@@ -35,6 +35,7 @@ function main() {
 
 function connectToCluster(client) {
   return client.connect().catch((err) => {
+    console.log(err);
     console.log("connection to the cluster has failed");
   });
 }
