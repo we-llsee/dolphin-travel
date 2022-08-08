@@ -1,0 +1,26 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": ["_id", "firstName", "lastName"],
+    "properties": {
+      "_id": {
+        "bsonType": "string",
+        "maxLength" : 25,
+        "minLength" : 1,
+        "description": "unique username is required"
+      },
+      "firstName": {
+       "bsonType": "string",
+       "maxLength" : 25,
+       "minLength" : 1,
+       "description": "must be a string and is required"
+     },
+     "lastName": {
+      "bsonType": "string",
+      "maxLength" : 25,
+      "minLength" : 1,
+      "description": "must be a string and is required"
+    }
+    }
+  }
+}

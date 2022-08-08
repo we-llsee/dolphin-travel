@@ -15,13 +15,21 @@ const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PW}@test.tqgebtp.mongodb.net/?r
 const userData = require("./data/users");
 const tripData = require("./data/trips");
 
+//schema
+const userSchema = require("./schemas/userSchema.json");
+
 function main() {
   const client = new MongoClient(uri);
   return connectToCluster(client).then(() => {
     console.log("successfully connected to cluster");
     return dropDatabase(client)
       .then(() => {
-        const userPromise = createCollection(client, "users", userData);
+        const userPromise = createCollection(
+          client,
+          "users",
+          userData,
+          userSchema
+        );
         const tripPromise = createCollection(client, "trips", tripData);
         return Promise.all([userPromise, tripPromise]);
       })
@@ -55,12 +63,19 @@ function dropDatabase(client) {
     });
 }
 
-function createCollection(client, collectionName, data) {
+function createCollection(client, collectionName, data, schema = {}) {
   return client
     .db("test")
-    .createCollection(collectionName)
+    .createCollection(collectionName, { validator: schema })
     .then(() => {
       return client.db("test").collection(collectionName).insertMany(data);
+    })
+    .catch((err) => {
+      if (err.code === 121) {
+        console.log("validation error - data does not adhere to schema");
+      } else {
+        console.log("error >>", err);
+      }
     });
 }
 
