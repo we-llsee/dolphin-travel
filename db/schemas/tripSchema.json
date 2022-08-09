@@ -1,7 +1,7 @@
 {
   "$jsonSchema": {
     "bsonType": "object",
-    "required": ["tripName","attending","startDate","endDate","budgetGBP","country","accomodation","days"],
+    "required": ["tripName","attending","startDate","endDate","budgetGBP","country","accommodation","days"],
     "properties": {
       "tripName": {
         "bsonType": "string",
@@ -26,11 +26,11 @@
         "bsonType":"string",
         "description":"based on dropdown from frontend"
       },
-      "accomodation":{
+      "accommodation":{
         "bsonType":"object",
-        "required":["accomodationName","latitude","longitude","address"],
+        "required":["accommodationName","latitude","longitude","address"],
         "properties":{
-            "accomodationName":{
+            "accommodationName":{
                 "bsonType":"string"
             },
             "latitude":{

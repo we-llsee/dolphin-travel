@@ -1,4 +1,4 @@
-const util=require('util')
+const util = require("util");
 
 const ENV = process.env.NODE_ENV || "test";
 
@@ -19,7 +19,7 @@ const tripData = require("./data/trips");
 
 //schema
 const userSchema = require("./schemas/userSchema.json");
-const tripSchema = require("./schemas/tripSchema.json")
+const tripSchema = require("./schemas/tripSchema.json");
 
 function main() {
   const client = new MongoClient(uri);
@@ -33,7 +33,12 @@ function main() {
           userData,
           userSchema
         );
-        const tripPromise = createCollection(client, "trips", tripData, tripSchema);
+        const tripPromise = createCollection(
+          client,
+          "trips",
+          tripData,
+          tripSchema
+        );
         return Promise.all([userPromise, tripPromise]);
       })
       .then(([listing1, listing2]) => {
@@ -76,7 +81,9 @@ function createCollection(client, collectionName, data, schema = {}) {
     .catch((err) => {
       if (err.code === 121) {
         console.log("validation error - data does not adhere to schema");
-        console.log(util.inspect(err,{showHidden: false, depth: null, colors: true}))
+        console.log(
+          util.inspect(err, { showHidden: false, depth: null, colors: true })
+        );
         // console.log(err.result.result.writeErrors[0].err.errInfo.details.schemaRulesNotSatisfied);
         // err.writeErrors.forEach(err=>{
         //   console.log(err.errInfo.details.schemaRulesNotSatisfied[0].propertiesNotSatisfied.forEach(property => {
