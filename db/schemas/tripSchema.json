@@ -1,0 +1,85 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": ["tripName","attending","startDate","endDate","budgetGBP","country","accommodation","days"],
+    "properties": {
+      "tripName": {
+        "bsonType": "string",
+        "maxLength": 35,
+        "minLength": 1,
+        "description": "must be a string and is required"
+      },
+      "attending":{
+        "bsonType": "array",
+        "description": "array containing user id's"
+      },
+      "startDate":{
+        "bsonType": "date"
+      },
+      "endDate":{
+        "bsonType":"date"
+      },
+      "budgetGBP":{
+        "bsonType":"int"
+      },
+      "country":{
+        "bsonType":"string",
+        "description":"based on dropdown from frontend"
+      },
+      "accommodation":{
+        "bsonType":"object",
+        "required":["accommodationName","latitude","longitude","address"],
+        "properties":{
+            "accommodationName":{
+                "bsonType":"string"
+            },
+            "latitude":{
+                "bsonType":"double"
+            },
+            "longitude":{
+                "bsonType":"double"
+            },
+            "address":{
+                "bsonType":"object"
+            }
+        }
+      },
+      "days":{
+        "bsonType":"array",
+        "items":{
+            "bsonType":"object",
+            "required":["date","activities"],
+            "properties":{
+                "date":{
+                    "bsonType":"date"
+                },
+                "activities":{
+                    "bsonType":"array",
+                    "items":{
+                        "bsonType":"object",
+                        "required":["activityName","latitude","longitude","address"],
+                        "properties":{
+                            "_id":{
+                                "bsonType":"objectId"
+                            },
+                            "activityName":{
+                                "bsonType":"string"
+                            },
+                            "latitude":{
+                                "bsonType":"double"
+                            },
+                            "longitude":{
+                                "bsonType":"double"
+                            },
+                            "address":{
+                                "bsonType":"object"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+      }
+    }
+  }
+}
