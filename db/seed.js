@@ -84,12 +84,6 @@ function createCollection(client, collectionName, data, schema = {}) {
         console.log(
           util.inspect(err, { showHidden: false, depth: null, colors: true })
         );
-        // console.log(err.result.result.writeErrors[0].err.errInfo.details.schemaRulesNotSatisfied);
-        // err.writeErrors.forEach(err=>{
-        //   console.log(err.errInfo.details.schemaRulesNotSatisfied[0].propertiesNotSatisfied.forEach(property => {
-        //     console.log(property.details)
-        //   }))
-        // })
       } else {
         console.log("error >>", err);
       }
