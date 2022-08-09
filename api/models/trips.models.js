@@ -1,24 +1,25 @@
 const client = require("../../db/connection");
+const ENV = process.env.NODE_ENV || "test";
 
-function getUsers() {
-  return client.connect().then(() => {
-    const db = client.db("test");
-    const trips = db.collection("trips");
+exports.selectTrips = () => {
+  let returnArr;
+  return client
+    .connect()
+    .then(() => {
+      const db = client.db(ENV);
+      const trips = db.collection("trips");
 
-    const query = {
-      attending: { $in: ["willclegg"] },
-    };
+      const query = {
+        attending: { $in: ["willclegg"] },
+      };
 
-    trips
-      .find(query)
-      .toArray()
-      .then((arr) => {
-        console.log(arr);
-      })
-      .then(() => {
-        return client.close();
-      });
-  });
-}
-
-getUsers();
+      return trips.find(query).toArray();
+    })
+    .then((arr) => {
+      returnArr = arr;
+      return client.close();
+    })
+    .then(() => {
+      return returnArr;
+    });
+};
