@@ -21,7 +21,8 @@ const tripData = require("./data/trips");
 const userSchema = require("./schemas/userSchema.json");
 const tripSchema = require("./schemas/tripSchema.json");
 
-function main() {
+function seed() {
+
   const client = new MongoClient(uri);
   return connectToCluster(client).then(() => {
     console.log("successfully connected to cluster");
@@ -63,8 +64,8 @@ function dropDatabase(client) {
     .listDatabases()
     .then((dbs) => {
       dbs.databases.forEach((db) => {
-        if (db.name === "test") {
-          const db = client.db("test");
+        if (db.name === ENV) {
+          const db = client.db(ENV);
           return db.dropDatabase();
         }
       });
@@ -73,10 +74,10 @@ function dropDatabase(client) {
 
 function createCollection(client, collectionName, data, schema = {}) {
   return client
-    .db("test")
+    .db(ENV)
     .createCollection(collectionName, { validator: schema })
     .then(() => {
-      return client.db("test").collection(collectionName).insertMany(data);
+      return client.db(ENV).collection(collectionName).insertMany(data);
     })
     .catch((err) => {
       if (err.code === 121) {
@@ -90,4 +91,4 @@ function createCollection(client, collectionName, data, schema = {}) {
     });
 }
 
-main();
+module.exports=seed;

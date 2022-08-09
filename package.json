@@ -8,7 +8,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "prepare": "husky install",
     "test": "jest",
-    "nodemon": "nodemon listen.js"
+    "nodemon": "nodemon listen.js",
+    "seed-prod": "NODE_ENV=production node ./db/run-seed.js"
   },
   "dependencies": {
     "dotenv": "^16.0.1",
