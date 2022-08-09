@@ -22,7 +22,6 @@ const userSchema = require("./schemas/userSchema.json");
 const tripSchema = require("./schemas/tripSchema.json");
 
 function seed() {
-
   const client = new MongoClient(uri);
   return connectToCluster(client).then(() => {
     console.log("successfully connected to cluster");
@@ -42,9 +41,9 @@ function seed() {
         );
         return Promise.all([userPromise, tripPromise]);
       })
-      .then(([listing1, listing2]) => {
-        console.log(listing1);
-        console.log(listing2);
+      .then(([addUserConfirmation, addTripConfirmation]) => {
+        console.log(addUserConfirmation);
+        console.log(addTripConfirmation);
         return client.close();
       });
   });
@@ -69,7 +68,9 @@ function dropDatabase(client) {
           return db.dropDatabase();
         }
       });
-    });
+    }).catch(err=>{
+      console.log(`an error occured while trying to drop the ${ENV} database`)
+    })
 }
 
 function createCollection(client, collectionName, data, schema = {}) {
@@ -86,9 +87,9 @@ function createCollection(client, collectionName, data, schema = {}) {
           util.inspect(err, { showHidden: false, depth: null, colors: true })
         );
       } else {
-        console.log("error >>", err);
+        console.log(`an error occured while trying to create and populate the ${collectionName} collection`, err);
       }
     });
 }
 
-module.exports=seed;
+module.exports = seed;

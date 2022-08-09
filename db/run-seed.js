@@ -1,7 +1,7 @@
-const seed=require('./seed');
+const seed = require("./seed");
 
-function runSeed(){
-    return seed();
+function runSeed() {
+  return seed();
 }
 
 runSeed();

@@ -1,17 +1,13 @@
-const seed=require('../db/seed')
+const seed = require("../db/seed");
 
 describe("", () => {
-
-  beforeEach(()=>{
+  beforeEach(() => {
     return seed();
-  })
-
-  afterAll(()=>{
-
-  })
-
-  it("", () => {
-    console.log('test1')
   });
 
+  afterAll(() => {});
+
+  it("", () => {
+    console.log("test1");
+  });
 });
