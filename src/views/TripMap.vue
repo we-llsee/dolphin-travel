@@ -1,15 +1,4 @@
-<script>
-import { latLng } from "leaflet/dist/leaflet-src.esm";
-import { LMap, LTileLayer, LMarker } from "vue-leaflet";
-export default {
-  name: "TripMap",
-  components: {
-    LMap,
-    LTileLayer,
-    LMarker,
-  },
-};
-</script>
+<script></script>
 
 <template>
   <div>
