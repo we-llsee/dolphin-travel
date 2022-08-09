@@ -4,6 +4,7 @@ import AddNewTrip from "../views/AddNewTrip.vue";
 import TripView from "../views/TripView.vue";
 import CurrentTrips from "../views/CurrentTrips.vue";
 import PreviousTrips from "../views/PreviousTrips.vue";
+import TripMap from "../views/TripMap.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,11 +20,6 @@ const router = createRouter({
       component: AddNewTrip,
     },
     {
-      path: "/trip-view",
-      name: "tripview",
-      component: TripView,
-    },
-    {
       path: "/current-trips",
       name: "currenttrips",
       component: CurrentTrips,
@@ -32,6 +28,16 @@ const router = createRouter({
       path: "/previous-trips",
       name: "previoustrips",
       component: PreviousTrips,
+    },
+    {
+      path: "/trips/:tripId",
+      name: "tripview",
+      component: TripView,
+    },
+    {
+      path: "/trips/:tripId/map",
+      name: "tripmap",
+      component: TripMap,
     },
   ],
 });

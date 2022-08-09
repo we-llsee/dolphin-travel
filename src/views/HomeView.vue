@@ -44,8 +44,8 @@ export default {
   },
   methods: {
     deleteTrip(id) {
+      alert("Are you sure you want to delete this trip?");
       this.trips = this.trips.filter((trip) => {
-        console.log(id);
         return trip.tripId !== id;
       });
     },
