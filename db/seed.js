@@ -68,9 +68,11 @@ function dropDatabase(client) {
           return db.dropDatabase();
         }
       });
-    }).catch(err=>{
-      console.log(`an error occured while trying to drop the ${ENV} database`)
     })
+    .catch((err) => {
+      console.log(`an error occured while trying to drop the ${ENV} database`);
+      console.log(err);
+    });
 }
 
 function createCollection(client, collectionName, data, schema = {}) {
@@ -87,7 +89,10 @@ function createCollection(client, collectionName, data, schema = {}) {
           util.inspect(err, { showHidden: false, depth: null, colors: true })
         );
       } else {
-        console.log(`an error occured while trying to create and populate the ${collectionName} collection`, err);
+        console.log(
+          `an error occured while trying to create and populate the ${collectionName} collection`,
+          err
+        );
       }
     });
 }
