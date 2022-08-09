@@ -2,7 +2,6 @@ const client = require("../../db/connection");
 const ENV = process.env.NODE_ENV || "test";
 
 exports.selectTrips = () => {
-  let returnArr;
   return client
     .connect()
     .then(() => {
@@ -16,10 +15,9 @@ exports.selectTrips = () => {
       return trips.find(query).toArray();
     })
     .then((arr) => {
-      returnArr = arr;
-      return client.close();
+      return arr;
     })
-    .then(() => {
-      return returnArr;
+    .finally(() => {
+      client.close();
     });
 };
