@@ -1,6 +1,6 @@
 const { selectTrips } = require("../models/trips.models");
 
-exports.getTrips = (req, res, next) => {
+exports.getTrips = (req, res) => {
   console.log("in function");
   selectTrips()
     .then((data) => {
