@@ -23,6 +23,21 @@ describe("Express App", () => {
     });
   });
 
+  describe("GET /api", () => {
+    it("200: Returns an object with keys describing the different endpoints", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.endpoints).toEqual(
+            expect.objectContaining({
+              "GET /api/trips": expect.any(Object),
+            })
+          );
+        });
+    });
+  });
+
   describe("GET /api/trips?username=X", () => {
     it("200: Returns an array of trips for specified user", () => {
       return request(app)

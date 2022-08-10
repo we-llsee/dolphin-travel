@@ -1,10 +1,15 @@
 const express = require("express");
+const endpoints = require("./endpoints.json");
 
 const { getTrips } = require("./controllers/trips.controllers");
 
 const app = express();
 
 app.use(express.json());
+
+app.get("/api", (req, res) => {
+  res.status(200).send({ endpoints });
+});
 
 app.get("/api/trips", getTrips);
 
