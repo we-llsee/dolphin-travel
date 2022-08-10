@@ -9,7 +9,8 @@
     "prepare": "husky install",
     "test": "jest",
     "nodemon": "nodemon ./api/listen.js",
-    "seed-prod": "NODE_ENV=production node ./db/run-seed.js"
+    "seed-prod": "NODE_ENV=production node ./db/run-seed.js",
+    "start": "node ./api/listen.js"
   },
   "dependencies": {
     "dotenv": "^16.0.1",
