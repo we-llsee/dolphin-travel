@@ -1,18 +1,19 @@
 <template>
-  <router-link :to="'/trips/' + trip.tripId">
-    <div>
+  <div>
+    <router-link :to="'/trips/' + trip.tripId" :trip="trip">
       <h3>
-        {{ trip.tripName
-        }}<img
-          @click="$emit('delete-trip', trip.tripId)"
-          class="delete-button"
-          src="../assets/trash.svg"
-          alt="trashcan"
-        />
+        {{ trip.tripName }}
+        {{ trip.tripId }}
       </h3>
       <p>You're visiting {{ trip.countryVisiting }}!</p>
-    </div>
-  </router-link>
+    </router-link>
+    <img
+      @click="$emit('delete-trip', trip.tripId)"
+      class="delete-button"
+      src="../assets/trash.svg"
+      alt="trashcan"
+    />
+  </div>
 </template>
 
 <script>
@@ -21,14 +22,11 @@ export default {
   props: {
     trip: Object,
   },
-  // created() {
-  //   this.url_data = this.$route.params.id;
-  // },
-  // data() {
-  //   return {
-  //     url_data: this.$route.params.tripId,
-  //   };
-  // },
+  method: {
+    onDelete(id) {
+      this.$emit("delete-trip", id);
+    },
+  },
 };
 </script>
 
@@ -38,6 +36,8 @@ div {
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 div h3 {
   display: flex;

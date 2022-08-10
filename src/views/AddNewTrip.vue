@@ -5,12 +5,21 @@
       <input type="text" name="text" placeholder="Trip Name" />
     </div>
     <div class="form-control">
-      <label>Country Visiting</label>
-      <input type="text" name="country" placeholder="Choose a country" />
+      <label>Country Visiting:</label>
+      <select name="countries" id="country-select">
+        <option>Please select a country</option>
+        <option
+          :key="country.code"
+          v-for="country in $options.COUNTRIES"
+          :value="country.value"
+        >
+          {{ country.name }}
+        </option>
+      </select>
     </div>
     <div class="form-control">
       <label>Budget</label>
-      <input type="text" name="budget" placeholder="$0.00" />
+      <input type="text" name="budget" placeholder="£0.00" />
     </div>
     <div class="form-control form-control-check">
       <label>Trip start date</label>
@@ -20,15 +29,18 @@
       <label>Trip end date</label>
       <input type="text" name="trip-end" placeholder="DD/MM/YYYY" />
     </div>
-    <router-link to="/trip-view">
+    <router-link :to="'/trips/' + $route.params.tripId">
       <input type="submit" value="Save trip" class="btn btn-block"
     /></router-link>
   </form>
 </template>
 
 <script>
+import countries from "../assets/data.js";
+
 export default {
   name: "AddNewTrip",
+  COUNTRIES: countries,
 };
 </script>
 

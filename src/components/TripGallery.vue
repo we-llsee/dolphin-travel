@@ -16,5 +16,6 @@ export default {
   props: {
     trips: Array,
   },
+  emits: ["delete-trip"],
 };
 </script>
