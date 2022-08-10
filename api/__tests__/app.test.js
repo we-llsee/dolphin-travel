@@ -90,4 +90,41 @@ describe("Express App", () => {
         });
     });
   });
+
+  describe("POST /api/trips", () => {
+    it.only("200: Returns an object containing the newly posted trip on a key of trip", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg", "alexrong", "mohamedelrofai"],
+        budgetGBP: 3000,
+        startDate: new Date(2022, 9, 10),
+        endDate: new Date(2022, 9, 17),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 36.2648311,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app).post("/api/trips").send(newTripData).expect(200);
+      //     .then(({ body }) => {
+      //       expect(body.trip).toEqual(
+      //         expect.objectContaining({
+      //           ...newTripData,
+      //           days: [],
+      //           _id: expect.any(String),
+      //         })
+      //       );
+      //     });
+    });
+  });
 });
