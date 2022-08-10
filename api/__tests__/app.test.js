@@ -1,7 +1,7 @@
 const seed = require("../../db/seed");
 const { client } = require("../../db/connection");
 
-jest.setTimeout(15000);
+// jest.setTimeout(15000);
 
 beforeEach(() => {
   return seed();

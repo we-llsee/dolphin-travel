@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { getTrips } = require("./controlllers/trips.controllers");
+const { getTrips } = require("./controllers/trips.controllers");
 
 const app = express();
 
