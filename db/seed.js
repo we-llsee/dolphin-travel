@@ -24,7 +24,6 @@ const tripSchema = require("./schemas/tripSchema.json");
 function seed() {
   const client = new MongoClient(uri);
   return connectToCluster(client).then(() => {
-    console.log("successfully connected to cluster");
     return dropDatabase(client)
       .then(() => {
         const userPromise = createCollection(
