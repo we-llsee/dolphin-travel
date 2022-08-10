@@ -8,4 +8,13 @@ app.use(express.json());
 
 app.get("/api/trips", getTrips);
 
+app.use('*',(req,res)=>{
+    res.status(404).send({msg:'Invalid Path'})
+})
+
+app.use((error,req,res,next)=>{
+    console.log(error)
+    res.status(500).send({msg:'Server Error'})
+})
+
 module.exports = app;
