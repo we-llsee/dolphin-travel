@@ -41,9 +41,7 @@ function seed() {
         );
         return Promise.all([userPromise, tripPromise]);
       })
-      .then(([addUserConfirmation, addTripConfirmation]) => {
-        console.log(addUserConfirmation);
-        console.log(addTripConfirmation);
+      .then(() => {
         return client.close();
       });
   });

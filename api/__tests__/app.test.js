@@ -5,7 +5,7 @@ const request = require("supertest");
 
 jest.setTimeout(15000);
 
-beforeAll(() => {
+beforeEach(() => {
   return seed();
 });
 
