@@ -11,4 +11,7 @@ const MONGO_USER = process.env.MONGO_USER;
 const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PW}@test.tqgebtp.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 
-module.exports = client;
+client.connect();
+const db = client.db(ENV);
+
+module.exports = { client, db };

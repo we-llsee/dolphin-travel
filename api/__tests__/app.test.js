@@ -1,4 +1,5 @@
 const seed = require("../../db/seed");
+const { client } = require("../../db/connection");
 
 jest.setTimeout(15000);
 
@@ -6,7 +7,7 @@ beforeEach(() => {
   return seed();
 });
 
-afterAll(() => {});
+afterAll(() => client.close());
 
 describe("", () => {
   it("", () => {
