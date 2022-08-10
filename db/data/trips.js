@@ -3,7 +3,7 @@ const { ObjectId } = require("mongodb");
 module.exports = [
   {
     tripName: "Greece Wedding",
-    attending: ["will"],
+    attending: ["willclegg"],
     startDate: new Date(2022, 9, 3),
     endDate: new Date(2022, 9, 8),
     budgetGBP: 1000,
@@ -53,7 +53,7 @@ module.exports = [
   },
   {
     tripName: "Berlin Weekend",
-    attending: ["will"],
+    attending: ["willclegg"],
     startDate: new Date(2023, 3, 31),
     endDate: new Date(2023, 4, 3),
     budgetGBP: 1000,
