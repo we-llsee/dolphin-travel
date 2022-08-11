@@ -353,7 +353,7 @@ describe("Express App", () => {
           expect(msg).toBe("User 'jessk' does not exist.");
         });
     });
-    it("400: Returns 'Budget cannot be £0 or less.' when the user gives a budget that is negative or 0", () => {
+    it.only("400: Returns 'Budget cannot be £0 or less.' when the user gives a budget that is negative or 0", () => {
       const newTripData = {
         tripName: "Turkey 2K22",
         attending: ["willclegg", "jesskemp"],
