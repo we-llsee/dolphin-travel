@@ -58,5 +58,50 @@
         }
       ]
     }
+  },
+  "POST /api/trips": {
+    "description": "adds a new trip to the database and returns the trip on a key of trip",
+    "requestBody": {
+      "tripName": "string",
+      "attending": "array of all users going on trip",
+      "budgetGBP": "integer > 0",
+      "startDate": "date (cannot be in the past)",
+      "endDate": "date (cannot be before the startDate)",
+      "country": "country",
+      "accommodation": {
+        "accommodationName": "string",
+        "latitude": "number",
+        "longitude": "number",
+        "address": "empty object or object containing any number of address keys"
+    },
+    "exampleResponse": {
+      "trip": 
+        {
+          "_id": "62f24229222c00589a5e617f",
+          "tripName": "Team 2 Getaway",
+          "attending": ["willclegg", "jesskemp", "alexrong", "mohamedelrofai"],
+          "startDate": "2022-08-31T23:00:00.000Z",
+          "endDate": "2022-09-07T23:00:00.000Z",
+          "budgetGBP": 1580,
+          "country": "Czech Republic",
+          "accommodation": {
+            "accommodationName": "Hotel Pod Věží",
+            "latitude": 50.0873932,
+            "longitude": 14.4066676,
+            "address": {
+              "name": "Hotel Pod Věží",
+              "house_number": "2",
+              "road": "Mostecká",
+              "city": "Prague",
+              "state": "Prague",
+              "postcode": 11800,
+              "country": "Czechia",
+              "country_code": "CZ"
+            }
+          },
+          "days": []
+        }
+      }
+    }
   }
 }
