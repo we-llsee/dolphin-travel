@@ -1,10 +1,12 @@
 const express = require("express");
 const endpoints = require("./endpoints.json");
+const cors = require("cors");
 
 const { getTrips } = require("./controllers/trips.controllers");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/api", (req, res) => {
