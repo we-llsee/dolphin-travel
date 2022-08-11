@@ -93,7 +93,7 @@ describe("Express App", () => {
   });
 
   describe("POST /api/trips", () => {
-    it.only("200: Returns an object containing the newly posted trip on a key of trip", () => {
+    it("200: Returns an object containing the newly posted trip on a key of trip", () => {
       const newTripData = {
         tripName: "Turkey 2K22",
         attending: ["willclegg", "alexrong", "mohamedelrofai"],
@@ -131,6 +131,133 @@ describe("Express App", () => {
               _id: expect.any(ObjectId),
             })
           );
+        });
+    });
+    it("400: Returns 'startDate is not type 'date'.' for a startDate that is the wrong type", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg", "alexrong", "mohamedelrofai"],
+        budgetGBP: 3000,
+        startDate: "sandwiches",
+        endDate: new Date(2022, 9, 17),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 36.2648311,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("startDate is not type 'date'.");
+        });
+    });
+    it("400: Returns 'latitude is not a number.' for a latitude that is the wrong type", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg", "alexrong", "mohamedelrofai"],
+        budgetGBP: 3000,
+        startDate: new Date(2022, 9, 16),
+        endDate: new Date(2022, 9, 17),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: "hello",
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("latitude is not type 'number'.");
+        });
+    });
+    it("400: Returns 'attending is not an array.' for a list of attending users that is the wrong type", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: {
+          name1: "willclegg",
+          name2: "alexrong",
+          name3: "mohamedelrofai",
+        },
+        budgetGBP: 3000,
+        startDate: new Date(2022, 9, 16),
+        endDate: new Date(2022, 9, 17),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("attending is not type 'array'.");
+        });
+    });
+    it.only("400: Returns 'budgetGBP has not been provided.' if no budget is provided on the request", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg"],
+        startDate: new Date(2022, 9, 16),
+        endDate: new Date(2022, 9, 17),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("budgetGBP has not been provided.");
         });
     });
   });
