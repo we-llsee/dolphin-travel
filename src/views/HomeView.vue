@@ -1,18 +1,18 @@
 <script>
-  import TripGallery from "../components/TripGallery.vue";
+import TripGallery from "../components/TripGallery.vue";
 
-  export default {
-    name: "HomeView",
-    components: {
-      TripGallery,
-    },
+export default {
+  name: "HomeView",
+  components: {
+    TripGallery,
+  },
 
-    methods: {
-      // deleteTrip(id) {
-      //   this.$emit("delete-trip", id);
-      // },
-    },
-  };
+  methods: {
+    // deleteTrip(id) {
+    //   this.$emit("delete-trip", id);
+    // },
+  },
+};
 </script>
 
 <template>
