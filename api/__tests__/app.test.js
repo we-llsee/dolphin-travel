@@ -2,6 +2,7 @@ const seed = require("../../db/seed");
 const { client } = require("../../db/connection");
 const app = require("../app");
 const request = require("supertest");
+const { ObjectId } = require("bson");
 
 jest.setTimeout(15000);
 
@@ -115,16 +116,22 @@ describe("Express App", () => {
           },
         },
       };
-      return request(app).post("/api/trips").send(newTripData).expect(200);
-      //     .then(({ body }) => {
-      //       expect(body.trip).toEqual(
-      //         expect.objectContaining({
-      //           ...newTripData,
-      //           days: [],
-      //           _id: expect.any(String),
-      //         })
-      //       );
-      //     });
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(200)
+        .then(({ body }) => {
+          body.trip.startDate = new Date(body.trip.startDate);
+          body.trip.endDate = new Date(body.trip.endDate);
+          body.trip._id = new ObjectId(body.trip._id);
+          expect(body.trip).toEqual(
+            expect.objectContaining({
+              ...newTripData,
+              days: [],
+              _id: expect.any(ObjectId),
+            })
+          );
+        });
     });
   });
 });

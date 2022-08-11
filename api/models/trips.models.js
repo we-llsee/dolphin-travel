@@ -23,6 +23,10 @@ exports.postTrip = (newTrip) => {
   newTrip.endDate = new Date(newTrip.endDate);
 
   return trips.insertOne(newTrip).then((trip) => {
-    return trip;
+    const tripEntered = {
+      _id: trip.insertedId,
+      ...newTrip,
+    };
+    return tripEntered;
   });
 };
