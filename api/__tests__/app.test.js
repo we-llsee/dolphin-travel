@@ -34,6 +34,7 @@ describe("Express App", () => {
             expect.objectContaining({
               "GET /api/trips": expect.any(Object),
               "POST /api/trips": expect.any(Object),
+              "GET /api/trips/:trip_id": expect.any(Object),
             })
           );
         });
