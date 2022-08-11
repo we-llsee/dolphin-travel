@@ -2,7 +2,11 @@ const express = require("express");
 const endpoints = require("./endpoints.json");
 const cors = require("cors");
 
-const { getTrips, addNewTrip } = require("./controllers/trips.controllers");
+const {
+  getTrips,
+  addNewTrip,
+  getSingleTrip,
+} = require("./controllers/trips.controllers");
 
 const app = express();
 
@@ -14,6 +18,7 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/api/trips", getTrips);
+app.get("/api/trips/:trip_id", getSingleTrip);
 
 app.post("/api/trips", addNewTrip);
 
