@@ -1,6 +1,11 @@
 const { db } = require("../../db/connection");
 const { selectUsername } = require("./users.models");
-const { checkTypes, checkDates } = require("../utility");
+const {
+  checkTypes,
+  checkDates,
+  checkUsersExist,
+  checkBudget,
+} = require("../utility");
 //TODO further investigation of MongoDB injection attacks
 const trips = db.collection("trips");
 
@@ -21,8 +26,8 @@ exports.selectTrips = (username) => {
 exports.postTrip = (newTrip) => {
   return Promise.all([
     checkTypes("tripName", newTrip.tripName, "string"),
-    checkTypes("attending", newTrip.attending, "array"),
-    checkTypes("budgetGBP", newTrip.budgetGBP, "number"),
+    checkUsersExist(newTrip.attending),
+    checkBudget(newTrip.budgetGBP),
     checkTypes("country", newTrip.country, "string"),
     checkTypes("accommodation", newTrip.accommodation, "object"),
     checkTypes(

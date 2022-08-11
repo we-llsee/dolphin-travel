@@ -73,21 +73,21 @@ describe("Express App", () => {
         });
     });
 
-    it("400: Returns {msg:Invalid Username} for invalid username query", () => {
+    it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
       return request(app)
         .get("/api/trips?username=23")
         .expect(400)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Invalid Username");
+          expect(msg).toBe("User '23' is an invalid username.");
         });
     });
 
-    it("404: Returns {msg:Username does not exist} when username cannot be found", () => {
+    it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
       return request(app)
         .get("/api/trips?username=jimstevenson")
         .expect(404)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Username does not exist");
+          expect(msg).toBe("User 'jimstevenson' does not exist.");
         });
     });
   });
@@ -230,7 +230,7 @@ describe("Express App", () => {
           expect(msg).toBe("attending is not type 'array'.");
         });
     });
-    it.only("400: Returns 'budgetGBP has not been provided.' if no budget is provided on the request", () => {
+    it("400: Returns 'budgetGBP has not been provided.' if no budget is provided on the request", () => {
       const newTripData = {
         tripName: "Turkey 2K22",
         attending: ["willclegg"],
@@ -258,6 +258,130 @@ describe("Express App", () => {
         .expect(400)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("budgetGBP has not been provided.");
+        });
+    });
+    it("400: Returns 'startDate cannot be in the past.' if given a startDate in the past", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg"],
+        budgetGBP: 3000,
+        startDate: new Date(2021, 2, 8),
+        endDate: new Date(2022, 9, 17),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("startDate cannot be in the past.");
+        });
+    });
+    it("400: Returns 'endDate cannot be before startDate.' if given an endDate before a startDate", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg"],
+        budgetGBP: 3000,
+        startDate: new Date(2022, 10, 8),
+        endDate: new Date(2022, 4, 4),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("endDate cannot be before startDate.");
+        });
+    });
+    it("400: Returns 'User 'X' does not exist.' when one username in the array is not in the users collection", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg", "jessk"],
+        budgetGBP: 3000,
+        startDate: new Date(2022, 10, 8),
+        endDate: new Date(2022, 10, 18),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("User 'jessk' does not exist.");
+        });
+    });
+    it("400: Returns 'Budget cannot be £0 or less.' when the user gives a budget that is negative or 0", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg", "jesskemp"],
+        budgetGBP: 0,
+        startDate: new Date(2022, 10, 8),
+        endDate: new Date(2022, 10, 18),
+        country: "Turkey",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Budget cannot be £0 or less.");
         });
     });
   });
