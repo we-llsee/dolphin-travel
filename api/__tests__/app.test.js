@@ -33,6 +33,7 @@ describe("Express App", () => {
           expect(body.endpoints).toEqual(
             expect.objectContaining({
               "GET /api/trips": expect.any(Object),
+              "POST /api/trips": expect.any(Object),
             })
           );
         });
