@@ -60,41 +60,41 @@ exports.postTrip = (newTrip) => {
     });
 };
 
-exports.selectSingleTrip = (trip_id, username) => {
+exports.doesTripExist = (trip_id) => {
   if (Number.isInteger(+trip_id) || trip_id.length < 24) {
     return Promise.reject({
       status: 400,
       msg: `trip_id '${trip_id}' is an invalid trip ID.`,
     });
   } else {
-    const query = {
-      _id: new ObjectId(trip_id),
-      attending: { $in: [username] },
-    };
-
-    return selectUsername(username)
-      .then(() => {
-        return trips.findOne({ _id: new ObjectId(trip_id) });
-      })
-      .then((trip) => {
-        if (trip === null) {
-          return Promise.reject({
-            status: 404,
-            msg: `trip_id '${trip_id}' does not exist.`,
-          });
-        } else {
-          return trips.findOne(query);
-        }
-      })
-      .then((trip) => {
-        if (trip === null) {
-          return Promise.reject({
-            status: 401,
-            msg: "You are unauthorised to access this trip.",
-          });
-        } else {
-          return trip;
-        }
-      });
+    return trips.findOne({ _id: new ObjectId(trip_id) }).then((trip) => {
+      if (trip === null) {
+        return Promise.reject({
+          status: 404,
+          msg: `trip_id '${trip_id}' does not exist.`,
+        });
+      }
+    });
   }
+};
+
+exports.selectSingleTrip = (trip_id, username) => {
+  return Promise.all([selectUsername(username), this.doesTripExist(trip_id)])
+    .then(() => {
+      const query = {
+        _id: new ObjectId(trip_id),
+        attending: { $in: [username] },
+      };
+      return trips.findOne(query);
+    })
+    .then((trip) => {
+      if (trip === null) {
+        return Promise.reject({
+          status: 401,
+          msg: "You are unauthorised to access this trip.",
+        });
+      } else {
+        return trip;
+      }
+    });
 };

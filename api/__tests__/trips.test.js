@@ -390,7 +390,7 @@ describe("Trips", () => {
         });
     });
   });
-  describe("GET /api/trip/:trip_id?username=X", () => {
+  describe.only("GET /api/trip/:trip_id?username=X", () => {
     it("200: Returns an object containing the trip requested", () => {
       return request(app)
         .get("/api/trips?username=willclegg")
