@@ -353,7 +353,7 @@ describe("Express App", () => {
           expect(msg).toBe("User 'jessk' does not exist.");
         });
     });
-    it.only("400: Returns 'Budget cannot be £0 or less.' when the user gives a budget that is negative or 0", () => {
+    it("400: Returns 'Budget cannot be £0 or less.' when the user gives a budget that is negative or 0", () => {
       const newTripData = {
         tripName: "Turkey 2K22",
         attending: ["willclegg", "jesskemp"],
@@ -382,6 +382,37 @@ describe("Express App", () => {
         .expect(400)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Budget cannot be £0 or less.");
+        });
+    });
+    it("400: Returns 'Country 'X' does not exist'. when the user gives a country that does not exist", () => {
+      const newTripData = {
+        tripName: "Turkey 2K22",
+        attending: ["willclegg", "jesskemp"],
+        budgetGBP: 5000,
+        startDate: new Date(2022, 10, 8),
+        endDate: new Date(2022, 10, 18),
+        country: "Sandwich",
+        accommodation: {
+          accommodationName: "Meldi Hotel",
+          latitude: 29.409945,
+          longitude: 29.409945,
+          address: {
+            name: "Meldi Hotel",
+            road: "Nilüfer Sokak",
+            city: "Kaş",
+            state: "Antalya",
+            postcode: "07960",
+            country: "Turkey",
+            country_code: "TR",
+          },
+        },
+      };
+      return request(app)
+        .post("/api/trips")
+        .send(newTripData)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Country 'Sandwich' does not exist.");
         });
     });
   });

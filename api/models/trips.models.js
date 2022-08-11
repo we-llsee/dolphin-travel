@@ -5,8 +5,11 @@ const {
   checkDates,
   checkUsersExist,
   checkBudget,
+  checkCountry,
 } = require("../utility");
 //TODO further investigation of MongoDB injection attacks
+// TODO look into getting more country information
+// TODO error handling for the latitude and longitude ranges, every key on address object should be string
 const trips = db.collection("trips");
 
 exports.selectTrips = (username) => {
@@ -28,7 +31,7 @@ exports.postTrip = (newTrip) => {
     checkTypes("tripName", newTrip.tripName, "string"),
     checkUsersExist(newTrip.attending),
     checkBudget(newTrip.budgetGBP),
-    checkTypes("country", newTrip.country, "string"),
+    checkCountry(newTrip.country),
     checkTypes("accommodation", newTrip.accommodation, "object"),
     checkTypes(
       "accommodationName",

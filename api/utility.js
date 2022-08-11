@@ -1,4 +1,5 @@
 const { selectUsername } = require("./models/users.models");
+const countries = require("./countries-data");
 
 exports.checkTypes = (keyName, value, type) => {
   if (value === undefined) {
@@ -74,5 +75,17 @@ exports.checkBudget = (budgetGBP) => {
       });
     }
     return Promise.resolve();
+  });
+};
+
+exports.checkCountry = (country) => {
+  return this.checkTypes("country", country, "string").then(() => {
+    if (countries.find((data) => data.name === country)) {
+      return Promise.resolve();
+    }
+    return Promise.reject({
+      status: 400,
+      msg: `Country '${country}' does not exist.`,
+    });
   });
 };
