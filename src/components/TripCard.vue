@@ -1,60 +1,83 @@
 <template>
   <div>
-    <router-link :to="'/trips/' + trip.tripId" :trip="trip">
+    <router-link class="active-card" :to="'/trips/' + trip._id" :trip="trip">
       <h3>
         {{ trip.tripName }}
-        {{ trip.tripId }}
       </h3>
-      <p>You're visiting {{ trip.countryVisiting }}!</p>
+      <span>
+        You're visiting {{ trip.country }} for
+        {{ (new Date(trip.endDate) - new Date(trip.startDate)) / 86400000 }}
+        days</span
+      >
+      <span class="time-stamp">{{
+        timeAgo.format(new Date(trip.startDate))
+      }}</span>
+      <img
+        :src="
+          'https://countryflagsapi.com/png/' +
+          trip.accommodation.address.country_code
+        "
+        alt=""
+        class="country-flag"
+      />
     </router-link>
-    <img
-      @click="$emit('delete-trip', trip.tripId)"
-      class="delete-button"
-      src="../assets/trash.svg"
-      alt="trashcan"
-    />
+    <img class="delete-button" src="../assets/trash.svg" alt="trashcan" />
   </div>
 </template>
 
 <script>
-export default {
-  name: "TripCard",
-  props: {
-    trip: Object,
-  },
-  method: {
-    onDelete(id) {
-      this.$emit("delete-trip", id);
+  import TimeAgo from "javascript-time-ago";
+
+  import en from "javascript-time-ago/locale/en";
+
+  TimeAgo.addDefaultLocale(en);
+
+  export default {
+    name: "TripCard",
+    props: {
+      trip: Object,
     },
-  },
-};
+    data() {
+      return {
+        timeAgo: new TimeAgo("en-US"),
+      };
+    },
+    method: {
+      // onDelete(id) {
+      //   this.$emit("delete-trip", id);
+      // },
+    },
+  };
 </script>
 
 <style scoped>
-div {
-  background: #a1d8f8;
-  margin: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-}
-div h3 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  div {
+    background: #a1d8f8;
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  div h3 {
+  }
 
-.delete-button {
-  height: 20px;
-}
+  .time-stamp {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .delete-button {
+    width: 15px;
+    height: 20px;
+    display: flex;
+  }
 
-img:hover {
-  background-color: red;
-  box-shadow: 0px 0px 5px 1px rgb(255, 0, 0);
-}
+  img:hover {
+    background-color: red;
+    box-shadow: 0px 0px 5px 1px rgb(255, 0, 0);
+  }
 
-a {
-  color: #2c3e50;
-}
+  a {
+    color: #2c3e50;
+  }
 </style>
