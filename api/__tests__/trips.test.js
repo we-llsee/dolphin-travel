@@ -606,8 +606,8 @@ describe("Trips", () => {
         });
     });
   });
-  describe("PATCH /api/trips/:trip_id?username=X", () => {
-    it.only("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
+  describe.only("PATCH /api/trips/:trip_id?username=X", () => {
+    it("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
       let trip_id;
       const changeTripData = {
         tripName: "Wedding in Greece",
@@ -719,29 +719,79 @@ describe("Trips", () => {
             });
         });
     });
-    // it("200: Returns an object containing the updated trip where a person has been removed from the trip", () => {
-    //   let trip_id;
-    //   const changeTripData = {
-    //     removePeople: ["jesskemp"],
-    //   };
-    //   return request(app)
-    //     .get("/api/trips?username=willclegg")
-    //     .then(({ body: { trips } }) => {
-    //       trip_id = trips[2]._id;
-    //     })
-    //     .then(() => {
-    //       return request(app)
-    //         .patch(`/api/trips/${trip_id}?username=willclegg`)
-    //         .send(changeTripData)
-    //         .expect(200)
-    //         .then(({ body }) => {
-    //           expect(body.attending).toEqual([
-    //             "willclegg",
-    //             "alexrong",
-    //             "mohammedelrofai",
-    //           ]);
-    //         });
-    //     });
-    // });
+    it("200: Returns an object containing the updated trip where a person has been removed from the trip", () => {
+      let trip_id;
+      const changeTripData = {
+        removePeople: ["jesskemp"],
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[2]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.trip.attending).toEqual([
+                "willclegg",
+                "alexrong",
+                "mohamedelrofai",
+              ]);
+            });
+        });
+    });
+    it("200: Returns an object containing the updated trip where a new creator has been assigned", () => {
+      let trip_id;
+      const changeTripData = {
+        newCreator: "jesskemp",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[2]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.trip.attending).toEqual([
+                "jesskemp",
+                "willclegg",
+                "alexrong",
+                "mohamedelrofai",
+              ]);
+            });
+        });
+    });
+    it("200: Returns an object containing the updated trip when the creator has added people to the trip and assigned a new creator at the same time", () => {
+      let trip_id;
+      const changeTripData = {
+        addPeople: ["jesskemp", "alexrong"],
+        newCreator: "jesskemp",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.trip.attending).toEqual([
+                "jesskemp",
+                "willclegg",
+                "alexrong",
+              ]);
+            });
+        });
+    });
   });
 });

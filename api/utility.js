@@ -90,9 +90,10 @@ exports.checkCountry = (country) => {
   });
 };
 
-exports.buildSetQuery = (newTripDetails) => {
+exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
   const set = {};
   const push = {};
+  const pull = {};
   if (newTripDetails.tripName) {
     set.tripName = newTripDetails.tripName;
   }
@@ -108,12 +109,36 @@ exports.buildSetQuery = (newTripDetails) => {
   if (newTripDetails.accommodation) {
     set.accommodation = newTripDetails.accommodation;
   }
-  if (newTripDetails.addPeople) {
+
+  if (newTripDetails.addPeople && newTripDetails.newCreator) {
+    const creatorRemoved = [...currentlyAttending, ...newTripDetails.addPeople];
+    creatorRemoved.splice(
+      creatorRemoved.indexOf(`${newTripDetails.newCreator}`),
+      1
+    );
+    set.attending = [newTripDetails.newCreator, ...creatorRemoved];
+  }
+
+  if (newTripDetails.addPeople && !newTripDetails.newCreator) {
     push.attending = { $each: newTripDetails.addPeople };
+  }
+
+  if (newTripDetails.newCreator && !newTripDetails.addPeople) {
+    const creatorRemoved = [...currentlyAttending];
+    creatorRemoved.splice(
+      creatorRemoved.indexOf(`${newTripDetails.newCreator}`),
+      1
+    );
+    set.attending = [newTripDetails.newCreator, ...creatorRemoved];
+  }
+
+  if (newTripDetails.removePeople) {
+    pull.attending = { $in: newTripDetails.removePeople };
   }
 
   return {
     $set: set,
     $push: push,
+    $pull: pull,
   };
 };

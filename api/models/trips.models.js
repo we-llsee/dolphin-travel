@@ -120,16 +120,28 @@ exports.removeTrip = (trip_id, username) => {
 };
 
 exports.updateTrip = (trip_id, username, newTripDetails) => {
-  const setDetails = buildSetQuery(newTripDetails);
-  const query = {
-    _id: new ObjectId(trip_id),
-  };
   return trips
-    .updateOne(query, setDetails, { upsert: true })
-    .then(() => {
-      return trips.findOne({ _id: new ObjectId(trip_id) });
-    })
+    .findOne({ _id: new ObjectId(trip_id) })
     .then((trip) => {
-      return trip;
+      const currentlyAttending = [...trip.attending];
+      return currentlyAttending;
+    })
+    .then((currentlyAttending) => {
+      const setDetails = buildSetQuery(
+        trip_id,
+        newTripDetails,
+        currentlyAttending
+      );
+      const query = {
+        _id: new ObjectId(trip_id),
+      };
+      return trips
+        .updateOne(query, setDetails, { upsert: true })
+        .then(() => {
+          return trips.findOne({ _id: new ObjectId(trip_id) });
+        })
+        .then((trip) => {
+          return trip;
+        });
     });
 };
