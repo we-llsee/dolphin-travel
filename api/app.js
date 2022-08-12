@@ -9,6 +9,8 @@ const {
   deleteTrip,
 } = require("./controllers/trips.controllers");
 
+const { getUsers } = require("./controllers/users.controllers");
+
 const app = express();
 
 app.use(cors());
@@ -17,6 +19,8 @@ app.use(express.json());
 app.get("/api", (req, res) => {
   res.status(200).send({ endpoints });
 });
+
+app.get("/api/users", getUsers);
 
 app.get("/api/trips", getTrips);
 app.get("/api/trips/:trip_id", getSingleTrip);

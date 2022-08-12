@@ -25,3 +25,9 @@ exports.selectUsername = (username) => {
     });
   }
 };
+
+exports.selectUsers = () => {
+  const users = db.collection("users");
+
+  return users.find().toArray();
+};
