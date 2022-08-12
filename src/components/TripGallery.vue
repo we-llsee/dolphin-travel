@@ -1,6 +1,6 @@
 <template>
   <div v-if="loggedIn === false">
-    <p>Please Login First</p>
+    <p>Please login first to view your trips</p>
     <router-link to="/login"
       ><button class="loginbtn">Login</button></router-link
     >

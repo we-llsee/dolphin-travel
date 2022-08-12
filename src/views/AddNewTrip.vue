@@ -1,5 +1,11 @@
 <template>
-  <form class="add-form">
+  <div v-if="loggedIn === false">
+    <p>Please login first to create trips</p>
+    <router-link to="/login"
+      ><button class="loginbtn">Login</button></router-link
+    >
+  </div>
+  <form v-if="loggedIn === true" class="add-form">
     <div class="form-control">
       <label for="trip-name">Trip Name: </label>
       <input
@@ -73,7 +79,7 @@
       </option>
     </select>
     <div class="form-control form-control-check">
-      <label for="attending">Add Attendees: </label>
+      <label for="attending">Add Attendee's Username: </label>
       <input v-model="attendee" type="text" id="attending" />
       <button class="btn" @click="addAttendee">Add</button>
     </div>
@@ -105,19 +111,23 @@ export default {
       country: "",
       isClicked: false,
       attendee: "",
-      attending: [],
+      attending: [this.$store.state.loggedInUser],
       isAttending: false,
       tripName: "",
       budgetGBP: 0,
       tripStart: "",
       tripEnd: "",
+      loggedIn: false,
     };
+  },
+
+  created() {
+    if (this.$store.state.loggedInUser != "GUEST") {
+      this.loggedIn = true;
+    }
   },
   methods: {
     saveTrip() {
-      //store accom object on save
-      //accom.lat accom.lon
-      //addressDetails =
       axios({
         method: "post",
         url: "https://dolphin-travel.herokuapp.com/api/trips",

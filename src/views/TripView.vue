@@ -1,11 +1,11 @@
 <script>
-  import DayGallery from "../components/DayGallery.vue";
-  export default {
-    name: "TripView",
-    components: {
-      DayGallery,
-    },
-  };
+import DayGallery from "../components/DayGallery.vue";
+export default {
+  name: "TripView",
+  components: {
+    DayGallery,
+  },
+};
 </script>
 
 <template>
