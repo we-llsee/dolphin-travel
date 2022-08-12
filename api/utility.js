@@ -90,10 +90,30 @@ exports.checkCountry = (country) => {
   });
 };
 
+exports.checkFields = (object, fieldsArr) => {
+  if (Object.keys(object).length === 0) {
+    return Promise.reject({
+      status: 400,
+      msg: "Please provide details of the updates to be made.",
+    });
+  } else {
+    for (const prop in object) {
+      if (fieldsArr.indexOf(prop) === -1) {
+        return Promise.reject({
+          status: 400,
+          msg: `Cannot update field '${prop}'.`,
+        });
+      }
+    }
+    return Promise.resolve();
+  }
+};
+
 exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
   const set = {};
   const push = {};
   const pull = {};
+
   if (newTripDetails.tripName) {
     set.tripName = newTripDetails.tripName;
   }

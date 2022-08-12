@@ -606,7 +606,7 @@ describe("Trips", () => {
         });
     });
   });
-  describe.only("PATCH /api/trips/:trip_id?username=X", () => {
+  describe("PATCH /api/trips/:trip_id?username=X", () => {
     it("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
       let trip_id;
       const changeTripData = {
@@ -792,6 +792,78 @@ describe("Trips", () => {
               ]);
             });
         });
+    });
+    describe("General Errors", () => {
+      it("401: Returns {msg: You are unauthorised to change this trip.} when a user not listed as attending attempts to change the trip", () => {
+        let trip_id;
+        const changeTripData = {
+          tripName: "Greece Takeover!",
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=jesskemp`)
+                .send(changeTripData)
+                .expect(401)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("You are unauthorised to change this trip.");
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: Please provide details of the updates to be made.} when no details are provided on the request body.", () => {
+        let trip_id;
+        const changeTripData = {};
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe(
+                    "Please provide details of the updates to be made."
+                  );
+                });
+            })
+        );
+      });
+      it.only("400: Returns {msg: Cannot update field 'country'.} when the user tries to update the country field (a field they cannot update).", () => {
+        let trip_id;
+        const changeTripData = {
+          tripName: "Turkey Takeover",
+          country: "Turkey",
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("Cannot update field 'country'.");
+                });
+            })
+        );
+      });
     });
   });
 });

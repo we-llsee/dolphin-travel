@@ -8,6 +8,7 @@ const {
   checkBudget,
   checkCountry,
   buildSetQuery,
+  checkFields,
 } = require("../utility");
 //TODO further investigation of MongoDB injection attacks
 // TODO look into getting more country information
@@ -120,9 +121,30 @@ exports.removeTrip = (trip_id, username) => {
 };
 
 exports.updateTrip = (trip_id, username, newTripDetails) => {
-  return trips
-    .findOne({ _id: new ObjectId(trip_id) })
+  const query = {
+    _id: new ObjectId(trip_id),
+    attending: { $in: [username] },
+  };
+  return checkFields(newTripDetails, [
+    "tripName",
+    "startDate",
+    "endDate",
+    "budgetGBP",
+    "accommodation",
+    "addPeople",
+    "removePeople",
+    "newCreator",
+  ])
+    .then(() => {
+      return trips.findOne(query);
+    })
     .then((trip) => {
+      if (trip === null) {
+        return Promise.reject({
+          status: 401,
+          msg: "You are unauthorised to change this trip.",
+        });
+      }
       const currentlyAttending = [...trip.attending];
       return currentlyAttending;
     })
@@ -132,16 +154,12 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
         newTripDetails,
         currentlyAttending
       );
-      const query = {
-        _id: new ObjectId(trip_id),
-      };
-      return trips
-        .updateOne(query, setDetails, { upsert: true })
-        .then(() => {
-          return trips.findOne({ _id: new ObjectId(trip_id) });
-        })
-        .then((trip) => {
-          return trip;
-        });
+      return trips.updateOne(query, setDetails, { upsert: true });
+    })
+    .then(() => {
+      return trips.findOne({ _id: new ObjectId(trip_id) });
+    })
+    .then((trip) => {
+      return trip;
     });
 };
