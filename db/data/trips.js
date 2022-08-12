@@ -17,7 +17,7 @@ module.exports = [
     days: [
       {
         _id: ObjectId(),
-        date: new Date(2022, 9, 5),
+        dayNumber:1,
         activities: [
           {
             _id: ObjectId(),
@@ -39,7 +39,7 @@ module.exports = [
       },
       {
         _id: ObjectId(),
-        date: new Date(2022, 9, 6),
+        dayNumber:2,
         activities: [
           {
             _id: ObjectId(),
@@ -69,7 +69,7 @@ module.exports = [
     days: [
       {
         _id:ObjectId(),
-        date: new Date(2023, 4, 1),
+        dayNumber:1,
         activities: [
           {
             _id: ObjectId(),
@@ -83,7 +83,7 @@ module.exports = [
       },
       {
         _id:ObjectId(),
-        date: new Date(2023, 4, 2),
+        dayNumber:2,
         activities: [
           {
             _id: ObjectId(),
@@ -108,7 +108,7 @@ module.exports = [
       },
       {
         _id:ObjectId(),
-        date: new Date(2023, 4, 3),
+        dayNumber:3,
         activities: [
           {
             _id: ObjectId(),
@@ -147,7 +147,7 @@ module.exports = [
     days: [
       {
         _id:ObjectId(),
-        date: new Date(2022, 8, 2),
+        dayNumber:1,
         activities: [
           {
             _id: ObjectId(),
@@ -186,7 +186,7 @@ module.exports = [
       },
       {
         _id:ObjectId(),
-        date: new Date(2022, 8, 5),
+        dayNumber:2,
         activities: [
           {
             _id: ObjectId(),
@@ -210,7 +210,7 @@ module.exports = [
       },
       {
         _id:ObjectId(),
-        date: new Date(2022, 8, 6),
+        dayNumber:3,
         activities: [
           {
             _id: ObjectId(),
@@ -262,7 +262,7 @@ module.exports = [
     days: [
       {
         _id:ObjectId(),
-        date: new Date(2023, 5, 15),
+        dayNumber:1,
         activities: [
           {
             _id: ObjectId(),
