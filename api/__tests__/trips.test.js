@@ -606,7 +606,7 @@ describe("Trips", () => {
         });
     });
   });
-  describe("PATCH /api/trips/:trip_id?username=X", () => {
+  describe.only("PATCH /api/trips/:trip_id?username=X", () => {
     it("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
       let trip_id;
       const changeTripData = {
@@ -840,7 +840,7 @@ describe("Trips", () => {
             })
         );
       });
-      it.only("400: Returns {msg: Cannot update field 'country'.} when the user tries to update the country field (a field they cannot update).", () => {
+      it("400: Returns {msg: Cannot update field 'country'.} when the user tries to update the country field (a field they cannot update).", () => {
         let trip_id;
         const changeTripData = {
           tripName: "Turkey Takeover",
@@ -865,5 +865,95 @@ describe("Trips", () => {
         );
       });
     });
+    describe("Username Errors", () => {
+      it("400: Returns {msg: Username Not Specified} when no username query", () => {
+        const changeTripData = {
+          tripName: "Greece Takeover!",
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[0]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}`)
+              .send(changeTripData)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("Username Not Specified");
+              });
+          });
+      });
+      it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
+        const changeTripData = {
+          tripName: "Greece Takeover!",
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[0]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=23`)
+              .send(changeTripData)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("User '23' is an invalid username.");
+              });
+          });
+      });
+      it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+        const changeTripData = {
+          tripName: "Greece Takeover!",
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[0]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=jimstevenson`)
+              .send(changeTripData)
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("User 'jimstevenson' does not exist.");
+              });
+          });
+      });
+    });
+    // describe("Trip ID Errors", () => {
+    //   const changeTripData = {
+    //     tripName: "Greece Takeover!",
+    //   };
+    //   it("400: Returns {msg: trip_id 'X' is an invalid trip ID.} when a user tries to access a trip id with the wrong format.", () => {
+    //     return request(app)
+    //       .patch(`/api/trips/234?username=alexrong`)
+    //       .send(changeTripData)
+    //       .expect(400)
+    //       .then(({ body: { msg } }) => {
+    //         expect(msg).toBe("trip_id '234' is an invalid trip ID.");
+    //       });
+    //   });
+    //   it("404: Returns {msg: trip_id 'X' does not exist.} when trip cannot be found", () => {
+    //     const changeTripData = {
+    //       tripName: "Greece Takeover!",
+    //     };
+    //     return request(app)
+    //       .get("/api/trips/507f1f77bcf86cd799439011?username=willclegg")
+    //       .send(changeTripData)
+    //       .expect(404)
+    //       .then(({ body: { msg } }) => {
+    //         expect(msg).toBe(
+    //           "trip_id '507f1f77bcf86cd799439011' does not exist."
+    //         );
+    //       });
+    //   });
+    // });
   });
 });

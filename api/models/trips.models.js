@@ -125,15 +125,18 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
     _id: new ObjectId(trip_id),
     attending: { $in: [username] },
   };
-  return checkFields(newTripDetails, [
-    "tripName",
-    "startDate",
-    "endDate",
-    "budgetGBP",
-    "accommodation",
-    "addPeople",
-    "removePeople",
-    "newCreator",
+  return Promise.all([
+    checkFields(newTripDetails, [
+      "tripName",
+      "startDate",
+      "endDate",
+      "budgetGBP",
+      "accommodation",
+      "addPeople",
+      "removePeople",
+      "newCreator",
+    ]),
+    selectUsername(username),
   ])
     .then(() => {
       return trips.findOne(query);
