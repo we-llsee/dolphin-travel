@@ -1,7 +1,12 @@
 <template>
+  <div v-if="loggedIn === false">
+    <p>Please Login First</p>
+    <router-link to="/login"
+      ><button class="loginbtn">Login</button></router-link
+    >
+  </div>
   <div v-if="trips.length != 0">
     <p>These are your upcoming trips...</p>
-
     <div :key="trip._id" v-for="trip in trips">
       <TripCard :trip="trip" />
     </div>
@@ -9,23 +14,24 @@
 </template>
 
 <script>
-  import TripCard from "./TripCard.vue";
-  import axios from "axios";
-  export default {
-    name: "TripGallery",
-    components: { TripCard },
+import TripCard from "./TripCard.vue";
+import axios from "axios";
+export default {
+  name: "TripGallery",
+  components: { TripCard },
 
-    data() {
-      return {
-        username: "willclegg",
-        password: "mohamed123",
-        trips: [],
-      };
-    },
-    created() {
+  data() {
+    return {
+      trips: [],
+      loggedIn: false,
+    };
+  },
+  created() {
+    if (this.$store.state.loggedInUser != "GUEST") {
+      this.loggedIn = true;
       axios
         .get(
-          `https://dolphin-travel.herokuapp.com/api/trips?username=${this.username}`
+          `https://dolphin-travel.herokuapp.com/api/trips?username=${this.$store.state.loggedInUser}`
         )
         .then((response) => {
           this.trips = response.data.trips;
@@ -33,11 +39,8 @@
         .catch((err) => {
           console.log(err);
         });
-    },
-    methods: {
-      // deleteTrip(id) {
-      //   this.$emit("delete-trip", id);
-      // },
-    },
-  };
+    }
+  },
+  methods: {},
+};
 </script>

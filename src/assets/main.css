@@ -6,6 +6,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+  text-align: center;
 }
 
 a,
@@ -23,7 +24,6 @@ a,
 
 @media (min-width: 1024px) {
   body {
-   
     place-items: center;
   }
 

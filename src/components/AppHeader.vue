@@ -1,7 +1,18 @@
 <template>
   <header>
-    <h1>Dolphin Travel Helper</h1>
-    <button class="btn">Login</button>
+    <div class="logowrapper"></div>
+    <img
+      class="logo"
+      src="https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg"
+    />
+    <div class="logotext">
+      <span class="maintitle">Dolphin Travels</span>
+      <span class="subtitle">Dive into your next adventure</span>
+    </div>
+    <p>Logged in as {{ $store.state.loggedInUser }}</p>
+    <router-link to="/login"
+      ><button class="loginbtn">Login</button></router-link
+    >
   </header>
   <NavigationBar class="nav-bar" />
 </template>
@@ -18,11 +29,33 @@ export default {
 </script>
 
 <style scoped>
+.maintitle {
+  font-size: 30px;
+  font-weight: bold;
+  color: #002fff;
+}
+
+.logotext {
+  display: flex;
+  flex-direction: column;
+}
+
+.logowrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  height: 200px;
+}
+
 header {
+  padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  background-color: #f7f7f7;
 }
 
 .btn {
@@ -50,5 +83,8 @@ header {
 .btn-block {
   display: block;
   width: 100%;
+}
+
+.loginbtn {
 }
 </style>

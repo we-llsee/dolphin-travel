@@ -5,6 +5,7 @@ import TripView from "../views/TripView.vue";
 import CurrentTrips from "../views/CurrentTrips.vue";
 import PreviousTrips from "../views/PreviousTrips.vue";
 import TripMap from "../views/TripMap.vue";
+import LoginPage from "../views/LoginPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/trips/:tripId/map",
       name: "tripmap",
       component: TripMap,
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LoginPage,
     },
   ],
 });
