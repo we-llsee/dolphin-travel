@@ -89,3 +89,31 @@ exports.checkCountry = (country) => {
     });
   });
 };
+
+exports.buildSetQuery = (newTripDetails) => {
+  const set = {};
+  const push = {};
+  if (newTripDetails.tripName) {
+    set.tripName = newTripDetails.tripName;
+  }
+  if (newTripDetails.startDate) {
+    set.startDate = new Date(newTripDetails.startDate);
+  }
+  if (newTripDetails.endDate) {
+    set.endDate = new Date(newTripDetails.endDate);
+  }
+  if (newTripDetails.budgetGBP) {
+    set.budgetGBP = newTripDetails.budgetGBP;
+  }
+  if (newTripDetails.accommodation) {
+    set.accommodation = newTripDetails.accommodation;
+  }
+  if (newTripDetails.addPeople) {
+    push.attending = { $each: newTripDetails.addPeople };
+  }
+
+  return {
+    $set: set,
+    $push: push,
+  };
+};

@@ -7,6 +7,7 @@ const {
   checkUsersExist,
   checkBudget,
   checkCountry,
+  buildSetQuery,
 } = require("../utility");
 //TODO further investigation of MongoDB injection attacks
 // TODO look into getting more country information
@@ -115,5 +116,20 @@ exports.removeTrip = (trip_id, username) => {
           msg: "You are unauthorised to delete this trip.",
         });
       }
+    });
+};
+
+exports.updateTrip = (trip_id, username, newTripDetails) => {
+  const setDetails = buildSetQuery(newTripDetails);
+  const query = {
+    _id: new ObjectId(trip_id),
+  };
+  return trips
+    .updateOne(query, setDetails, { upsert: true })
+    .then(() => {
+      return trips.findOne({ _id: new ObjectId(trip_id) });
+    })
+    .then((trip) => {
+      return trip;
     });
 };

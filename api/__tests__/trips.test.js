@@ -606,4 +606,142 @@ describe("Trips", () => {
         });
     });
   });
+  describe("PATCH /api/trips/:trip_id?username=X", () => {
+    it.only("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
+      let trip_id;
+      const changeTripData = {
+        tripName: "Wedding in Greece",
+        addPeople: ["mohamedelrofai"],
+        startDate: new Date(2023, 6, 10),
+        endDate: new Date(2023, 6, 16),
+        budgetGBP: 1200,
+        accommodation: {
+          accommodationName: "Hilton",
+          latitude: 37.9756481,
+          longitude: 23.751097,
+          address: {
+            parking: "Hilton",
+            road: "Βασιλίσσης Σοφίας",
+            suburb: "Kolonaki",
+            city_district: "1st District of Athens",
+            city: "Athens",
+            municipality: "Municipality of Athens",
+            county: "Regional Unit of Central Athens",
+            state_district: "Attica",
+            state: "Attica",
+            postcode: "11528",
+            country: "Greece",
+            country_code: "gr",
+          },
+        },
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              body.trip._id = new ObjectId(body.trip._id);
+              expect(body.trip).toEqual({
+                _id: new ObjectId(trip_id),
+                tripName: "Wedding in Greece",
+                attending: ["willclegg", "mohamedelrofai"],
+                startDate: "2023-07-09T23:00:00.000Z",
+                endDate: "2023-07-15T23:00:00.000Z",
+                budgetGBP: 1200,
+                country: "Greece",
+                accommodation: {
+                  accommodationName: "Hilton",
+                  latitude: 37.9756481,
+                  longitude: 23.751097,
+                  address: {
+                    parking: "Hilton",
+                    road: "Βασιλίσσης Σοφίας",
+                    suburb: "Kolonaki",
+                    city_district: "1st District of Athens",
+                    city: "Athens",
+                    municipality: "Municipality of Athens",
+                    county: "Regional Unit of Central Athens",
+                    state_district: "Attica",
+                    state: "Attica",
+                    postcode: "11528",
+                    country: "Greece",
+                    country_code: "gr",
+                  },
+                },
+                days: [
+                  {
+                    _id: expect.any(String),
+                    dayNumber: 1,
+                    activities: [
+                      {
+                        _id: expect.any(String),
+                        activityName: "Mykonos Dive Center",
+                        latitude: 37.41,
+                        longitude: 25.356,
+                        address: {
+                          name: "Mykonos Dive Center",
+                          road: "f",
+                          city: "Plintri",
+                          state: "Aegean",
+                          postcode: "84600",
+                          country: "Greece",
+                          country_code: "GR",
+                        },
+                        type: "sport",
+                      },
+                    ],
+                  },
+                  {
+                    _id: expect.any(String),
+                    dayNumber: 2,
+                    activities: [
+                      {
+                        _id: expect.any(String),
+                        activityName: "Jackie O' Beach Club",
+                        latitude: 37.414,
+                        longitude: 25.367,
+                        address: {
+                          address:
+                            "Jackie O' Beach Club, Μύκονος 84600, Greece",
+                        },
+                        type: "bar",
+                      },
+                    ],
+                  },
+                ],
+              });
+            });
+        });
+    });
+    it("200: Returns an object containing the updated trip where a person has been removed from the trip", () => {
+      let trip_id;
+      const changeTripData = {
+        removePeople: ["jesskemp"],
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[2]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.attending).toEqual([
+                "willclegg",
+                "alexrong",
+                "mohammedelrofai",
+              ]);
+            });
+        });
+    });
+  });
 });

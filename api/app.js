@@ -7,6 +7,7 @@ const {
   addNewTrip,
   getSingleTrip,
   deleteTrip,
+  changeTrip,
 } = require("./controllers/trips.controllers");
 
 const app = express();
@@ -22,6 +23,8 @@ app.get("/api/trips", getTrips);
 app.get("/api/trips/:trip_id", getSingleTrip);
 
 app.post("/api/trips", addNewTrip);
+
+app.patch("/api/trips/:trip_id", changeTrip);
 
 app.delete("/api/trips/:trip_id", deleteTrip);
 
