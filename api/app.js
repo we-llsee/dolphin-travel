@@ -10,6 +10,11 @@ const {
   changeTrip,
 } = require("./controllers/trips.controllers");
 
+const {
+  getUsers,
+  getUserByUsername,
+} = require("./controllers/users.controllers");
+
 const app = express();
 
 app.use(cors());
@@ -18,6 +23,9 @@ app.use(express.json());
 app.get("/api", (req, res) => {
   res.status(200).send({ endpoints });
 });
+
+app.get("/api/users", getUsers);
+app.get("/api/users/:username", getUserByUsername);
 
 app.get("/api/trips", getTrips);
 app.get("/api/trips/:trip_id", getSingleTrip);

@@ -33,7 +33,7 @@
           },
           "days": [
             {
-              "_id":"1234",
+              "_id": "1234",
               "dayNumber": 1,
               "activities": [
                 {
@@ -75,11 +75,10 @@
         "latitude": "number",
         "longitude": "number",
         "address": "empty object or object containing any number of address keys"
-    },
-    "exampleRequest": "/api/trips",
-    "exampleResponse": {
-      "trip": 
-        {
+      },
+      "exampleRequest": "/api/trips",
+      "exampleResponse": {
+        "trip": {
           "_id": "62f24229222c00589a5e617f",
           "tripName": "Team 2 Getaway",
           "attending": ["willclegg", "jesskemp", "alexrong", "mohamedelrofai"],
@@ -110,67 +109,83 @@
   "GET /api/trips/:trip_id": {
     "description": "serves an object containing the trip with the trip id specified for a specific user",
     "required queries": ["username"],
-    "parameters": {"trip_id": "the trips 24 character _id"},
+    "parameters": { "trip_id": "the trips 24 character _id" },
     "exampleRequest": "/api/trips/62f24229222c00589a5e617f?username=willclegg",
     "exampleResponse": {
-      "trip": 
-        {
-          "_id": "62f24229222c00589a5e617f",
-          "tripName": "Team 2 Getaway",
-          "attending": ["willclegg", "jesskemp", "alexrong", "mohamedelrofai"],
-          "startDate": "2022-08-31T23:00:00.000Z",
-          "endDate": "2022-09-07T23:00:00.000Z",
-          "budgetGBP": 1580,
-          "country": "Czech Republic",
-          "accommodation": {
-            "accommodationName": "Hotel Pod Věží",
-            "latitude": 50.0873932,
-            "longitude": 14.4066676,
-            "address": {
-              "name": "Hotel Pod Věží",
-              "house_number": "2",
-              "road": "Mostecká",
-              "city": "Prague",
-              "state": "Prague",
-              "postcode": 11800,
-              "country": "Czechia",
-              "country_code": "CZ"
-            }
-          },
-          "days": [
-            {
-              "_id":"1234",
-              "dayNumber":1,
-              "activities": [
-                {
-                  "_id": "62f24228222c00589a5e617a",
-                  "activityName": "Charles Bridge",
-                  "latitude": 50.0866258,
-                  "longitude": 14.410148493264568,
-                  "address": {
-                    "attraction": "Charles Bridge",
-                    "road": "Charles Bridge",
-                    "suburb": "Old Town",
-                    "city_district": "Prague",
-                    "city": "Prague",
-                    "state": "Prague",
-                    "postcode": "116 93",
-                    "country": "Czechia",
-                    "country_code": "cz"
-                  },
-                  "type": "attraction"
-                }
-              ]
-            }
-          ]
-        }
+      "trip": {
+        "_id": "62f24229222c00589a5e617f",
+        "tripName": "Team 2 Getaway",
+        "attending": ["willclegg", "jesskemp", "alexrong", "mohamedelrofai"],
+        "startDate": "2022-08-31T23:00:00.000Z",
+        "endDate": "2022-09-07T23:00:00.000Z",
+        "budgetGBP": 1580,
+        "country": "Czech Republic",
+        "accommodation": {
+          "accommodationName": "Hotel Pod Věží",
+          "latitude": 50.0873932,
+          "longitude": 14.4066676,
+          "address": {
+            "name": "Hotel Pod Věží",
+            "house_number": "2",
+            "road": "Mostecká",
+            "city": "Prague",
+            "state": "Prague",
+            "postcode": 11800,
+            "country": "Czechia",
+            "country_code": "CZ"
+          }
+        },
+        "days": [
+          {
+            "_id": "1234",
+            "dayNumber": 1,
+            "activities": [
+              {
+                "_id": "62f24228222c00589a5e617a",
+                "activityName": "Charles Bridge",
+                "latitude": 50.0866258,
+                "longitude": 14.410148493264568,
+                "address": {
+                  "attraction": "Charles Bridge",
+                  "road": "Charles Bridge",
+                  "suburb": "Old Town",
+                  "city_district": "Prague",
+                  "city": "Prague",
+                  "state": "Prague",
+                  "postcode": "116 93",
+                  "country": "Czechia",
+                  "country_code": "cz"
+                },
+                "type": "attraction"
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   "DELETE /api/trips/:trip_id": {
     "description": "deletes the trip specified if the user attempting to delete the trip is the creator",
     "required queries": ["username"],
-    "parameters": {"trip_id": "the trips 24 character _id"},
+    "parameters": { "trip_id": "the trips 24 character _id" },
     "exampleRequest": "/api/trips/62f24229222c00589a5e617f?username=willclegg",
     "exampleResponse": {}
+  },
+  "GET /api/users": {
+    "description": "Returns array of users",
+    "required queries": ["username"],
+    "exampleRequest": "/api/users/username=willclegg",
+    "exampleResponse": {
+      "users": [
+        { "_id": "willclegg", "firstName": "Will", "lastName": "Clegg" },
+        { "_id": "jesskemp", "firstName": "Jess", "lastName": "Kemp" }
+      ]
+    }
+  },
+  "GET /api/users/:username": {
+    "description": "Returns specified user on a key of 'user'",
+    "parameters": ["username"],
+    "exampleRequest": "/api/users/willclegg",
+    "exampleResponse": {"user": { "_id": "willclegg", "firstName": "Will", "lastName": "Clegg" }}
   }
 }
