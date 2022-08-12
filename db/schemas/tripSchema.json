@@ -48,10 +48,10 @@
         "bsonType":"array",
         "items":{
             "bsonType":"object",
-            "required":["date","activities"],
+            "required":["dayNumber","activities"],
             "properties":{
-                "date":{
-                    "bsonType":"date"
+                "dayNumber":{
+                    "bsonType":"int"
                 },
                 "activities":{
                     "bsonType":"array",
