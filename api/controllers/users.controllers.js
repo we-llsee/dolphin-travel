@@ -1,4 +1,4 @@
-const { selectUsers } = require("../models/users.models");
+const { selectUsers, selectUserByUsername } = require("../models/users.models");
 
 exports.getUsers = (req, res, next) => {
   const { username } = req.query;
@@ -10,4 +10,8 @@ exports.getUsers = (req, res, next) => {
     .catch((err) => {
         next(err);
     })
+}
+
+exports.getUserByUsername=()=>{
+  return selectUserByUsername();
 }

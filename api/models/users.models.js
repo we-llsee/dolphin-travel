@@ -42,3 +42,7 @@ exports.selectUsers = (username) => {
    }
   })
 };
+
+exports.selectUserByUsername=()=>{
+
+}

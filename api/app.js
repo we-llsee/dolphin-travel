@@ -9,7 +9,7 @@ const {
   deleteTrip,
 } = require("./controllers/trips.controllers");
 
-const { getUsers } = require("./controllers/users.controllers");
+const { getUsers, getUserByUsername } = require("./controllers/users.controllers");
 
 const app = express();
 
@@ -21,6 +21,7 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/api/users", getUsers);
+app.get("/api/users/:username",getUserByUsername)
 
 app.get("/api/trips", getTrips);
 app.get("/api/trips/:trip_id", getSingleTrip);
