@@ -163,5 +163,12 @@
           ]
         }
     }
+  },
+  "DELETE /api/trips/:trip_id": {
+    "description": "deletes the trip specified if the user attempting to delete the trip is the creator",
+    "required queries": ["username"],
+    "parameters": {"trip_id": "the trips 24 character _id"},
+    "exampleRequest": "/api/trips/62f24229222c00589a5e617f?username=willclegg",
+    "exampleResponse": {}
   }
 }

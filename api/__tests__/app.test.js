@@ -35,6 +35,7 @@ describe("Express App", () => {
               "GET /api/trips": expect.any(Object),
               "POST /api/trips": expect.any(Object),
               "GET /api/trips/:trip_id": expect.any(Object),
+              "DELETE /api/trips/:trip_id": expect.any(Object),
             })
           );
         });
