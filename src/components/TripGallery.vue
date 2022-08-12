@@ -8,7 +8,7 @@
   <div v-if="trips.length != 0">
     <p>These are your upcoming trips...</p>
     <div :key="trip._id" v-for="trip in trips">
-      <TripCard :trip="trip" />
+      <TripCard :trip="trip" @delete-trip="tripDelete" />
     </div>
   </div>
 </template>
@@ -23,9 +23,26 @@ export default {
   data() {
     return {
       trips: [],
-      loggedIn: false,
+      componentKey: 0,
     };
   },
+  methods: {
+    tripDelete(id) {
+      if (confirm("Are you sure you want to delete this trip?")) {
+        axios
+          .delete(
+            `https://dolphin-travel.herokuapp.com/api/trips/${id}?username=${this.$store.state.loggedInUser}`
+          )
+          .then(() => {
+            this.componentKey += 1;
+            alert("Trip deleted");
+          });
+      } else {
+        console.log("Trip was not deleted");
+      }
+    },
+  },
+
   created() {
     if (this.$store.state.loggedInUser != "GUEST") {
       this.loggedIn = true;
@@ -41,6 +58,5 @@ export default {
         });
     }
   },
-  methods: {},
 };
 </script>

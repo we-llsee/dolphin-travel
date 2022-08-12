@@ -25,7 +25,6 @@ export default {
       .get("https://dolphin-travel.herokuapp.com/api/users?username=alexrong")
       .then(({ data }) => {
         this.users = data;
-        console.log(this.users);
       });
   },
 };

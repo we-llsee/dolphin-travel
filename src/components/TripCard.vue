@@ -12,7 +12,9 @@
       <span class="time-stamp">{{
         timeAgo.format(new Date(trip.startDate))
       }}</span>
+
       <img
+        v-if="trip.accommodation.address.country_code != undefined"
         :src="
           'https://countryflagsapi.com/png/' +
           trip.accommodation.address.country_code
@@ -20,14 +22,20 @@
         alt=""
         class="country-flag"
       />
+      <p>Trip owner: {{ trip.attending[0] }}</p>
     </router-link>
-    <img class="delete-button" src="../assets/trash.svg" alt="trashcan" />
+
+    <img
+      @click="tripDelete(trip._id)"
+      class="delete-button"
+      src="../assets/trash.svg"
+      alt="trashcan"
+    />
   </div>
 </template>
 
 <script>
 import TimeAgo from "javascript-time-ago";
-
 import en from "javascript-time-ago/locale/en";
 
 TimeAgo.addDefaultLocale(en);
@@ -37,15 +45,28 @@ export default {
   props: {
     trip: Object,
   },
+  emits: ["delete-trip"],
   data() {
     return {
       timeAgo: new TimeAgo("en-US"),
     };
   },
-  method: {
-    // onDelete(id) {
-    //   this.$emit("delete-trip", id);
-    // },
+
+  methods: {
+    tripDelete(id) {
+      this.$emit("delete-trip", id);
+      // if (confirm("Are you sure you want to delete this trip?")) {
+      //   axios
+      //     .delete(
+      //       `https://dolphin-travel.herokuapp.com/api/trips/${id}?username=${this.$store.state.loggedInUser}`
+      //     )
+      //     .then(() => {
+      //       alert("Trip deleted");
+      //     });
+      // } else {
+      //   console.log("Trip was not deleted");
+      // }
+    },
   },
 };
 </script>
