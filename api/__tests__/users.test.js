@@ -12,7 +12,7 @@ beforeEach(() => {
 afterAll(() => client.close());
 
 describe("Users", () => {
-  describe("GET /api/users",()=>{
+  describe("GET /api/users", () => {
     it('200: GET /api/users?username=willclegg returns an array of users on a key of "users"', () => {
       return request(app)
         .get("/api/users?username=willclegg")
@@ -39,17 +39,29 @@ describe("Users", () => {
           expect(body.msg).toBe("You are unauthorised to access this resource");
         });
     });
-  })
-  
-  describe("GET /api/users/:username",()=>{
-    it('200: GET /api/users/willclegg returns a valid user on a key of user',()=>{
-      // return request(app).get('/api/users/willcleggg').expect(200).then(({body})=>{
-      //   expect(body.user).toEqual(expect.objectContaining({
-      //     _id:"willclegg",
-      //     firstName:"Will",
-      //     lastName:"Clegg"
-      //   }))
-      // })
+  });
+
+  describe("GET /api/users/:username", () => {
+    it("200: /api/users/willclegg returns a valid user on a key of user", () => {
+      return request(app).get('/api/users/willclegg').expect(200).then(({body})=>{
+        expect(body.user).toEqual(expect.objectContaining({
+          _id:"willclegg",
+          firstName:"Will",
+          lastName:"Clegg"
+        }))
+      })
     });
-  })
+
+    it("400: /api/users/123 returns 'User 123 is an invalid username'",()=>{
+      return request(app).get('/api/users/123').expect(400).then(({body})=>{
+        expect(body.msg).toBe("User '123' is an invalid username.")
+      })
+    })
+
+    it("404: /api/users/NOTAUSER returns 'User NOTAUSER does not exist.'",()=>{
+      return request(app).get('/api/users/NOTAUSER').expect(404).then(({body})=>{
+        expect(body.msg).toBe("User 'NOTAUSER' does not exist.")
+      })
+    })
+  });
 });

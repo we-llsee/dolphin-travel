@@ -181,5 +181,11 @@
         { "_id": "jesskemp", "firstName": "Jess", "lastName": "Kemp" }
       ]
     }
+  },
+  "GET /api/users/:username": {
+    "description": "Returns specified user on a key of 'user'",
+    "parameters": ["username"],
+    "exampleRequest": "/api/users/willclegg",
+    "exampleResponse": {"user": { "_id": "willclegg", "firstName": "Will", "lastName": "Clegg" }}
   }
 }
