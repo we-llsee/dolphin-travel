@@ -7,7 +7,7 @@
     "preview": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "prepare": "husky install",
-    "test": "jest",
+    "test": "jest -i",
     "nodemon": "nodemon ./api/listen.js",
     "seed-prod": "NODE_ENV=production node ./db/run-seed.js",
     "start": "node ./api/listen.js"
