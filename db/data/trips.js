@@ -17,7 +17,7 @@ module.exports = [
     days: [
       {
         _id: ObjectId(),
-        dayNumber:1,
+        dayNumber: 1,
         activities: [
           {
             _id: ObjectId(),
@@ -39,7 +39,7 @@ module.exports = [
       },
       {
         _id: ObjectId(),
-        dayNumber:2,
+        dayNumber: 2,
         activities: [
           {
             _id: ObjectId(),
@@ -68,8 +68,8 @@ module.exports = [
     },
     days: [
       {
-        _id:ObjectId(),
-        dayNumber:1,
+        _id: ObjectId(),
+        dayNumber: 1,
         activities: [
           {
             _id: ObjectId(),
@@ -82,8 +82,8 @@ module.exports = [
         ],
       },
       {
-        _id:ObjectId(),
-        dayNumber:2,
+        _id: ObjectId(),
+        dayNumber: 2,
         activities: [
           {
             _id: ObjectId(),
@@ -107,8 +107,8 @@ module.exports = [
         ],
       },
       {
-        _id:ObjectId(),
-        dayNumber:3,
+        _id: ObjectId(),
+        dayNumber: 3,
         activities: [
           {
             _id: ObjectId(),
@@ -146,8 +146,8 @@ module.exports = [
     },
     days: [
       {
-        _id:ObjectId(),
-        dayNumber:1,
+        _id: ObjectId(),
+        dayNumber: 1,
         activities: [
           {
             _id: ObjectId(),
@@ -185,8 +185,8 @@ module.exports = [
         ],
       },
       {
-        _id:ObjectId(),
-        dayNumber:2,
+        _id: ObjectId(),
+        dayNumber: 2,
         activities: [
           {
             _id: ObjectId(),
@@ -209,8 +209,8 @@ module.exports = [
         ],
       },
       {
-        _id:ObjectId(),
-        dayNumber:3,
+        _id: ObjectId(),
+        dayNumber: 3,
         activities: [
           {
             _id: ObjectId(),
@@ -261,8 +261,8 @@ module.exports = [
     },
     days: [
       {
-        _id:ObjectId(),
-        dayNumber:1,
+        _id: ObjectId(),
+        dayNumber: 1,
         activities: [
           {
             _id: ObjectId(),

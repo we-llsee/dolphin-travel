@@ -719,29 +719,29 @@ describe("Trips", () => {
             });
         });
     });
-    it("200: Returns an object containing the updated trip where a person has been removed from the trip", () => {
-      let trip_id;
-      const changeTripData = {
-        removePeople: ["jesskemp"],
-      };
-      return request(app)
-        .get("/api/trips?username=willclegg")
-        .then(({ body: { trips } }) => {
-          trip_id = trips[2]._id;
-        })
-        .then(() => {
-          return request(app)
-            .patch(`/api/trips/${trip_id}?username=willclegg`)
-            .send(changeTripData)
-            .expect(200)
-            .then(({ body }) => {
-              expect(body.attending).toEqual([
-                "willclegg",
-                "alexrong",
-                "mohammedelrofai",
-              ]);
-            });
-        });
-    });
+    // it("200: Returns an object containing the updated trip where a person has been removed from the trip", () => {
+    //   let trip_id;
+    //   const changeTripData = {
+    //     removePeople: ["jesskemp"],
+    //   };
+    //   return request(app)
+    //     .get("/api/trips?username=willclegg")
+    //     .then(({ body: { trips } }) => {
+    //       trip_id = trips[2]._id;
+    //     })
+    //     .then(() => {
+    //       return request(app)
+    //         .patch(`/api/trips/${trip_id}?username=willclegg`)
+    //         .send(changeTripData)
+    //         .expect(200)
+    //         .then(({ body }) => {
+    //           expect(body.attending).toEqual([
+    //             "willclegg",
+    //             "alexrong",
+    //             "mohammedelrofai",
+    //           ]);
+    //         });
+    //     });
+    // });
   });
 });
