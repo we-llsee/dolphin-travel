@@ -390,7 +390,7 @@ describe("Trips", () => {
         });
     });
   });
-  describe.only("GET /api/trip/:trip_id?username=X", () => {
+  describe("GET /api/trips/:trip_id?username=X", () => {
     it("200: Returns an object containing the trip requested", () => {
       return request(app)
         .get("/api/trips?username=willclegg")
@@ -466,7 +466,7 @@ describe("Trips", () => {
             });
         });
     });
-    it("400: Returns {msg: You are unauthorised to access this trip.} when a user not listed as attending on the trip tries to access the trip using it's ID", () => {
+    it("401: Returns {msg: You are unauthorised to access this trip.} when a user not listed as attending on the trip tries to access the trip using it's ID", () => {
       return request(app)
         .get("/api/trips?username=willclegg")
         .then(({ body: { trips } }) => {
@@ -493,6 +493,111 @@ describe("Trips", () => {
     it("404: Returns {msg: trip_id 'X' does not exist.} when trip cannot be found", () => {
       return request(app)
         .get("/api/trips/507f1f77bcf86cd799439011?username=willclegg")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe(
+            "trip_id '507f1f77bcf86cd799439011' does not exist."
+          );
+        });
+    });
+  });
+  describe("DELETE /api/trips/:trip_id?username=X", () => {
+    it("204 no content: successfully deletes the specified trip", () => {
+      let trip_id;
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}?username=willclegg`)
+            .expect(204);
+        })
+        .then(() => {
+          return request(app)
+            .get(`/api/trips/${trip_id}?username=willclegg`)
+            .expect(404);
+        });
+    });
+    it("401: Returns {msg: You are unauthorised to delete this trip.} when a user who did not create the trip attempts to delete the trip", () => {
+      let trip_id;
+      return (
+        request(app)
+          // Will Clegg created the trip (first user listed in attending)
+          .get("/api/trips?username=jesskemp")
+          .then(({ body: { trips } }) => {
+            trip_id = trips[0]._id;
+          })
+          .then(() => {
+            return request(app)
+              .delete(`/api/trips/${trip_id}?username=alexrong`)
+              .expect(401)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("You are unauthorised to delete this trip.");
+              });
+          })
+      );
+    });
+    it("400: Returns {msg: Username Not Specified} when no username query", () => {
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          const trip_id = trips[0]._id;
+          return trip_id;
+        })
+        .then((trip_id) => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}`)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Username Not Specified");
+            });
+        });
+    });
+    it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          const trip_id = trips[0]._id;
+          return trip_id;
+        })
+        .then((trip_id) => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}?username=23`)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User '23' is an invalid username.");
+            });
+        });
+    });
+    it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          const trip_id = trips[0]._id;
+          return trip_id;
+        })
+        .then((trip_id) => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}?username=jimstevenson`)
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User 'jimstevenson' does not exist.");
+            });
+        });
+    });
+    it("400: Returns {msg: trip_id 'X' is an invalid trip ID.} when a user tries to access a trip id with the wrong format.", () => {
+      return request(app)
+        .delete(`/api/trips/234?username=alexrong`)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("trip_id '234' is an invalid trip ID.");
+        });
+    });
+    it("404: Returns {msg: trip_id 'X' does not exist.} when trip cannot be found", () => {
+      return request(app)
+        .delete("/api/trips/507f1f77bcf86cd799439011?username=willclegg")
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe(

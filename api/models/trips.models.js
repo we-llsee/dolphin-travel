@@ -98,3 +98,22 @@ exports.selectSingleTrip = (trip_id, username) => {
       }
     });
 };
+
+exports.removeTrip = (trip_id, username) => {
+  return Promise.all([selectUsername(username), this.doesTripExist(trip_id)])
+    .then(() => {
+      const query = {
+        _id: new ObjectId(trip_id),
+        "attending.0": username,
+      };
+      return trips.deleteOne(query);
+    })
+    .then((res) => {
+      if (res.deletedCount === 0) {
+        return Promise.reject({
+          status: 401,
+          msg: "You are unauthorised to delete this trip.",
+        });
+      }
+    });
+};

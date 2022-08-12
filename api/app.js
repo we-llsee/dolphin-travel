@@ -6,6 +6,7 @@ const {
   getTrips,
   addNewTrip,
   getSingleTrip,
+  deleteTrip,
 } = require("./controllers/trips.controllers");
 
 const app = express();
@@ -21,6 +22,8 @@ app.get("/api/trips", getTrips);
 app.get("/api/trips/:trip_id", getSingleTrip);
 
 app.post("/api/trips", addNewTrip);
+
+app.delete("/api/trips/:trip_id", deleteTrip);
 
 app.use("*", (req, res) => {
   res.status(404).send({ msg: "Invalid Path" });
