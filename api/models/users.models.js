@@ -31,5 +31,14 @@ exports.selectUsers = (username) => {
 
   return this.selectUsername(username).then(() => {
     return users.find().toArray();
-  });
+  }).catch((err)=>{
+    if(err.status && err.msg){
+      return(Promise.reject({
+        status: 401,
+        msg: "You are unauthorised to access this resource"
+      }))
+   } else {
+      return(Promise.reject(err))
+   }
+  })
 };

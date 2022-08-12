@@ -8,14 +8,6 @@ exports.getUsers = (req, res, next) => {
       res.status(200).send({ users });
     })
     .catch((err) => {
-      if(err.status && err.msg){
-         next({
-        status: 401,
-        msg: "You are unauthorised to access this resource",
-      });
-      } else {
         next(err);
-      }
-     
-    });
-};
+    })
+}
