@@ -26,8 +26,10 @@ exports.selectUsername = (username) => {
   }
 };
 
-exports.selectUsers = () => {
+exports.selectUsers = (username) => {
   const users = db.collection("users");
 
-  return users.find().toArray();
+  return this.selectUsername(username).then(() => {
+    return users.find().toArray();
+  });
 };
