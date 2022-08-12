@@ -121,11 +121,9 @@ exports.removeTrip = (trip_id, username) => {
 };
 
 exports.updateTrip = (trip_id, username, newTripDetails) => {
-  const query = {
-    _id: new ObjectId(trip_id),
-    attending: { $in: [username] },
-  };
   return Promise.all([
+    this.doesTripExist(trip_id),
+    selectUsername(username),
     checkFields(newTripDetails, [
       "tripName",
       "startDate",
@@ -136,10 +134,12 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
       "removePeople",
       "newCreator",
     ]),
-    selectUsername(username),
   ])
     .then(() => {
-      return trips.findOne(query);
+      return trips.findOne({
+        _id: new ObjectId(trip_id),
+        attending: { $in: [username] },
+      });
     })
     .then((trip) => {
       if (trip === null) {
@@ -157,7 +157,14 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
         newTripDetails,
         currentlyAttending
       );
-      return trips.updateOne(query, setDetails, { upsert: true });
+      return trips.updateOne(
+        {
+          _id: new ObjectId(trip_id),
+          attending: { $in: [username] },
+        },
+        setDetails,
+        { upsert: true }
+      );
     })
     .then(() => {
       return trips.findOne({ _id: new ObjectId(trip_id) });
