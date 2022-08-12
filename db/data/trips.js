@@ -16,6 +16,7 @@ module.exports = [
     },
     days: [
       {
+        _id: ObjectId(),
         date: new Date(2022, 9, 5),
         activities: [
           {
@@ -37,6 +38,7 @@ module.exports = [
         ],
       },
       {
+        _id: ObjectId(),
         date: new Date(2022, 9, 6),
         activities: [
           {
@@ -66,6 +68,7 @@ module.exports = [
     },
     days: [
       {
+        _id:ObjectId(),
         date: new Date(2023, 4, 1),
         activities: [
           {
@@ -79,6 +82,7 @@ module.exports = [
         ],
       },
       {
+        _id:ObjectId(),
         date: new Date(2023, 4, 2),
         activities: [
           {
@@ -103,6 +107,7 @@ module.exports = [
         ],
       },
       {
+        _id:ObjectId(),
         date: new Date(2023, 4, 3),
         activities: [
           {
@@ -141,6 +146,7 @@ module.exports = [
     },
     days: [
       {
+        _id:ObjectId(),
         date: new Date(2022, 8, 2),
         activities: [
           {
@@ -179,6 +185,7 @@ module.exports = [
         ],
       },
       {
+        _id:ObjectId(),
         date: new Date(2022, 8, 5),
         activities: [
           {
@@ -202,6 +209,7 @@ module.exports = [
         ],
       },
       {
+        _id:ObjectId(),
         date: new Date(2022, 8, 6),
         activities: [
           {
@@ -253,6 +261,7 @@ module.exports = [
     },
     days: [
       {
+        _id:ObjectId(),
         date: new Date(2023, 5, 15),
         activities: [
           {
