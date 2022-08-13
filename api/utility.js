@@ -120,6 +120,9 @@ exports.checkFields = (newTripDetails) => {
             this.checkTypes(field, newTripDetails[field], "string")
           );
         }
+        if (field === "budgetGBP") {
+          validationPromises.push(this.checkBudget(newTripDetails[field]));
+        }
       }
     }
     return Promise.all(validationPromises);

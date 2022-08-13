@@ -980,53 +980,53 @@ describe("Trips", () => {
         );
       });
     });
-    // describe("Budget Errors", () => {
-    //   it("400: Returns 'budget is not type 'number'.' for a budget that is the wrong type", () => {
-    //     let trip_id;
-    //     const changeTripData = {
-    //       budget: "hello",
-    //     };
-    //     return (
-    //       request(app)
-    //         // Will Clegg created the trip (first user listed in attending)
-    //         .get("/api/trips?username=willclegg")
-    //         .then(({ body: { trips } }) => {
-    //           trip_id = trips[0]._id;
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .patch(`/api/trips/${trip_id}?username=willclegg`)
-    //             .send(changeTripData)
-    //             .expect(400)
-    //             .then(({ body: { msg } }) => {
-    //               expect(msg).toBe("budget is not type 'number'.");
-    //             });
-    //         })
-    //     );
-    //   });
-    //   it("400: Returns 'Budget cannot be £0 or less.' when the user tries to change the budget to be 0 or lower", () => {
-    //     let trip_id;
-    //     const changeTripData = {
-    //       budget: -1000,
-    //     };
-    //     return (
-    //       request(app)
-    //         // Will Clegg created the trip (first user listed in attending)
-    //         .get("/api/trips?username=willclegg")
-    //         .then(({ body: { trips } }) => {
-    //           trip_id = trips[0]._id;
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .patch(`/api/trips/${trip_id}?username=willclegg`)
-    //             .send(changeTripData)
-    //             .expect(400)
-    //             .then(({ body: { msg } }) => {
-    //               expect(msg).toBe("Budget cannot be £0 or less.");
-    //             });
-    //         })
-    //     );
-    //   });
-    // });
+    describe("Budget Errors", () => {
+      it("400: Returns 'budgetGBP is not type 'number'.' for a budget that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          budgetGBP: "hello",
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("budgetGBP is not type 'number'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'Budget cannot be £0 or less.' when the user tries to change the budget to be 0 or lower", () => {
+        let trip_id;
+        const changeTripData = {
+          budgetGBP: -1000,
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("Budget cannot be £0 or less.");
+                });
+            })
+        );
+      });
+    });
   });
 });
