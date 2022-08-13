@@ -124,16 +124,7 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
   return Promise.all([
     this.doesTripExist(trip_id),
     selectUsername(username),
-    checkFields(newTripDetails, [
-      "tripName",
-      "startDate",
-      "endDate",
-      "budgetGBP",
-      "accommodation",
-      "addPeople",
-      "removePeople",
-      "newCreator",
-    ]),
+    checkFields(newTripDetails),
   ])
     .then(() => {
       return trips.findOne({

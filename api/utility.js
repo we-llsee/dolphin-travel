@@ -90,22 +90,39 @@ exports.checkCountry = (country) => {
   });
 };
 
-exports.checkFields = (object, fieldsArr) => {
-  if (Object.keys(object).length === 0) {
+exports.checkFields = (newTripDetails) => {
+  const allowedFields = [
+    "tripName",
+    "startDate",
+    "endDate",
+    "budgetGBP",
+    "accommodation",
+    "addPeople",
+    "removePeople",
+    "newCreator",
+  ];
+  const validationPromises = [];
+  if (Object.keys(newTripDetails).length === 0) {
     return Promise.reject({
       status: 400,
       msg: "Please provide details of the updates to be made.",
     });
   } else {
-    for (const prop in object) {
-      if (fieldsArr.indexOf(prop) === -1) {
+    for (const field in newTripDetails) {
+      if (allowedFields.indexOf(field) === -1) {
         return Promise.reject({
           status: 400,
-          msg: `Cannot update field '${prop}'.`,
+          msg: `Cannot update field '${field}'.`,
         });
+      } else {
+        if (field === "tripName") {
+          validationPromises.push(
+            this.checkTypes(field, newTripDetails[field], "string")
+          );
+        }
       }
     }
-    return Promise.resolve();
+    return Promise.all(validationPromises);
   }
 };
 
