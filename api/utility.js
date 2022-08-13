@@ -10,6 +10,11 @@ exports.checkTypes = (keyName, value, type) => {
   }
   if (type === "array" && Array.isArray(value) === true) {
     return Promise.resolve();
+  } else if (type === "object" && Array.isArray(value) === true) {
+    return Promise.reject({
+      status: 400,
+      msg: `${keyName} is not type '${type}'.`,
+    });
   } else if (typeof value !== type) {
     return Promise.reject({
       status: 400,
@@ -122,6 +127,27 @@ exports.checkFields = (newTripDetails) => {
         }
         if (field === "budgetGBP") {
           validationPromises.push(this.checkBudget(newTripDetails[field]));
+        }
+        if (field === "accommodation") {
+          validationPromises.push(
+            this.checkTypes(field, newTripDetails[field], "object"),
+            this.checkTypes(
+              "accommodationName",
+              newTripDetails[field].accommodationName,
+              "string"
+            ),
+            this.checkTypes(
+              "longitude",
+              newTripDetails[field].longitude,
+              "number"
+            ),
+            this.checkTypes(
+              "latitude",
+              newTripDetails[field].latitude,
+              "number"
+            ),
+            this.checkTypes("address", newTripDetails[field].address, "object")
+          );
         }
       }
     }

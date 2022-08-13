@@ -1028,5 +1028,142 @@ describe("Trips", () => {
         );
       });
     });
+    describe("Accommodation Errors", () => {
+      it("400: Returns 'accommodation is not type 'object'.' for an accommodation that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          accommodation: ["hey"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("accommodation is not type 'object'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'accommodationName is not type 'string'.' for an accommodation name that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          accommodation: {
+            accommodationName: 268,
+            latitude: 36.2648311,
+            longitude: 29.409945,
+            address: {},
+          },
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("accommodationName is not type 'string'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'latitude is not type 'number'.' for an latitude that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          accommodation: {
+            accommodationName: "Hilton Hotel",
+            latitude: "here",
+            longitude: 29.409945,
+            address: {},
+          },
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("latitude is not type 'number'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'longitude is not type 'number'.' for an longitude that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          accommodation: {
+            accommodationName: "Hilton Hotel",
+            latitude: 29.409945,
+            longitude: [],
+            address: {},
+          },
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("longitude is not type 'number'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'address is not type 'object'.' for an address that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          accommodation: {
+            accommodationName: "Hilton Hotel",
+            latitude: 29.409945,
+            longitude: 36.2648311,
+            address: true,
+          },
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("address is not type 'object'.");
+                });
+            })
+        );
+      });
+    });
   });
 });
