@@ -124,6 +124,8 @@ exports.removeTrip = (trip_id, username) => {
 };
 
 exports.updateTrip = (trip_id, username, newTripDetails) => {
+  let originalDuration;
+  let newDuration;
   return Promise.all([
     this.doesTripExist(trip_id),
     selectUsername(username),
@@ -145,6 +147,8 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
       return trip;
     })
     .then((trip) => {
+      originalDuration =
+        (trip.endDate - trip.startDate) / (1000 * 60 * 60 * 24);
       if (newTripDetails.addPeople) {
         for (let i = 0; i < newTripDetails.addPeople.length; i++) {
           if (trip.attending.includes(newTripDetails.addPeople[i])) {
@@ -228,6 +232,9 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
             msg: `endDate cannot be before startDate.`,
           });
         }
+        newDuration =
+          (new Date(newTripDetails.endDate) - trip.startDate) /
+          (1000 * 60 * 60 * 24);
       }
       if (newTripDetails.startDate && !newTripDetails.endDate) {
         if (new Date(trip.endDate) < new Date(newTripDetails.startDate)) {
@@ -236,6 +243,9 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
             msg: `startDate cannot be moved to after the endDate.`,
           });
         }
+        newDuration =
+          (trip.endDate - new Date(newTripDetails.startDate)) /
+          (1000 * 60 * 60 * 24);
       }
       if (newTripDetails.startDate && newTripDetails.endDate) {
         if (
@@ -246,9 +256,20 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
             msg: `endDate cannot be before startDate.`,
           });
         }
+        newDuration =
+          (new Date(newTripDetails.endDate) -
+            new Date(newTripDetails.startDate)) /
+          (1000 * 60 * 60 * 24);
       }
 
-      const setDetails = buildSetQuery(trip_id, newTripDetails, trip.attending);
+      const setDetails = buildSetQuery(
+        trip_id,
+        newTripDetails,
+        trip.attending,
+        originalDuration + 1,
+        newDuration + 1,
+        trip.days
+      );
       return trips.updateOne(
         {
           _id: new ObjectId(trip_id),

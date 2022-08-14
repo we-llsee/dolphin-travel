@@ -815,6 +815,28 @@ describe("Trips", () => {
             });
         });
     });
+    it("200: Returns an object containing the updated and shortened trip and sets any days that are no longer included in the trip to dayNumber: NaN", () => {
+      let trip_id;
+      const changeTripData = {
+        tripName: "Prague Hols",
+        endDate: new Date(2022, 8, 2),
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[2]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.trip.tripName).toBe("Prague Hols");
+              expect(body.trip.days[2].dayNumber).toBe(0);
+            });
+        });
+    });
     describe("General Errors", () => {
       it("401: Returns {msg: You are unauthorised to change this trip.} when a user not listed as attending attempts to change the trip", () => {
         let trip_id;

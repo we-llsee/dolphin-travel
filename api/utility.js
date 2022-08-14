@@ -173,10 +173,30 @@ exports.checkFields = (newTripDetails) => {
   }
 };
 
-exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
+exports.buildSetQuery = (
+  trip_id,
+  newTripDetails,
+  currentlyAttending,
+  originalDuration,
+  newDuration,
+  days
+) => {
   const set = {};
   const push = {};
   const pull = {};
+
+  console.log(originalDuration, newDuration);
+
+  if (newDuration < originalDuration) {
+    const newDays = [...days];
+    console.log(newDays);
+    for (let i = 0; i < newDays.length; i++) {
+      if (newDays[i].dayNumber > newDuration) {
+        newDays[i].dayNumber = 0;
+      }
+    }
+    set.days = newDays;
+  }
 
   if (newTripDetails.tripName) {
     set.tripName = newTripDetails.tripName;
