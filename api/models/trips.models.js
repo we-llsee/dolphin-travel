@@ -14,6 +14,7 @@ const {
 //TODO further investigation of MongoDB injection attacks
 // TODO look into getting more country information
 // TODO error handling for the latitude and longitude ranges, every key on address object should be string
+// TODO turn the buildSetQuery (utility) function into a promise which takes the current trip and the new details, then we can merge all the promise.reject error handling from the model, the build set query and the validation function together
 const trips = db.collection("trips");
 
 exports.selectTrips = (username) => {
