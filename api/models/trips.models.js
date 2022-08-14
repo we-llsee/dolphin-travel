@@ -32,7 +32,7 @@ exports.selectTrips = (username) => {
 exports.postTrip = (newTrip) => {
   return Promise.all([
     checkTypes("tripName", newTrip.tripName, "string"),
-    checkUsersExist(newTrip.attending),
+    checkUsersExist("attending", newTrip.attending),
     checkBudget(newTrip.budgetGBP),
     checkCountry(newTrip.country),
     checkTypes("accommodation", newTrip.accommodation, "object"),
@@ -149,6 +149,41 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
             return Promise.reject({
               status: 400,
               msg: `User '${newTripDetails.addPeople[i]}' is already attending.`,
+            });
+          }
+        }
+      }
+      if (newTripDetails.removePeople) {
+        for (let i = 0; i < newTripDetails.removePeople.length; i++) {
+          if (
+            (currentlyAttending.length === 1 &&
+              !newTripDetails.addPeople &&
+              username === newTripDetails.removePeople[0]) ||
+            (currentlyAttending.length === 1 &&
+              newTripDetails.addPeople &&
+              !newTripDetails.newCreator)
+          ) {
+            return Promise.reject({
+              status: 400,
+              msg: `Your trip must have a creator.`,
+            });
+          }
+          if (
+            currentlyAttending.includes(newTripDetails.removePeople[i]) ===
+            false
+          ) {
+            return Promise.reject({
+              status: 400,
+              msg: `User '${newTripDetails.removePeople[i]}' is not listed as attending this trip.`,
+            });
+          }
+          if (
+            currentlyAttending[0] !== username &&
+            newTripDetails.removePeople[i] !== username
+          ) {
+            return Promise.reject({
+              status: 401,
+              msg: `You are unauthorised to remove user '${newTripDetails.removePeople[i]}' from this trip.`,
             });
           }
         }

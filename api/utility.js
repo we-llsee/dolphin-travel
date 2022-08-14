@@ -57,18 +57,20 @@ exports.checkDates = (startDate, endDate) => {
   return Promise.resolve();
 };
 
-exports.checkUsersExist = (userArr) => {
-  return this.checkTypes("attending", userArr, "array")
-    .then(() => {
-      const userPromises = [];
-      userArr.forEach((user) => {
-        userPromises.push(selectUsername(user));
-      });
-      return Promise.all(userPromises);
-    })
-    .catch((err) => {
-      return Promise.reject({ ...err, status: 400 });
+exports.checkUsersExist = (fieldName, userArr) => {
+  if (userArr.length === 0) {
+    return Promise.reject({
+      status: 400,
+      msg: `${fieldName} requires one or more usernames.`,
     });
+  }
+  return this.checkTypes(fieldName, userArr, "array").then(() => {
+    const userPromises = [];
+    userArr.forEach((user) => {
+      userPromises.push(selectUsername(user));
+    });
+    return Promise.all(userPromises);
+  });
 };
 
 exports.checkBudget = (budgetGBP) => {
@@ -93,23 +95,6 @@ exports.checkCountry = (country) => {
       msg: `Country '${country}' does not exist.`,
     });
   });
-};
-
-exports.checkPeopleArray = (fieldName, peopleArray) => {
-  return this.checkTypes(fieldName, peopleArray, "array")
-    .then(() => {
-      if (peopleArray.length === 0) {
-        return Promise.reject({
-          status: 400,
-          msg: `${fieldName} requires one or more usernames.`,
-        });
-      }
-    })
-    .then(() => {
-      for (let i = 0; i < peopleArray.length; i++) {
-        return selectUsername(peopleArray[i]);
-      }
-    });
 };
 
 exports.checkFields = (newTripDetails) => {
@@ -166,9 +151,9 @@ exports.checkFields = (newTripDetails) => {
             this.checkTypes("address", newTripDetails[field].address, "object")
           );
         }
-        if (field === "addPeople") {
+        if (field === "addPeople" || field === "removePeople") {
           validationPromises.push(
-            this.checkPeopleArray(field, newTripDetails[field])
+            this.checkUsersExist(field, newTripDetails[field])
           );
         }
       }
@@ -204,6 +189,14 @@ exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
       creatorRemoved.indexOf(`${newTripDetails.newCreator}`),
       1
     );
+    if (newTripDetails.removePeople) {
+      for (let i = 0; i < newTripDetails.removePeople.length; i++) {
+        creatorRemoved.splice(
+          creatorRemoved.indexOf(`${newTripDetails.removePeople[i]}`),
+          1
+        );
+      }
+    }
     set.attending = [newTripDetails.newCreator, ...creatorRemoved];
   }
 
@@ -220,7 +213,7 @@ exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
     set.attending = [newTripDetails.newCreator, ...creatorRemoved];
   }
 
-  if (newTripDetails.removePeople) {
+  if (newTripDetails.removePeople && !newTripDetails.newCreator) {
     pull.attending = { $in: newTripDetails.removePeople };
   }
 

@@ -296,7 +296,7 @@ describe("Trips", () => {
           expect(msg).toBe("endDate cannot be before startDate.");
         });
     });
-    it("400: Returns 'User 'X' does not exist.' when one username in the array is not in the users collection", () => {
+    it("404: Returns 'User 'X' does not exist.' when one username in the array is not in the users collection", () => {
       const newTripData = {
         tripName: "Turkey 2K22",
         attending: ["willclegg", "jessk"],
@@ -322,7 +322,7 @@ describe("Trips", () => {
       return request(app)
         .post("/api/trips")
         .send(newTripData)
-        .expect(400)
+        .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("User 'jessk' does not exist.");
         });
@@ -793,6 +793,28 @@ describe("Trips", () => {
             });
         });
     });
+    it("200: Returns an object containing the updated trip when the creator has added a new person to the trip, assigned them as the creator and removed themselves at the same time", () => {
+      let trip_id;
+      const changeTripData = {
+        addPeople: ["jesskemp"],
+        newCreator: "jesskemp",
+        removePeople: ["willclegg"],
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .patch(`/api/trips/${trip_id}?username=willclegg`)
+            .send(changeTripData)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.trip.attending).toEqual(["jesskemp"]);
+            });
+        });
+    });
     describe("General Errors", () => {
       it("401: Returns {msg: You are unauthorised to change this trip.} when a user not listed as attending attempts to change the trip", () => {
         let trip_id;
@@ -1258,7 +1280,7 @@ describe("Trips", () => {
             })
         );
       });
-      it.only("400: Returns {msg: User 'jesskemp' is already attending.} when username cannot be found", () => {
+      it("400: Returns {msg: User 'jesskemp' is already attending.} when username cannot be found", () => {
         let trip_id;
         const changeTripData = {
           addPeople: ["jesskemp"],
@@ -1277,6 +1299,199 @@ describe("Trips", () => {
                 .expect(400)
                 .then(({ body: { msg } }) => {
                   expect(msg).toBe("User 'jesskemp' is already attending.");
+                });
+            })
+        );
+      });
+    });
+    describe("Remove People Erros", () => {
+      it("400: Returns 'removePeople is not type 'array'.' for a removePeople request that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: false,
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("removePeople is not type 'array'.");
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: removePeople requires one or more usernames.} when no username are given in the array", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: [],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe(
+                    "removePeople requires one or more usernames."
+                  );
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: [true],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("User 'true' is an invalid username.");
+                });
+            })
+        );
+      });
+      it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: ["jimstevenson"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(404)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("User 'jimstevenson' does not exist.");
+                });
+            })
+        );
+      });
+      it("401: Returns {msg: You are unauthorised to remove user 'X' from this trip.} when user who is not the creator or the person themselves tries to remove someone from the trip.", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: ["alexrong"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[2]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=jesskemp`)
+                .send(changeTripData)
+                .expect(401)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe(
+                    "You are unauthorised to remove user 'alexrong' from this trip."
+                  );
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: User 'X' is not listed as attending this trip.} when the user tries to remove someone who is not attending the trip.", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: ["alexrong"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe(
+                    "User 'alexrong' is not listed as attending this trip."
+                  );
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: Your trip must have a creator.} when the user tries to remove the one person on the trip (the creator).", () => {
+        let trip_id;
+        const changeTripData = {
+          removePeople: ["willclegg"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("Your trip must have a creator.");
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: Your trip must have a creator.} when the creator adds a new person to the trip and tries to remove thenselves without setting a new creator.", () => {
+        let trip_id;
+        const changeTripData = {
+          addPeople: ["jesskemp"],
+          removePeople: ["willclegg"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("Your trip must have a creator.");
                 });
             })
         );
