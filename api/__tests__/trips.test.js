@@ -646,7 +646,6 @@ describe("Trips", () => {
             .send(changeTripData)
             .expect(200)
             .then(({ body }) => {
-              console.log(body);
               body.trip._id = new ObjectId(body.trip._id);
               expect(body.trip).toEqual({
                 _id: new ObjectId(trip_id),
@@ -1641,6 +1640,115 @@ describe("Trips", () => {
                 });
             })
         );
+      });
+    });
+    describe("Change Creator Errors", () => {
+      it("400: Returns {msg: User 'X' is an invalid username.} for when the user tries to change the creator using an invalid username", () => {
+        const changeTripData = {
+          newCreator: 46,
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[0]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=willclegg`)
+              .send(changeTripData)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("User '46' is an invalid username.");
+              });
+          });
+      });
+      it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+        const changeTripData = {
+          newCreator: "jimstevenson",
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[0]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=willclegg`)
+              .send(changeTripData)
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("User 'jimstevenson' does not exist.");
+              });
+          });
+      });
+      it("401: Returns {msg: You are not authorised to change the creator of this trip.} when someone who is not the creator attempts to change the creator", () => {
+        const changeTripData = {
+          newCreator: "alexrong",
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[2]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=alexrong`)
+              .send(changeTripData)
+              .expect(401)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe(
+                  "You are not authorised to change the creator of this trip."
+                );
+              });
+          });
+      });
+      it("400: Returns {msg: You cannot change the creator to a user who is not attending the trip.} when the creator attempts to change the creator to be another user who is not attending the trip", () => {
+        const changeTripData = {
+          newCreator: "alexrong",
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[0]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=willclegg`)
+              .send(changeTripData)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe(
+                  "You cannot change the creator to a user who is not attending the trip."
+                );
+              });
+          });
+      });
+      it("400: Returns {msg: You cannot change the creator to a user you are removing.} when the creator attempts to change the creator to a user that is being removed from the trip", () => {
+        const changeTripData = {
+          newCreator: "alexrong",
+          removePeople: ["alexrong"],
+        };
+        return request(app)
+          .get("/api/trips?username=willclegg")
+          .then(({ body: { trips } }) => {
+            const trip_id = trips[2]._id;
+            return trip_id;
+          })
+          .then((trip_id) => {
+            return request(app)
+              .patch(`/api/trips/${trip_id}?username=willclegg`)
+              .send(changeTripData)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe(
+                  "You cannot change the creator to a user you are removing."
+                );
+              });
+          });
       });
     });
   });

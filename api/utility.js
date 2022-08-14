@@ -163,6 +163,10 @@ exports.checkFields = (newTripDetails) => {
         if (field === "startDate" || field === "endDate") {
           validationPromises.push(this.checkDate(field, newTripDetails[field]));
         }
+
+        if (field === "newCreator") {
+          validationPromises.push(selectUsername(newTripDetails[field]));
+        }
       }
     }
     return Promise.all(validationPromises);
@@ -170,7 +174,6 @@ exports.checkFields = (newTripDetails) => {
 };
 
 exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
-  console.log("here");
   const set = {};
   const push = {};
   const pull = {};

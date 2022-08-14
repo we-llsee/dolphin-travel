@@ -189,6 +189,38 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
           }
         }
       }
+      if (newTripDetails.newCreator) {
+        if (username !== trip.attending[0]) {
+          return Promise.reject({
+            status: 401,
+            msg: "You are not authorised to change the creator of this trip.",
+          });
+        }
+        if (trip.attending.includes(newTripDetails.newCreator) === false) {
+          if (
+            !newTripDetails.addPeople ||
+            newTripDetails.addPeople.includes(newTripDetails.newCreator) ===
+              false
+          ) {
+            return Promise.reject({
+              status: 400,
+              msg: "You cannot change the creator to a user who is not attending the trip.",
+            });
+          }
+        }
+        if (newTripDetails.removePeople) {
+          if (
+            newTripDetails.removePeople.includes(newTripDetails.newCreator) ===
+            true
+          ) {
+            return Promise.reject({
+              status: 400,
+              msg: "You cannot change the creator to a user you are removing.",
+            });
+          }
+        }
+      }
+
       if (newTripDetails.endDate && !newTripDetails.startDate) {
         if (new Date(newTripDetails.endDate) < new Date(trip.startDate)) {
           return Promise.reject({
