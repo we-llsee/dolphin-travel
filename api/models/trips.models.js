@@ -3,7 +3,8 @@ const { selectUsername } = require("./users.models");
 const { ObjectId } = require("bson");
 const {
   checkTypes,
-  checkDates,
+  checkDate,
+  checkDateRelationship,
   checkUsersExist,
   checkBudget,
   checkCountry,
@@ -44,7 +45,9 @@ exports.postTrip = (newTrip) => {
     checkTypes("latitude", newTrip.accommodation.latitude, "number"),
     checkTypes("longitude", newTrip.accommodation.longitude, "number"),
     checkTypes("address", newTrip.accommodation.address, "object"),
-    checkDates(newTrip.startDate, newTrip.endDate),
+    checkDate("startDate", newTrip.startDate),
+    checkDate("endDate", newTrip.endDate),
+    checkDateRelationship(newTrip.startDate, newTrip.endDate),
   ])
     .then(() => {
       newTrip.days = [];
@@ -139,13 +142,12 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
           msg: "You are unauthorised to change this trip.",
         });
       }
-      const currentlyAttending = [...trip.attending];
-      return currentlyAttending;
+      return trip;
     })
-    .then((currentlyAttending) => {
+    .then((trip) => {
       if (newTripDetails.addPeople) {
         for (let i = 0; i < newTripDetails.addPeople.length; i++) {
-          if (currentlyAttending.includes(newTripDetails.addPeople[i])) {
+          if (trip.attending.includes(newTripDetails.addPeople[i])) {
             return Promise.reject({
               status: 400,
               msg: `User '${newTripDetails.addPeople[i]}' is already attending.`,
@@ -156,10 +158,10 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
       if (newTripDetails.removePeople) {
         for (let i = 0; i < newTripDetails.removePeople.length; i++) {
           if (
-            (currentlyAttending.length === 1 &&
+            (trip.attending.length === 1 &&
               !newTripDetails.addPeople &&
               username === newTripDetails.removePeople[0]) ||
-            (currentlyAttending.length === 1 &&
+            (trip.attending.length === 1 &&
               newTripDetails.addPeople &&
               !newTripDetails.newCreator)
           ) {
@@ -169,8 +171,7 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
             });
           }
           if (
-            currentlyAttending.includes(newTripDetails.removePeople[i]) ===
-            false
+            trip.attending.includes(newTripDetails.removePeople[i]) === false
           ) {
             return Promise.reject({
               status: 400,
@@ -178,7 +179,7 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
             });
           }
           if (
-            currentlyAttending[0] !== username &&
+            trip.attending[0] !== username &&
             newTripDetails.removePeople[i] !== username
           ) {
             return Promise.reject({
@@ -188,11 +189,34 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
           }
         }
       }
-      const setDetails = buildSetQuery(
-        trip_id,
-        newTripDetails,
-        currentlyAttending
-      );
+      if (newTripDetails.endDate && !newTripDetails.startDate) {
+        if (new Date(newTripDetails.endDate) < new Date(trip.startDate)) {
+          return Promise.reject({
+            status: 400,
+            msg: `endDate cannot be before startDate.`,
+          });
+        }
+      }
+      if (newTripDetails.startDate && !newTripDetails.endDate) {
+        if (new Date(trip.endDate) < new Date(newTripDetails.startDate)) {
+          return Promise.reject({
+            status: 400,
+            msg: `startDate cannot be moved to after the endDate.`,
+          });
+        }
+      }
+      if (newTripDetails.startDate && newTripDetails.endDate) {
+        if (
+          new Date(newTripDetails.endDate) < new Date(newTripDetails.startDate)
+        ) {
+          return Promise.reject({
+            status: 400,
+            msg: `endDate cannot be before startDate.`,
+          });
+        }
+      }
+
+      const setDetails = buildSetQuery(trip_id, newTripDetails, trip.attending);
       return trips.updateOne(
         {
           _id: new ObjectId(trip_id),

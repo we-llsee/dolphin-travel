@@ -24,31 +24,34 @@ exports.checkTypes = (keyName, value, type) => {
   return Promise.resolve();
 };
 
-exports.checkDates = (startDate, endDate) => {
-  if (startDate === undefined) {
+exports.checkDate = (dateName, date) => {
+  if (date === undefined) {
     return Promise.reject({
       status: 400,
-      msg: `startDate has not been provided.`,
-    });
-  } else if (endDate === undefined) {
-    return Promise.reject({
-      status: 400,
-      msg: `endDate has not been provided.`,
+      msg: `${dateName} has not been provided.`,
     });
   }
-  if (new Date(startDate).toString() === "Invalid Date") {
+  if (
+    new Date(date).toString() === "Invalid Date" ||
+    typeof date === "number"
+  ) {
     return Promise.reject({
       status: 400,
-      msg: `startDate is not type 'date'.`,
+      msg: `${dateName} is not type 'date'.`,
     });
-  } else if (new Date(startDate) < Date.now()) {
+  }
+
+  if (dateName === "startDate" && new Date(date) < Date.now()) {
     return Promise.reject({
       status: 400,
-      msg: `startDate cannot be in the past.`,
+      msg: `${dateName} cannot be in the past.`,
     });
-  } else if (new Date(endDate).toString() === "Invalid Date") {
-    return Promise.reject({ status: 400, msg: `endDate is not type 'date'.` });
-  } else if (new Date(endDate) < new Date(startDate)) {
+  }
+  return Promise.resolve();
+};
+
+exports.checkDateRelationship = (startDate, endDate) => {
+  if (new Date(endDate) < new Date(startDate)) {
     return Promise.reject({
       status: 400,
       msg: `endDate cannot be before startDate.`,
@@ -156,6 +159,10 @@ exports.checkFields = (newTripDetails) => {
             this.checkUsersExist(field, newTripDetails[field])
           );
         }
+
+        if (field === "startDate" || field === "endDate") {
+          validationPromises.push(this.checkDate(field, newTripDetails[field]));
+        }
       }
     }
     return Promise.all(validationPromises);
@@ -163,6 +170,7 @@ exports.checkFields = (newTripDetails) => {
 };
 
 exports.buildSetQuery = (trip_id, newTripDetails, currentlyAttending) => {
+  console.log("here");
   const set = {};
   const push = {};
   const pull = {};

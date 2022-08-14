@@ -646,6 +646,7 @@ describe("Trips", () => {
             .send(changeTripData)
             .expect(200)
             .then(({ body }) => {
+              console.log(body);
               body.trip._id = new ObjectId(body.trip._id);
               expect(body.trip).toEqual({
                 _id: new ObjectId(trip_id),
@@ -1492,6 +1493,151 @@ describe("Trips", () => {
                 .expect(400)
                 .then(({ body: { msg } }) => {
                   expect(msg).toBe("Your trip must have a creator.");
+                });
+            })
+        );
+      });
+    });
+    describe("Start Date Errors", () => {
+      it("400: Returns 'startDate is not type 'date'.' for a startDate that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          startDate: "hey",
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("startDate is not type 'date'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'startDate cannot be in the past.' for a startDate that is in the past", () => {
+        let trip_id;
+        const changeTripData = {
+          startDate: new Date(2019, 2, 12),
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("startDate cannot be in the past.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'startDate cannot be moved to after the endDate.' if given a startDate which is after the current endDate", () => {
+        let trip_id;
+        const changeTripData = {
+          startDate: new Date(2024, 5, 10),
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe(
+                    "startDate cannot be moved to after the endDate."
+                  );
+                });
+            })
+        );
+      });
+    });
+    describe("End Date Errors", () => {
+      it("400: Returns 'endDate is not type 'date'.' for a endDate that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          endDate: 26835,
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("endDate is not type 'date'.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'endDate cannot be before startDate.' if given an endDate which is before the current startDate", () => {
+        let trip_id;
+        const changeTripData = {
+          endDate: new Date(2019, 2, 12),
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("endDate cannot be before startDate.");
+                });
+            })
+        );
+      });
+      it("400: Returns 'endDate cannot be before startDate.' if given an endDate which is before the new startDate", () => {
+        let trip_id;
+        const changeTripData = {
+          endDate: new Date(2023, 2, 12),
+          startDate: new Date(2023, 3, 2),
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("endDate cannot be before startDate.");
                 });
             })
         );
