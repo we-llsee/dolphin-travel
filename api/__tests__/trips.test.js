@@ -607,7 +607,7 @@ describe("Trips", () => {
     });
   });
   describe("PATCH /api/trips/:trip_id?username=X", () => {
-    it("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
+    it.only("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
       let trip_id;
       const changeTripData = {
         tripName: "Wedding in Greece",
@@ -1326,7 +1326,7 @@ describe("Trips", () => {
         );
       });
     });
-    describe("Remove People Erros", () => {
+    describe("Remove People Errors", () => {
       it("400: Returns 'removePeople is not type 'array'.' for a removePeople request that is the wrong type", () => {
         let trip_id;
         const changeTripData = {

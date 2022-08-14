@@ -185,11 +185,8 @@ exports.buildSetQuery = (
   const push = {};
   const pull = {};
 
-  console.log(originalDuration, newDuration);
-
   if (newDuration < originalDuration) {
     const newDays = [...days];
-    console.log(newDays);
     for (let i = 0; i < newDays.length; i++) {
       if (newDays[i].dayNumber > newDuration) {
         newDays[i].dayNumber = 0;

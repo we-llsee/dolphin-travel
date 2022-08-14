@@ -25,7 +25,7 @@ describe("Express App", () => {
   });
 
   describe("GET /api", () => {
-    it("200: Returns an object with keys describing the different endpoints", () => {
+    it.only("200: Returns an object with keys describing the different endpoints", () => {
       return request(app)
         .get("/api")
         .expect(200)
@@ -38,6 +38,7 @@ describe("Express App", () => {
               "DELETE /api/trips/:trip_id": expect.any(Object),
               "GET /api/users": expect.any(Object),
               "GET /api/users/:username": expect.any(Object),
+              "PATCH /api/trips/:trip_id": expect.any(Object),
             })
           );
         });
