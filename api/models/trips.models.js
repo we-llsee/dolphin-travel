@@ -143,6 +143,16 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
       return currentlyAttending;
     })
     .then((currentlyAttending) => {
+      if (newTripDetails.addPeople) {
+        for (let i = 0; i < newTripDetails.addPeople.length; i++) {
+          if (currentlyAttending.includes(newTripDetails.addPeople[i])) {
+            return Promise.reject({
+              status: 400,
+              msg: `User '${newTripDetails.addPeople[i]}' is already attending.`,
+            });
+          }
+        }
+      }
       const setDetails = buildSetQuery(
         trip_id,
         newTripDetails,

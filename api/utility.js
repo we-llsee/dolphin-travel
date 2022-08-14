@@ -95,6 +95,23 @@ exports.checkCountry = (country) => {
   });
 };
 
+exports.checkPeopleArray = (fieldName, peopleArray) => {
+  return this.checkTypes(fieldName, peopleArray, "array")
+    .then(() => {
+      if (peopleArray.length === 0) {
+        return Promise.reject({
+          status: 400,
+          msg: `${fieldName} requires one or more usernames.`,
+        });
+      }
+    })
+    .then(() => {
+      for (let i = 0; i < peopleArray.length; i++) {
+        return selectUsername(peopleArray[i]);
+      }
+    });
+};
+
 exports.checkFields = (newTripDetails) => {
   const allowedFields = [
     "tripName",
@@ -147,6 +164,11 @@ exports.checkFields = (newTripDetails) => {
               "number"
             ),
             this.checkTypes("address", newTripDetails[field].address, "object")
+          );
+        }
+        if (field === "addPeople") {
+          validationPromises.push(
+            this.checkPeopleArray(field, newTripDetails[field])
           );
         }
       }

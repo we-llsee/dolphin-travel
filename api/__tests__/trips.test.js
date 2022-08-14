@@ -1165,5 +1165,122 @@ describe("Trips", () => {
         );
       });
     });
+    describe("Add People Errors", () => {
+      it("400: Returns 'addPeople is not type 'array'.' for an addPeople request that is the wrong type", () => {
+        let trip_id;
+        const changeTripData = {
+          addPeople: 256,
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("addPeople is not type 'array'.");
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: addPeople requires one or more usernames.} when no username are given in the array", () => {
+        let trip_id;
+        const changeTripData = {
+          addPeople: [],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("addPeople requires one or more usernames.");
+                });
+            })
+        );
+      });
+      it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
+        let trip_id;
+        const changeTripData = {
+          addPeople: [234],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("User '234' is an invalid username.");
+                });
+            })
+        );
+      });
+      it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+        let trip_id;
+        const changeTripData = {
+          addPeople: ["jimstevenson"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[0]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(404)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("User 'jimstevenson' does not exist.");
+                });
+            })
+        );
+      });
+      it.only("400: Returns {msg: User 'jesskemp' is already attending.} when username cannot be found", () => {
+        let trip_id;
+        const changeTripData = {
+          addPeople: ["jesskemp"],
+        };
+        return (
+          request(app)
+            // Will Clegg created the trip (first user listed in attending)
+            .get("/api/trips?username=willclegg")
+            .then(({ body: { trips } }) => {
+              trip_id = trips[2]._id;
+            })
+            .then(() => {
+              return request(app)
+                .patch(`/api/trips/${trip_id}?username=willclegg`)
+                .send(changeTripData)
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).toBe("User 'jesskemp' is already attending.");
+                });
+            })
+        );
+      });
+    });
   });
 });
