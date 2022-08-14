@@ -1,17 +1,20 @@
 const seed = require("../../db/seed");
-const { client } = require("../../db/connection");
 const app = require("../app");
 const request = require("supertest");
 
 jest.setTimeout(15000);
 
-beforeEach(() => {
-  return seed();
-});
+const userTests = () => {
+  beforeAll(() => {
+    return seed();
+  });
 
-afterAll(() => client.close());
+  beforeEach(() => {
+    if (process.env.TEST_FREQ === "each") {
+      return seed();
+    }
+  });
 
-describe("Users", () => {
   describe("GET /api/users", () => {
     it('200: GET /api/users?username=willclegg returns an array of users on a key of "users"', () => {
       return request(app)
@@ -43,25 +46,38 @@ describe("Users", () => {
 
   describe("GET /api/users/:username", () => {
     it("200: /api/users/willclegg returns a valid user on a key of user", () => {
-      return request(app).get('/api/users/willclegg').expect(200).then(({body})=>{
-        expect(body.user).toEqual(expect.objectContaining({
-          _id:"willclegg",
-          firstName:"Will",
-          lastName:"Clegg"
-        }))
-      })
+      return request(app)
+        .get("/api/users/willclegg")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toEqual(
+            expect.objectContaining({
+              _id: "willclegg",
+              firstName: "Will",
+              lastName: "Clegg",
+            })
+          );
+        });
     });
 
-    it("400: /api/users/123 returns 'User 123 is an invalid username'",()=>{
-      return request(app).get('/api/users/123').expect(400).then(({body})=>{
-        expect(body.msg).toBe("User '123' is an invalid username.")
-      })
-    })
+    it("400: /api/users/123 returns 'User 123 is an invalid username'", () => {
+      return request(app)
+        .get("/api/users/123")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("User '123' is an invalid username.");
+        });
+    });
 
-    it("404: /api/users/NOTAUSER returns 'User NOTAUSER does not exist.'",()=>{
-      return request(app).get('/api/users/NOTAUSER').expect(404).then(({body})=>{
-        expect(body.msg).toBe("User 'NOTAUSER' does not exist.")
-      })
-    })
+    it("404: /api/users/NOTAUSER returns 'User NOTAUSER does not exist.'", () => {
+      return request(app)
+        .get("/api/users/NOTAUSER")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("User 'NOTAUSER' does not exist.");
+        });
+    });
   });
-});
+};
+
+module.exports = userTests;

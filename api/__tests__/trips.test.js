@@ -1,19 +1,21 @@
 const seed = require("../../db/seed");
-const { client } = require("../../db/connection");
-
 const app = require("../app");
 const request = require("supertest");
 const { ObjectId } = require("bson");
 
 jest.setTimeout(15000);
 
-beforeEach(() => {
-  return seed();
-});
+const tripTests = () => {
+  beforeAll(() => {
+    return seed();
+  });
 
-afterAll(() => client.close());
+  beforeEach(() => {
+    if (process.env.TEST_FREQ === "each") {
+      return seed();
+    }
+  });
 
-describe("Trips", () => {
   describe("GET /api/trips?username=X", () => {
     it("200: Returns an array of trips for specified user", () => {
       return request(app)
@@ -606,4 +608,6 @@ describe("Trips", () => {
         });
     });
   });
-});
+};
+
+module.exports = tripTests;
