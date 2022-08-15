@@ -1798,6 +1798,7 @@ const tripTests = () => {
             .send(createDay)
             .expect(201)
             .then(({ body: { day } }) => {
+              console.log(day);
               expect(day).toEqual({
                 _id: expect.any(String),
                 dayNumber: createDay.dayNumber,
