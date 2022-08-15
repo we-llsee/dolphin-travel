@@ -251,3 +251,29 @@ exports.buildSetQuery = (
     $pull: pull,
   };
 };
+
+exports.checkDayNumber = (trip, dayNumber) => {
+  const dayPromises = [];
+  const duration = (trip.endDate - trip.startDate) / (1000 * 60 * 60 * 24) + 1;
+  trip.days.forEach((day) => {
+    if (day.dayNumber === dayNumber && dayNumber !== 0) {
+      dayPromises.push(
+        Promise.reject({
+          status: 400,
+          msg: `Day '${dayNumber}' has already been created.`,
+        })
+      );
+    }
+    if (dayNumber > duration) {
+      dayPromises.push(
+        Promise.reject({
+          status: 400,
+          msg: `Your trip is too short to have a day '${dayNumber}'.`,
+        })
+      );
+    } else {
+      dayPromises.push(Promise.resolve());
+    }
+  });
+  return Promise.all(dayPromises);
+};

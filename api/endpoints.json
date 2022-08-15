@@ -235,5 +235,16 @@
         }
       }
     }
+  },
+  "POST /api/trips/:trip_id": {
+    "description": "adds a new empty day to the trip and returns the day on a key of day",
+    "requestBody": {
+      "username": "the username of the user adding the day",
+      "dayNumber": "the day of the holiday relative to the start date, e.g. if the start date is 10/05/2022, then the dayNumber for 11/05/2022 would be 2. This can be set to 0 if the user does not want to select a day at this point)"
+      },
+      "exampleRequest": "/api/trips/:trip_id",
+      "exampleResponse": {
+        "day": { "_id": "62fa317ea5b2a1d71463530c", "dayNumber": 3, "activities": [] }
+      }
+    }
   }
-}

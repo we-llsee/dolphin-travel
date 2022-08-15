@@ -4,6 +4,7 @@ const {
   selectSingleTrip,
   removeTrip,
   updateTrip,
+  postDay,
 } = require("../models/trips.models");
 
 exports.getTrips = (req, res, next) => {
@@ -63,6 +64,19 @@ exports.changeTrip = (req, res, next) => {
   updateTrip(trip_id, username, newTripDetails)
     .then((trip) => {
       res.status(200).send({ trip });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.addNewDay = (req, res, next) => {
+  const { trip_id } = req.params;
+  const newDayDetails = req.body;
+
+  postDay(trip_id, newDayDetails)
+    .then((day) => {
+      res.status(201).send({ day });
     })
     .catch((err) => {
       next(err);
