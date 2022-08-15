@@ -3,8 +3,6 @@ const app = require("../app");
 const request = require("supertest");
 const { ObjectId } = require("bson");
 
-jest.setTimeout(15000);
-
 const tripTests = () => {
   beforeAll(() => {
     return seed();
@@ -1798,7 +1796,6 @@ const tripTests = () => {
             .send(createDay)
             .expect(201)
             .then(({ body: { day } }) => {
-              console.log(day);
               expect(day).toEqual({
                 _id: expect.any(String),
                 dayNumber: createDay.dayNumber,

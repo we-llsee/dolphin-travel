@@ -5,13 +5,16 @@ const { client } = require("./connection");
 const seed = require("./seed");
 
 function runSeed() {
-  return client.connect().then(() => {
-    console.log("Mongo client connected")
-    return seed();
-  }).then(()=>{
-    console.log("Production DB seeded")
-    return client.close();
-  })
+  return client
+    .connect()
+    .then(() => {
+      console.log("Mongo client connected");
+      return seed();
+    })
+    .then(() => {
+      console.log("Production DB seeded");
+      return client.close();
+    });
 }
 
 runSeed();

@@ -11,6 +11,8 @@ const {
   addNewDay,
 } = require("./controllers/trips.controllers");
 
+const { getDayById } = require("./controllers/days.controllers");
+
 const {
   getUsers,
   getUserByUsername,
@@ -37,6 +39,8 @@ app.post("/api/trips/:trip_id", addNewDay);
 app.patch("/api/trips/:trip_id", changeTrip);
 
 app.delete("/api/trips/:trip_id", deleteTrip);
+
+app.get("/api/trips/:trip_id/:day_id", getDayById);
 
 app.use("*", (req, res) => {
   res.status(404).send({ msg: "Invalid Path" });
