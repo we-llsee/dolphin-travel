@@ -1780,6 +1780,259 @@ const tripTests = () => {
       });
     });
   });
+  describe("POST /api/trips/:trip_id", () => {
+    it("201: Returns an object containing the new day on a key of day", () => {
+      let trip_id;
+      const createDay = {
+        username: "willclegg",
+        dayNumber: 3,
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(201)
+            .then(({ body: { day } }) => {
+              console.log(day);
+              expect(day).toEqual({
+                _id: expect.any(String),
+                dayNumber: createDay.dayNumber,
+                activities: [],
+              });
+            });
+        });
+    });
+    it("201: Returns an object containing the new day on a key of day when the user has put in a day that is 0 twice (the user is allowed more than one day that is dayNumber 0)", () => {
+      let trip_id;
+      const createDay = {
+        username: "willclegg",
+        dayNumber: 0,
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app).post(`/api/trips/${trip_id}`).send(createDay);
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(201)
+            .then(({ body: { day } }) => {
+              expect(day).toEqual({
+                _id: expect.any(String),
+                dayNumber: createDay.dayNumber,
+                activities: [],
+              });
+            });
+        });
+    });
+    it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
+      let trip_id;
+      const createDay = {
+        username: 467,
+        dayNumber: 3,
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User '467' is an invalid username.");
+            });
+        });
+    });
+    it("400: Returns {msg: Username Not Specified} when no username query", () => {
+      let trip_id;
+      const createDay = {
+        dayNumber: 3,
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Username Not Specified");
+            });
+        });
+    });
+    it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+      let trip_id;
+      const createDay = {
+        username: "jimstevenson",
+        dayNumber: 3,
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User 'jimstevenson' does not exist.");
+            });
+        });
+    });
+    it("400: Returns {msg: trip_id 'X' is an invalid trip ID.} when a user tries to access a trip id with the wrong format.", () => {
+      let trip_id = 4567;
+      const createDay = {
+        username: "willclegg",
+        dayNumber: 3,
+      };
+      return request(app)
+        .post(`/api/trips/${trip_id}`)
+        .send(createDay)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("trip_id '4567' is an invalid trip ID.");
+        });
+    });
+    it("404: Returns {msg: trip_id 'X' does not exist.} when trip cannot be found", () => {
+      const createDay = {
+        username: "willclegg",
+        dayNumber: 3,
+      };
+      return request(app)
+        .post(`/api/trips/507f1f77bcf86cd799439011`)
+        .send(createDay)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe(
+            "trip_id '507f1f77bcf86cd799439011' does not exist."
+          );
+        });
+    });
+    it("400: Returns 'dayNumber is not type 'number'.' for a dayNumber that is the wrong type", () => {
+      let trip_id;
+      const createDay = {
+        username: "willclegg",
+        dayNumber: "hello there",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("dayNumber is not type 'number'.");
+            });
+        });
+    });
+    it("400: Returns 'dayNumber has not been provided.' if no dayNumber is provided on the request", () => {
+      let trip_id;
+      const createDay = {
+        username: "willclegg",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("dayNumber has not been provided.");
+            });
+        });
+    });
+    it("400: Returns 'Day 'X' has already been created.' if the user tries to create a day that already exists", () => {
+      let trip_id;
+      const createDay = {
+        dayNumber: 1,
+        username: "willclegg",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Day '1' has already been created.");
+            });
+        });
+    });
+    it("400: Returns 'Your trip is too short to have a day 'X'.' if the user tries to create a day that is outside of the duration of the trip", () => {
+      let trip_id;
+      const createDay = {
+        dayNumber: 10,
+        username: "willclegg",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Your trip is too short to have a day '10'.");
+            });
+        });
+    });
+    it("401: Returns {msg: You are unauthorised to add a day to this trip.} when a user not listed as attending attempts to add a day to the trip", () => {
+      let trip_id;
+      const createDay = {
+        dayNumber: 10,
+        username: "mohamedelrofai",
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(401)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe(
+                "You are unauthorised to add a day to this trip."
+              );
+            });
+        });
+    });
+  });
   describe("GET /api/trips/:trip_id/:day_id", () => {
     it("200: /api/trips/TRIPX/DAYZ returns a day object on a key of 'day'", () => {
       let testTripId;

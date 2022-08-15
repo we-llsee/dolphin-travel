@@ -8,6 +8,7 @@ const {
   getSingleTrip,
   deleteTrip,
   changeTrip,
+  addNewDay,
 } = require("./controllers/trips.controllers");
 
 const { getDayById } = require("./controllers/days.controllers");
@@ -33,6 +34,7 @@ app.get("/api/trips", getTrips);
 app.get("/api/trips/:trip_id", getSingleTrip);
 
 app.post("/api/trips", addNewTrip);
+app.post("/api/trips/:trip_id", addNewDay);
 
 app.patch("/api/trips/:trip_id", changeTrip);
 

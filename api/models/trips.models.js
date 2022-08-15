@@ -10,6 +10,7 @@ const {
   checkCountry,
   buildSetQuery,
   checkFields,
+  checkDayNumber,
 } = require("../utility");
 //TODO further investigation of MongoDB injection attacks
 // TODO look into getting more country information
@@ -285,5 +286,49 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
     })
     .then((trip) => {
       return trip;
+    });
+};
+
+exports.postDay = (trip_id, newDayDetails) => {
+  const newDay = {
+    _id: new ObjectId(),
+    dayNumber: newDayDetails.dayNumber,
+    activities: [],
+  };
+  return Promise.all([
+    selectUsername(newDayDetails.username),
+    this.doesTripExist(trip_id),
+    checkTypes("dayNumber", newDayDetails.dayNumber, "number"),
+  ])
+    .then(() => {
+      return trips.findOne({
+        _id: new ObjectId(trip_id),
+        attending: { $in: [newDayDetails.username] },
+      });
+    })
+    .then((trip) => {
+      if (trip === null) {
+        return Promise.reject({
+          status: 401,
+          msg: `You are unauthorised to add a day to this trip.`,
+        });
+      }
+      return checkDayNumber(trip, newDayDetails.dayNumber);
+    })
+    .then(() => {
+      return trips.findOneAndUpdate(
+        {
+          _id: new ObjectId(trip_id),
+          attending: { $in: [newDayDetails.username] },
+        },
+        { $push: { days: newDay } },
+        { upsert: true, returnDocument: "after" }
+      );
+    })
+    .then((trip) => {
+      const day = trip.value.days.find(
+        (day) => day.dayNumber === newDayDetails.dayNumber
+      );
+      return day;
     });
 };
