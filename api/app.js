@@ -10,7 +10,7 @@ const {
   changeTrip,
 } = require("./controllers/trips.controllers");
 
-const {getDayById} = require('./controllers/days.controllers');
+const { getDayById } = require("./controllers/days.controllers");
 
 const {
   getUsers,

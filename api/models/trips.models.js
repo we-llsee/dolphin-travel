@@ -287,5 +287,3 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
       return trip;
     });
 };
-
-
