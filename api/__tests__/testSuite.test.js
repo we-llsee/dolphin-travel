@@ -17,4 +17,4 @@ describe("App Tests", appTests);
 describe("User Tests", userTests);
 describe("Trip Tests", tripTests);
 describe("Day Tests", dayTests);
-describe.only("Activity Tests", activityTests);
+describe("Activity Tests", activityTests);
