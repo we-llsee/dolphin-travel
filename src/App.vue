@@ -1,91 +1,77 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-</script>
-
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="container">
+    <AppHeader />
+    <router-view />
+    <AppFooter />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
+import AppHeader from "./components/AppHeader.vue";
+import AppFooter from "./components/AppFooter.vue";
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+export default {
+  name: "App",
+  components: {
+    AppHeader,
+    AppFooter,
+  },
+  created() {},
+  data() {
+    return {};
+  },
+  methods: {
+    // deleteTrip(id) {
+    //   alert("Are you sure you want to delete this trip?");
+    //   console.log(id);
+    //   this.trips = this.trips.filter((trip) => {
+    //     return trip._id !== id;
+    //   });
+    // },
+  },
+};
+</script>
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+body {
+  font-family: "Poppins", sans-serif;
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+.container {
+  width: 90%;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
 }
-
-nav a {
+.btn {
   display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
 }
-
-nav a:first-of-type {
-  border: 0;
+.btn:focus {
+  outline: none;
 }
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-block {
+  display: block;
+  width: 100%;
 }
 </style>
