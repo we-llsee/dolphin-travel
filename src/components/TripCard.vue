@@ -1,9 +1,9 @@
 <template>
   <div>
     <router-link class="active-card" :to="'/trips/' + trip._id" :trip="trip">
-      <h3>
+      <p>
         {{ trip.tripName }}
-      </h3>
+      </p>
       <span>
         You're visiting {{ trip.country }} for
         {{ (new Date(trip.endDate) - new Date(trip.startDate)) / 86400000 }}
@@ -60,6 +60,14 @@
 </script>
 
 <style scoped>
+  h2 {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+  p {
+    font-family: "Reenie Beanie";
+    font-size: 2rem;
+  }
   div {
     background: #a1d8f8;
     margin: 5px;
@@ -67,7 +75,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
+    border-radius: 10px;
   }
 
   .time-stamp {

@@ -1,7 +1,7 @@
 <template>
   <div class="center">
     <div class="day-gallery">
-      <AddActivityCard />
+      <AddDayCard />
 
       <DayCard
         :key="day.date"
@@ -16,11 +16,11 @@
 <script>
   import axios from "axios";
   import DayCard from "./DayCard.vue";
-  import AddActivityCard from "./AddActivityCard.vue";
+  import AddDayCard from "./AddDayCard.vue";
 
   export default {
     name: "DayGallery",
-    components: { DayCard, AddActivityCard },
+    components: { DayCard, AddDayCard },
 
     data() {
       return {

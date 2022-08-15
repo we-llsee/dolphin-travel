@@ -3,7 +3,7 @@
     <ul>
       <li>
         <a href="#">
-          <p>Add Activity</p>
+          <p>Add Day</p>
 
           <img
             src="../assets/plus-sign.svg"
@@ -43,11 +43,6 @@
     padding: 0;
   }
 
-  p {
-    font-size: 2rem;
-    font-weight: normal;
-  }
-
   ul,
   li {
     list-style: none;
@@ -64,14 +59,11 @@
     display: block;
     height: 15em;
     width: 15em;
-    padding: 1em;
-    border-radius: 5px;
-  }
-  ul li {
     margin: 1em;
+    border-radius: 5px;
   }
 
   .plus-sign {
-    height: 5em;
+    height: 10em;
   }
 </style>
