@@ -1,17 +1,20 @@
 const seed = require("../../db/seed");
-const { client } = require("../../db/connection");
 const app = require("../app");
 const request = require("supertest");
 
 jest.setTimeout(15000);
 
-beforeEach(() => {
-  return seed();
-});
+const userTests = () => {
+  beforeAll(() => {
+    return seed();
+  });
 
-afterAll(() => client.close());
+  beforeEach(() => {
+    if (process.env.TEST_FREQ === "each") {
+      return seed();
+    }
+  });
 
-describe("Users", () => {
   describe("GET /api/users", () => {
     it('200: GET /api/users?username=willclegg returns an array of users on a key of "users"', () => {
       return request(app)
@@ -75,4 +78,6 @@ describe("Users", () => {
         });
     });
   });
-});
+};
+
+module.exports = userTests;
