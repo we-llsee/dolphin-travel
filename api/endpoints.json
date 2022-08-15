@@ -282,5 +282,18 @@
           "type": "attraction"
         }
       }
+    },
+  "GET /api/trips/:trip_id/:day_id": {
+    "description": "serves a specific day from specific trip on a key of day",
+    "required queries": ["username"],
+    "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the day's 24 character _id"},
+    "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d?username=willclegg",
+    "exampleResponse": {
+      "day": {
+        "_id": "62f24229222c00589a5e617f",
+        "day_number": 1,
+        "activites":[]
+      }
+    }
   }
 }

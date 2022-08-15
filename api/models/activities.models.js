@@ -1,7 +1,6 @@
 const { db } = require("../../db/connection");
 const trips = db.collection("trips");
 const { ObjectId } = require("bson");
-const { selectUsername } = require("./users.models");
 const { checkTypes } = require("../utility");
 const { selectDayById } = require("./days.models");
 
@@ -14,8 +13,7 @@ exports.postActivity = (trip_id, day_id, activityDetails) => {
   let changedDay;
 
   return Promise.all([
-    selectUsername(activityDetails.username),
-    selectDayById(trip_id, day_id),
+    selectDayById(trip_id, day_id, activityDetails.username),
     checkTypes("activityName", newActivity.activityName, "string"),
     checkTypes("latitude", newActivity.latitude, "number"),
     checkTypes("longitude", newActivity.longitude, "number"),
@@ -30,12 +28,6 @@ exports.postActivity = (trip_id, day_id, activityDetails) => {
       });
     })
     .then((trip) => {
-      if (trip === null) {
-        return Promise.reject({
-          status: 401,
-          msg: `You are unauthorised to add an activity to this day.`,
-        });
-      }
       changedDay = trip.days.find((day) => day._id.toString() === day_id);
       const activities = changedDay.activities;
       activities.push(newActivity);

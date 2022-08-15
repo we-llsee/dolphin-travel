@@ -1,13 +1,20 @@
 const { db } = require("../../db/connection");
 const trips = db.collection("trips");
+const { selectUsername } = require("./users.models");
 const { checkId } = require("../utility");
-const { doesTripExist } = require("./trips.models");
+const { doesTripExist, selectSingleTrip } = require("./trips.models");
 const { ObjectId } = require("bson");
 
-exports.selectDayById = (trip_id, day_id) => {
-  return checkId("trip_id", trip_id)
+exports.selectDayById = (trip_id, day_id, username) => {
+  return selectUsername(username)
+    .then(() => {
+      return checkId("trip_id", trip_id);
+    })
     .then(() => {
       return doesTripExist(trip_id);
+    })
+    .then(() => {
+      return selectSingleTrip(trip_id, username);
     })
     .then(() => {
       return checkId("day_id", day_id);

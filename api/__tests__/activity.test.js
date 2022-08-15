@@ -342,7 +342,7 @@ const activityTests = () => {
             });
         });
     });
-    it("401: Returns {msg: You are unauthorised to add an activity to this day.} when the user is not attending the trip", () => {
+    it("401: Returns {msg: You are unauthorised to access this trip.} when the user is not attending the trip", () => {
       let trip_id;
       let day_id;
       const newActivity = {
@@ -365,9 +365,7 @@ const activityTests = () => {
             .send(newActivity)
             .expect(401)
             .then(({ body: { msg } }) => {
-              expect(msg).toBe(
-                "You are unauthorised to add an activity to this day."
-              );
+              expect(msg).toBe("You are unauthorised to access this trip.");
             });
         });
     });
