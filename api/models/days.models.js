@@ -32,3 +32,24 @@ exports.selectDayById = (trip_id, day_id, username) => {
       return trip.days.find((day) => day._id.toString() === day_id.toString());
     });
 };
+
+exports.removeDay = (trip_id, day_id, username) => {
+  return this.selectDayById(trip_id, day_id, username)
+    .then(() => {
+      const query = {
+        _id: new ObjectId(trip_id),
+        attending: { $in: [username] },
+        "days._id": new ObjectId(day_id),
+      };
+      const pull = {
+        $pull: { days: { _id: new ObjectId(day_id) } },
+      };
+
+      return trips.updateOne(query, pull, {
+        upsert: true,
+      });
+    })
+    .then(() => {
+      return;
+    });
+};
