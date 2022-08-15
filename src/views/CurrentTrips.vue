@@ -1,11 +1,15 @@
 <script>
-export default {
-  name: "CurrentTrips",
-};
+  import TripGallery from "../components/TripGallery.vue";
+  export default {
+    name: "CurrentTrips",
+    components: {
+      TripGallery,
+    },
+  };
 </script>
 
 <template>
-  <div>
-    <h2>Current Trips</h2>
-  </div>
+  <main>
+    <TripGallery />
+  </main>
 </template>

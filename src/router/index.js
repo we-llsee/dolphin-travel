@@ -45,6 +45,11 @@ const router = createRouter({
       name: "login",
       component: LoginPage,
     },
+    // {
+    //   path:'/trip/:tripId/acitivites',
+    //   name:'activities',
+    //   component:''
+    // }
   ],
 });
 

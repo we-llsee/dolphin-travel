@@ -1,74 +1,76 @@
 <template>
   <div class="day-card">
-    <!-- <span>{{ trips }}</span> -->
-    <p></p>
-    <span></span>
     <ul>
-      <li>
-        <a href="#">
-          <span>Day {{ day }}</span>
-          <h3 v-show="isBooked">Booked</h3>
-        </a>
-      </li>
+      <router-link :to="'/trips/' + $route.params.tripId + '/map'" :day="day">
+        <li>
+          <a href="#">
+            <h2>Day #{{ day.dayNumber }}</h2>
+            <p>{{ day.activities[0].activityName }}</p>
+            <p class="type">{{ day.activities[0].type }}</p>
+          </a>
+        </li>
+      </router-link>
     </ul>
   </div>
 </template>
 
 <script>
-export default {
-  name: "DayCard",
-  props: ["trips", "day", "activityArray"],
+  export default {
+    name: "DayCard",
+    props: ["trips", "days", "day"],
 
-  data() {
-    return {
-      isBooked: false,
-    };
-  },
-};
+    data() {
+      return {
+        isBooked: false,
+      };
+    },
+  };
 </script>
 
 <style scoped>
-body {
-  margin: 20px auto;
-  font-family: "Lato";
-  background: #666;
-  color: #fff;
-}
+  body {
+    margin: 20px auto;
+    font-family: "Lato";
+    background: #666;
+    color: #fff;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-}
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  h2 {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  p {
+    font-family: "Reenie Beanie";
+    font-size: 2rem;
+  }
+  ul,
+  li {
+    list-style: none;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  ul li a {
+    text-decoration: none;
+    color: #000;
+    background: skyblue;
+    display: block;
+    height: 15em;
+    width: 15em;
+    padding: 1em;
+    border-radius: 5px;
+  }
+  ul li {
+    margin: 1em;
+  }
 
-h2 {
-  font-weight: bold;
-  font-size: 2rem;
-}
-
-p {
-  font-size: 1rem;
-  font-weight: normal;
-}
-
-ul,
-li {
-  list-style: none;
-}
-ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-ul li a {
-  text-decoration: none;
-  color: #000;
-  background: #ffc;
-  display: block;
-  height: 10em;
-  width: 10em;
-  padding: 1em;
-}
-ul li {
-  margin: 1em;
-}
+  .type {
+    color: saddlebrown;
+  }
 </style>

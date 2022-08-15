@@ -16,52 +16,55 @@
       </l-marker>
     </l-map>
     <button @click="changeIcon">New kitten icon</button>
+    day:{{ day }}
   </div>
 </template>
 <script>
-import {
-  LMap,
-  LTileLayer,
-  LMarker,
-  LControlLayers,
-  LPopup,
-} from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css";
-export default {
-  components: {
+  import {
     LMap,
-
     LTileLayer,
     LMarker,
     LControlLayers,
-
     LPopup,
-  },
-  data() {
-    return {
-      zoom: 2,
-      iconWidth: 25,
-      iconHeight: 40,
-    };
-  },
-  computed: {
-    iconUrl() {
-      return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+  } from "@vue-leaflet/vue-leaflet";
+  import "leaflet/dist/leaflet.css";
+  export default {
+    props: ["day"],
+    components: {
+      LMap,
+
+      LTileLayer,
+      LMarker,
+      LControlLayers,
+
+      LPopup,
     },
-    iconSize() {
-      return [this.iconWidth, this.iconHeight];
+    data() {
+      return {
+        zoom: 2,
+        iconWidth: 25,
+        iconHeight: 40,
+      };
     },
-  },
-  methods: {
-    log(a) {
-      console.log(a);
+
+    computed: {
+      iconUrl() {
+        return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+      },
+      iconSize() {
+        return [this.iconWidth, this.iconHeight];
+      },
     },
-    changeIcon() {
-      this.iconWidth += 2;
-      if (this.iconWidth > this.iconHeight) {
-        this.iconWidth = Math.floor(this.iconHeight / 2);
-      }
+    methods: {
+      log(a) {
+        console.log(a);
+      },
+      changeIcon() {
+        this.iconWidth += 2;
+        if (this.iconWidth > this.iconHeight) {
+          this.iconWidth = Math.floor(this.iconHeight / 2);
+        }
+      },
     },
-  },
-};
+  };
 </script>
