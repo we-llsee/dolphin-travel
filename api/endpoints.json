@@ -187,5 +187,53 @@
     "parameters": ["username"],
     "exampleRequest": "/api/users/willclegg",
     "exampleResponse": {"user": { "_id": "willclegg", "firstName": "Will", "lastName": "Clegg" }}
+  },
+  "PATCH /api/trips/:trip_id": {
+    "description": "updates a trip in the database and returns the updated trip on a key of trip",
+    "required queries": ["username"],
+    "requestBodyDescription": "every option is the requestBody is optional but at least one field must be provided",
+    "requestBody": {
+      "tripName": "string",
+      "addPeople": "an array of all the new users to add",
+      "removePeople": "an array of all the users to remove from the trip",
+      "newCreator": "the username of the person to assign as creator of the trip (moved to index 0 in attending array)",
+      "budgetGBP": "integer > 0",
+      "startDate": "date (cannot be in the past)",
+      "endDate": "date (cannot be before the startDate)",
+      "accommodation": {
+        "accommodationName": "string",
+        "latitude": "number",
+        "longitude": "number",
+        "address": "empty object or object containing any number of address keys"
+      },
+      "exampleRequest": "/api/trips/:trip_id?username=willclegg",
+      "exampleResponse": {
+        "trip": {
+          "_id": "62f24229222c00589a5e617f",
+          "tripName": "Team 2 Trip Away",
+          "attending": ["jesskemp", "willclegg", "alexrong", "mohamedelrofai"],
+          "startDate": "2022-08-31T23:00:00.000Z",
+          "endDate": "2022-09-07T23:00:00.000Z",
+          "budgetGBP": 1700,
+          "country": "Czech Republic",
+          "accommodation": {
+            "accommodationName": "Hotel Pod Věží",
+            "latitude": 50.0873932,
+            "longitude": 14.4066676,
+            "address": {
+              "name": "Hotel Pod Věží",
+              "house_number": "2",
+              "road": "Mostecká",
+              "city": "Prague",
+              "state": "Prague",
+              "postcode": 11800,
+              "country": "Czechia",
+              "country_code": "CZ"
+            }
+          },
+          "days": []
+        }
+      }
+    }
   }
 }
