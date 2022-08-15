@@ -11,12 +11,18 @@
       />
     </div>
     <div class="form-control form-control-check">
-      <label for="attending">Add Attendee's Username: </label>
-      <input v-model="attendee" type="text" id="attending" />
+      <label for="attending">Add user: </label>
+      <textarea v-model="attendee" type="text" id="attending" />
       <button class="btn" @click="addAttendee">Add</button>
     </div>
+
+    <div class="form-control form-control-check">
+      <label for="remove-user">Remove user: </label>
+      <textarea v-model="REMOVE_USER" type="text" id="remove-user" />
+      <button class="btn" @click="removeUser">Remove</button>
+    </div>
     <div class="blue-container">
-      <span>Currently Attending: </span>
+      <span>Currently attending: </span>
       <span :key="users" v-for="users in attending">{{ users }}, </span>
     </div>
 
@@ -75,6 +81,7 @@
           {{ accom.display_name }}
         </option>
       </select>
+      REMOVE_USER : {{ REMOVE_USER }}
     </div>
   </form>
 </template>
@@ -98,13 +105,48 @@
         accommodations: [],
         country: "",
         accom: "",
+        lookupAttendee: [],
+        users: [],
+        REMOVE_USER: "",
+        removeUsers: [],
       };
     },
     methods: {
-      addAttendee(e) {
+      removeUser(e) {
         e.preventDefault();
 
-        this.attending.push(this.attendee);
+        const attendingRemoved = this.attending.filter((user) => {
+          return user !== this.REMOVE_USER;
+        });
+
+        if (this.attending !== attendingRemoved) {
+          this.attending = [...attendingRemoved];
+        } else
+          alert(
+            `${this.REMOVE_USER} is not on the attending list.Please try again.`
+          );
+      },
+
+      addAttendee(e) {
+        e.preventDefault();
+        const lookupAttendee = this.attending.filter((attendee) => {
+          return attendee === this.attendee;
+        });
+        // length > 0 return warning
+        const validUsers = this.users.map((userObj) => {
+          return userObj._id;
+        });
+        //length > 0 push
+        const lookupUsers = validUsers.filter((attendee) => {
+          return attendee === this.attendee;
+        });
+        if (lookupUsers.length > 0 && lookupAttendee.length === 0) {
+          this.attending.push(this.attendee);
+        } else if (lookupUsers.length > 0 && lookupAttendee.length > 0) {
+          return alert(`${this.attendee} is already attending.`);
+        } else if (lookupUsers.length === 0) {
+          return alert(`${this.attendee} is not an existing user.`);
+        }
       },
       getAccommodation(e) {
         e.preventDefault();
@@ -146,6 +188,13 @@
           })
           .catch((err) => {
             console.log(err);
+          });
+        axios
+          .get(
+            "https://dolphin-travel.herokuapp.com/api/users?username=alexrong"
+          )
+          .then(({ data: { users } }) => {
+            this.users = users;
           });
       }
     },
