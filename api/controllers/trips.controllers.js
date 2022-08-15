@@ -75,8 +75,8 @@ exports.addNewDay = (req, res, next) => {
   const newDayDetails = req.body;
 
   postDay(trip_id, newDayDetails)
-    .then((days) => {
-      res.status(201).send({ days });
+    .then((day) => {
+      res.status(201).send({ day });
     })
     .catch((err) => {
       next(err);
