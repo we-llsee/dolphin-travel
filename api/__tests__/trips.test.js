@@ -607,7 +607,7 @@ describe("Trips", () => {
     });
   });
   describe("PATCH /api/trips/:trip_id?username=X", () => {
-    it.only("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
+    it("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
       let trip_id;
       const changeTripData = {
         tripName: "Wedding in Greece",
@@ -1772,6 +1772,33 @@ describe("Trips", () => {
               });
           });
       });
+    });
+  });
+  describe("POST /api/trips/:trip_id", () => {
+    it.only("201: Returns an array on the key of days where the days array contains the newly posted day", () => {
+      let trip_id;
+      const createDay = {
+        username: "willclegg",
+        dayNumber: 3,
+      };
+      return request(app)
+        .get("/api/trips?username=willclegg")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .post(`/api/trips/${trip_id}`)
+            .send(createDay)
+            .expect(201)
+            .then(({ body: { days } }) => {
+              expect(days[2]).toEqual({
+                _id: expect.any(String),
+                dayNumber: createDay.dayNumber,
+                activities: [],
+              });
+            });
+        });
     });
   });
 });

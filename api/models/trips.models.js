@@ -287,3 +287,23 @@ exports.updateTrip = (trip_id, username, newTripDetails) => {
       return trip;
     });
 };
+
+exports.postDay = (trip_id, newDayDetails) => {
+  const newDay = {
+    _id: new ObjectId(),
+    dayNumber: newDayDetails.dayNumber,
+    activities: [],
+  };
+  return trips
+    .findOneAndUpdate(
+      {
+        _id: new ObjectId(trip_id),
+        attending: { $in: [newDayDetails.username] },
+      },
+      { $push: { days: newDay } },
+      { upsert: true, returnDocument: "after" }
+    )
+    .then((res) => {
+      return res.value.days;
+    });
+};
