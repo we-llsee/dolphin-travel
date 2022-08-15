@@ -8,8 +8,9 @@ const {
   getSingleTrip,
   deleteTrip,
   changeTrip,
-  getDayById,
 } = require("./controllers/trips.controllers");
+
+const {getDayById} = require('./controllers/days.controllers');
 
 const {
   getUsers,
