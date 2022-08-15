@@ -251,3 +251,15 @@ exports.buildSetQuery = (
     $pull: pull,
   };
 };
+
+exports.checkId=(id_key,id_value)=>{
+  const idRegex=/^\w{24}$/g
+
+  if(!idRegex.test(id_value)){
+    return Promise.reject({
+      status: 400,
+      msg: `'${id_value}' is an invalid ${id_key}.`,
+    });
+  }
+  return Promise.resolve();
+}
