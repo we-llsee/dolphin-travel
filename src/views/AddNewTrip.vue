@@ -98,98 +98,98 @@
 </template>
 
 <script>
-import countries from "../assets/data.js";
-import axios from "axios";
-export default {
-  name: "AddNewTrip",
-  COUNTRIES: countries,
-  data() {
-    return {
-      hotelName: "",
-      accommodations: [],
-      accom: "",
-      country: "",
-      isClicked: false,
-      attendee: "",
-      attending: [this.$store.state.loggedInUser],
-      isAttending: false,
-      tripName: "",
-      budgetGBP: 0,
-      tripStart: "",
-      tripEnd: "",
-      loggedIn: false,
-    };
-  },
+  import countries from "../assets/data.js";
+  import axios from "axios";
+  export default {
+    name: "AddNewTrip",
+    COUNTRIES: countries,
+    data() {
+      return {
+        hotelName: "",
+        accommodations: [],
+        accom: "",
+        country: "",
+        isClicked: false,
+        attendee: "",
+        attending: [this.$store.state.loggedInUser],
+        isAttending: false,
+        tripName: "",
+        budgetGBP: 0,
+        tripStart: "",
+        tripEnd: "",
+        loggedIn: false,
+      };
+    },
 
-  created() {
-    if (this.$store.state.loggedInUser != "GUEST") {
-      this.loggedIn = true;
-    }
-  },
-  methods: {
-    saveTrip() {
-      axios({
-        method: "post",
-        url: "https://dolphin-travel.herokuapp.com/api/trips",
-        data: {
-          tripName: this.tripName,
-          attending: this.attending,
-          budgetGBP: Number(this.budgetGBP),
-          startDate: new Date(this.tripStart).toISOString(),
-          endDate: new Date(this.tripEnd).toISOString(),
-          country: this.country.name,
-          accommodation: {
-            accommodationName: this.hotelName,
-            latitude: Number(this.accom.lat),
-            longitude: Number(this.accom.lon),
-            address: {
-              hotel: this.accom.address.hotel,
-              road: this.accom.address.road,
-              suburb: this.accom.address.suburb,
-              city: this.accom.address.city,
-              state: this.accom.address.state,
-              postcode: this.accom.address.postcode,
-              country: this.accom.address.country,
-              country_code: this.accom.address.country_code,
+    created() {
+      if (this.$store.state.loggedInUser != "GUEST") {
+        this.loggedIn = true;
+      }
+    },
+    methods: {
+      saveTrip() {
+        axios({
+          method: "post",
+          url: "https://dolphin-travel.herokuapp.com/api/trips",
+          data: {
+            tripName: this.tripName,
+            attending: this.attending,
+            budgetGBP: Number(this.budgetGBP),
+            startDate: new Date(this.tripStart).toISOString(),
+            endDate: new Date(this.tripEnd).toISOString(),
+            country: this.country.name,
+            accommodation: {
+              accommodationName: this.hotelName,
+              latitude: Number(this.accom.lat),
+              longitude: Number(this.accom.lon),
+              address: {
+                hotel: this.accom.address.hotel,
+                road: this.accom.address.road,
+                suburb: this.accom.address.suburb,
+                city: this.accom.address.city,
+                state: this.accom.address.state,
+                postcode: this.accom.address.postcode,
+                country: this.accom.address.country,
+                country_code: this.accom.address.country_code,
+              },
             },
           },
-        },
-      });
-    },
-
-    addAttendee(e) {
-      e.preventDefault();
-
-      this.attending.push(this.attendee);
-    },
-    getAccommodation(e) {
-      e.preventDefault();
-      this.isClicked = true;
-      axios
-        .get(
-          `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=${this.hotelName}&addressdetails=1&countrycodes=${this.country.code}&format=json`
-        )
-        .then(({ data }) => {
-          this.accommodations = data;
-        })
-        .catch((err) => {
-          if (err.code === "ERR_BAD_REQUEST") {
-            alert(
-              "This accommodation is not available in this country, please try another location."
-            );
-          }
         });
+      },
+
+      addAttendee(e) {
+        e.preventDefault();
+
+        this.attending.push(this.attendee);
+      },
+      getAccommodation(e) {
+        e.preventDefault();
+        this.isClicked = true;
+        axios
+          .get(
+            `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=${this.hotelName}&addressdetails=1&countrycodes=${this.country.code}&format=json`
+          )
+          .then(({ data }) => {
+            this.accommodations = data;
+          })
+          .catch((err) => {
+            if (err.code === "ERR_BAD_REQUEST") {
+              alert(
+                "This accommodation is not available in this country, please try another location."
+              );
+            }
+          });
+      },
     },
-  },
-};
+  };
 </script>
 
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+  @media (min-width: 1024px) {
+    .about {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
   }
-}
 </style>

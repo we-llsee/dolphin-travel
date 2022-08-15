@@ -35,68 +35,56 @@
 </template>
 
 <script>
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
+  import TimeAgo from "javascript-time-ago";
 
-TimeAgo.addDefaultLocale(en);
+  import en from "javascript-time-ago/locale/en";
 
-export default {
-  name: "TripCard",
-  props: {
-    trip: Object,
-  },
-  emits: ["delete-trip"],
-  data() {
-    return {
-      timeAgo: new TimeAgo("en-US"),
-    };
-  },
+  TimeAgo.addDefaultLocale(en);
 
-  methods: {
-    tripDelete(id) {
-      this.$emit("delete-trip", id);
-      // if (confirm("Are you sure you want to delete this trip?")) {
-      //   axios
-      //     .delete(
-      //       `https://dolphin-travel.herokuapp.com/api/trips/${id}?username=${this.$store.state.loggedInUser}`
-      //     )
-      //     .then(() => {
-      //       alert("Trip deleted");
-      //     });
-      // } else {
-      //   console.log("Trip was not deleted");
-      // }
+  export default {
+    name: "TripCard",
+    props: {
+      trip: Object,
     },
-  },
-};
+    data() {
+      return {
+        timeAgo: new TimeAgo("en-US"),
+      };
+    },
+    method: {
+      // onDelete(id) {
+      //   this.$emit("delete-trip", id);
+      // },
+    },
+  };
 </script>
 
 <style scoped>
-div {
-  background: #a1d8f8;
-  margin: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-}
+  div {
+    background: #a1d8f8;
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
 
-.time-stamp {
-  display: flex;
-  justify-content: flex-end;
-}
-.delete-button {
-  width: 15px;
-  height: 20px;
-  display: flex;
-}
+  .time-stamp {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .delete-button {
+    width: 15px;
+    height: 20px;
+    display: flex;
+  }
 
-img:hover {
-  background-color: red;
-  box-shadow: 0px 0px 5px 1px rgb(255, 0, 0);
-}
+  img:hover {
+    background-color: red;
+    box-shadow: 0px 0px 5px 1px rgb(255, 0, 0);
+  }
 
-a {
-  color: #2c3e50;
-}
+  a {
+    color: #2c3e50;
+  }
 </style>
