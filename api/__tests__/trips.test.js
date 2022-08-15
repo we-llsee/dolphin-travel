@@ -1,19 +1,21 @@
 const seed = require("../../db/seed");
-const { client } = require("../../db/connection");
-
 const app = require("../app");
 const request = require("supertest");
 const { ObjectId } = require("bson");
 
 jest.setTimeout(15000);
 
-beforeEach(() => {
-  return seed();
-});
+const tripTests = () => {
+  beforeAll(() => {
+    return seed();
+  });
 
-afterAll(() => client.close());
+  beforeEach(() => {
+    if (process.env.TEST_FREQ === "each") {
+      return seed();
+    }
+  });
 
-describe("Trips", () => {
   describe("GET /api/trips?username=X", () => {
     it("200: Returns an array of trips for specified user", () => {
       return request(app)
@@ -607,7 +609,11 @@ describe("Trips", () => {
     });
   });
   describe("PATCH /api/trips/:trip_id?username=X", () => {
-    it.only("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
+    beforeEach(() => {
+        return seed();
+    });
+
+    it("200: Returns an object containing the updated trip on a key of trip where details are changed and a person is added to the trip", () => {
       let trip_id;
       const changeTripData = {
         tripName: "Wedding in Greece",
@@ -1774,4 +1780,6 @@ describe("Trips", () => {
       });
     });
   });
-});
+};
+
+module.exports = tripTests;

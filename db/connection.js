@@ -14,7 +14,6 @@ const MONGO_HOST = process.env.MONGO_HOST;
 const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PW}@${MONGO_HOST}/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 
-client.connect();
 const db = client.db(ENV);
 
 module.exports = { client, db };

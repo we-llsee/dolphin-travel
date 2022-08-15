@@ -1,18 +1,20 @@
 const seed = require("../../db/seed");
-const { client } = require("../../db/connection");
-
 const app = require("../app");
 const request = require("supertest");
 
 jest.setTimeout(15000);
 
-beforeEach(() => {
-  return seed();
-});
+const appTests = () => {
+  beforeAll(() => {
+    return seed();
+  });
 
-afterAll(() => client.close());
+  beforeEach(() => {
+    if (process.env.TEST_FREQ === "each") {
+      return seed();
+    }
+  });
 
-describe("Express App", () => {
   describe("General Error Handling", () => {
     it("404: Specified path not found (e.g. /trips)", () => {
       return request(app)
@@ -25,7 +27,7 @@ describe("Express App", () => {
   });
 
   describe("GET /api", () => {
-    it.only("200: Returns an object with keys describing the different endpoints", () => {
+    it("200: Returns an object with keys describing the different endpoints", () => {
       return request(app)
         .get("/api")
         .expect(200)
@@ -44,4 +46,6 @@ describe("Express App", () => {
         });
     });
   });
-});
+};
+
+module.exports = appTests;
