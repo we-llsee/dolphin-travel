@@ -3,6 +3,7 @@ const {
   postTrip,
   selectSingleTrip,
   removeTrip,
+  updateTrip,
 } = require("../models/trips.models");
 
 exports.getTrips = (req, res, next) => {
@@ -48,6 +49,20 @@ exports.deleteTrip = (req, res, next) => {
   removeTrip(trip_id, username)
     .then(() => {
       res.status(204).send({});
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.changeTrip = (req, res, next) => {
+  const { trip_id } = req.params;
+  const { username } = req.query;
+  const newTripDetails = req.body;
+
+  updateTrip(trip_id, username, newTripDetails)
+    .then((trip) => {
+      res.status(200).send({ trip });
     })
     .catch((err) => {
       next(err);

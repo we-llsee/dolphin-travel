@@ -40,6 +40,7 @@ const appTests = () => {
               "DELETE /api/trips/:trip_id": expect.any(Object),
               "GET /api/users": expect.any(Object),
               "GET /api/users/:username": expect.any(Object),
+              "PATCH /api/trips/:trip_id": expect.any(Object),
             })
           );
         });

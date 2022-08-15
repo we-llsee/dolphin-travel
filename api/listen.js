@@ -10,8 +10,3 @@ client.connect().then(() => {
     console.log(`Now listening on port ${PORT}...`);
   });
 });
-
-// app.listen(PORT, (err) => {
-//   if (err) throw err;
-//   console.log(`Now listening on port ${PORT}...`);
-// });
