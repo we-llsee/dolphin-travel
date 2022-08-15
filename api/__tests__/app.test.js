@@ -2,8 +2,6 @@ const seed = require("../../db/seed");
 const app = require("../app");
 const request = require("supertest");
 
-jest.setTimeout(15000);
-
 const appTests = () => {
   beforeAll(() => {
     return seed();
