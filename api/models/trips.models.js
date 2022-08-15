@@ -301,9 +301,12 @@ exports.selectDayById = (trip_id, day_id) => {
       return trips.findOne({ "days._id": ObjectId(day_id) });
     })
     .then((trip) => {
-      if(trip===null){
-        return Promise.reject({status:404,msg:`day_id '${day_id}' does not exist.`})
+      if (trip === null) {
+        return Promise.reject({
+          status: 404,
+          msg: `day_id '${day_id}' does not exist.`,
+        });
       }
       return trip.days.find((day) => day._id.toString() === day_id.toString());
-    })
+    });
 };

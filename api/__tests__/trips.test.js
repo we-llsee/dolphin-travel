@@ -1780,7 +1780,7 @@ const tripTests = () => {
       });
     });
   });
-  describe.only("GET /api/trips/:trip_id/:day_id", () => {
+  describe("GET /api/trips/:trip_id/:day_id", () => {
     it("200: /api/trips/TRIPX/DAYZ returns a day object on a key of 'day'", () => {
       let testTripId;
       let testDayId;
@@ -1796,13 +1796,13 @@ const tripTests = () => {
           return request(app).get(`/api/trips/${testTripId}/${testDayId}`);
         })
         .then(({ body }) => {
-          expect(testDays).toEqual(expect.arrayContaining([body.day]))
+          expect(testDays).toEqual(expect.arrayContaining([body.day]));
           expect(typeof body.day).toBe("object");
           expect(body.day).toEqual(
             expect.objectContaining({
               _id: testDayId,
               dayNumber: expect.any(Number),
-              activities: expect.any(Array)
+              activities: expect.any(Array),
             })
           );
         });
@@ -1843,13 +1843,18 @@ const tripTests = () => {
 
     it('404: /api/trips/VALIDTRIP/NONEXISTENTDAY returns "trip_id does not exist"', () => {
       return request(app)
-      .get("/api/trips?username=willclegg")
-      .expect(200)
-      .then(({ body }) => {
-        const testTripId = body.trips[0]._id;
-        return request(app).get(`/api/trips/${testTripId}/eeeeeeeeeeeeeeeeeeeeeeee`).expect(404)
-      }).then(({ body }) => {
-          expect(body.msg).toBe("day_id 'eeeeeeeeeeeeeeeeeeeeeeee' does not exist.");
+        .get("/api/trips?username=willclegg")
+        .expect(200)
+        .then(({ body }) => {
+          const testTripId = body.trips[0]._id;
+          return request(app)
+            .get(`/api/trips/${testTripId}/eeeeeeeeeeeeeeeeeeeeeeee`)
+            .expect(404);
+        })
+        .then(({ body }) => {
+          expect(body.msg).toBe(
+            "day_id 'eeeeeeeeeeeeeeeeeeeeeeee' does not exist."
+          );
         });
     });
   });
