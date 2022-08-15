@@ -41,6 +41,7 @@ const appTests = () => {
               "PATCH /api/trips/:trip_id": expect.any(Object),
               "POST /api/trips/:trip_id": expect.any(Object),
               "GET /api/trips/:trip_id/:day_id": expect.any(Object),
+              "POST /api/trips/:trip_id/:day_id": expect.any(Object),
             })
           );
         });
