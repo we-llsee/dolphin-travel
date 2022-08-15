@@ -93,4 +93,4 @@ const dayTests = () => {
   });
 };
 
-module.exports=dayTests;
+module.exports = dayTests;
