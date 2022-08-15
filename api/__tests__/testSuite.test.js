@@ -1,7 +1,7 @@
 const appTests = require("./app.test");
 const userTests = require("./user.test");
 const tripTests = require("./trip.test");
-const dayTests = require("./day.test")
+const dayTests = require("./day.test");
 const { client } = require("../../db/connection");
 
 beforeAll(() => {
