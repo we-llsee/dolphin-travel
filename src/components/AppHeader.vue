@@ -16,70 +16,70 @@
 </template>
 
 <script>
-  import NavigationBar from "./NavigationBar.vue";
+import NavigationBar from "./NavigationBar.vue";
 
-  export default {
-    name: "AppHeader",
-    components: {
-      NavigationBar,
-    },
-  };
+export default {
+  name: "AppHeader",
+  components: {
+    NavigationBar,
+  },
+};
 </script>
 
 <style scoped>
-  .maintitle {
-    font-size: 30px;
-    font-weight: bold;
-    color: #002fff;
-  }
+.maintitle {
+  font-size: 30px;
+  font-weight: bold;
+  color: #002fff;
+}
 
-  .logotext {
-    display: flex;
-    flex-direction: column;
-  }
+.logotext {
+  display: flex;
+  flex-direction: column;
+}
 
-  .logowrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.logowrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .logo {
-    height: 200px;
-  }
+.logo {
+  height: 200px;
+}
 
-  header {
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f7f7f7;
-  }
+header {
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f7f7;
+}
 
-  .btn {
-    display: inline-block;
-    background: #000;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 15px;
-    font-family: inherit;
-  }
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
 
-  .btn:focus {
-    outline: none;
-  }
+.btn:focus {
+  outline: none;
+}
 
-  .btn:active {
-    transform: scale(0.98);
-  }
+.btn:active {
+  transform: scale(0.98);
+}
 
-  .btn-block {
-    display: block;
-    width: 100%;
-  }
+.btn-block {
+  display: block;
+  width: 100%;
+}
 </style>
