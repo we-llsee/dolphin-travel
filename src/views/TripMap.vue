@@ -105,7 +105,7 @@ export default {
           }
         }
         this.allActivities = allActivities;
-        console.log(LMap)
+        console.log(LMap);
         return;
       });
   },
