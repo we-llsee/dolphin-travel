@@ -1,26 +1,26 @@
 <script>
-  import DayGallery from "../components/DayGallery.vue";
-  import EditTrip from "../components/EditTrip.vue";
+import DayGallery from "../components/DayGallery.vue";
+import EditTrip from "../components/EditTrip.vue";
 
-  export default {
-    name: "TripView",
-    components: {
-      DayGallery,
-      EditTrip,
+export default {
+  name: "TripView",
+  components: {
+    DayGallery,
+    EditTrip,
+  },
+  data() {
+    return {
+      isToggled: false,
+    };
+  },
+  methods: {
+    toggleTrip() {
+      this.isToggled === false
+        ? (this.isToggled = true)
+        : (this.isToggled = false);
     },
-    data() {
-      return {
-        isToggled: false,
-      };
-    },
-    methods: {
-      toggleTrip() {
-        this.isToggled === false
-          ? (this.isToggled = true)
-          : (this.isToggled = false);
-      },
-    },
-  };
+  },
+};
 </script>
 
 <template>
