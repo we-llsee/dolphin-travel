@@ -1,17 +1,30 @@
 <template>
   <div class="day-card">
     <ul>
-      <router-link :to="'/trips/' + $route.params.tripId + '/map'" :day="day">
-        <li>
-          <a href="#">
-            <h2>Day #{{ day.dayNumber }}</h2>
-            <div v-if="day.activities.length > 0">
-              <p>{{ day.activities[0].activityName }}</p>
-              <p class="type">{{ day.activities[0].type }}</p>
-            </div>
-          </a>
-        </li>
-      </router-link>
+      <li>
+        <router-link
+          :to="
+            '/trips/' + $route.params.tripId + '/' + day._id + '/add-activities'
+          "
+          :day="day"
+        >
+          <h2>Day #{{ day.dayNumber }}</h2>
+          <div v-if="day.activities.length > 0">
+            <p>{{ day.activities[0].activityName }}</p>
+            <p class="type">{{ day.activities[0].type }}</p>
+          </div>
+        </router-link>
+        <button
+          @click="
+            $emit('deleteDay', {
+              tripId: this.$route.params.tripId,
+              dayId: this.day._id,
+            })
+          "
+        >
+          Delete Day
+        </button>
+      </li>
     </ul>
   </div>
 </template>

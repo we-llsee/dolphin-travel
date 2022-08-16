@@ -7,6 +7,7 @@ import PreviousTrips from "../views/PreviousTrips.vue";
 import TripMap from "../views/TripMap.vue";
 import LoginPage from "../views/LoginPage.vue";
 import AddNewDay from "../views/AddNewDay.vue";
+import AddNewActivities from "../views/AddNewActivities.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,11 +47,11 @@ const router = createRouter({
       name: "login",
       component: LoginPage,
     },
-    // {
-    //   path:'/trip/:tripId/acitivites',
-    //   name:'activities',
-    //   component:''
-    // }
+    {
+      path: "/trips/:tripId/:dayId/add-activities",
+      name: "activities",
+      component: AddNewActivities,
+    },
     {
       path: "/trips/:tripId/add-day",
       name: "addday",

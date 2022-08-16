@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       trips: [],
-      componentKey: 0,
+
       loggedIn: false,
     };
   },

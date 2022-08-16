@@ -2,9 +2,9 @@
   <div v-if="loggedIn === true">
     Which day do you want to add to your trip?
     <div :key="day" v-for="day in difference">
-      <router-link :to="'/trips/' + $route.params.tripId + '/activities'">
-        <button @click="saveDay(day)" class="btn">Day: {{ day }}</button>
-      </router-link>
+      <button type="button" @click="saveDay(day)" class="btn">
+        Day: {{ day }}
+      </button>
     </div>
   </div>
 </template>
@@ -20,6 +20,7 @@ export default {
       daysBetween: 0,
       daysAvailable: [],
       difference: [],
+      newDayId: "",
     };
   },
 
@@ -61,10 +62,17 @@ export default {
           username: this.$store.state.loggedInUser,
           dayNumber: day,
         },
-      }).catch((err) => {
-        console.log(this.day);
-        console.log(err);
-      });
+      })
+        .then(({ data }) => {
+          this.newDayId = data.day._id;
+          this.$router.push(
+            `/trips/${this.$route.params.tripId}/${this.newDayId}/add-activities`
+          );
+        })
+        .catch((err) => {
+          console.log(this.day);
+          console.log(err);
+        });
     },
   },
 };
