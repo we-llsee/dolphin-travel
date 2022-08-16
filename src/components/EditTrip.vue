@@ -26,12 +26,16 @@
       <span :key="users" v-for="users in attending">{{ users }}, </span>
     </div>
 
+    <div class="form-control form-control-check">
+      <label for="new-creator">Pass ownership to another user: </label>
+      <input type="text" id="new-creator" v-model="newCreator" />
+    </div>
     <div class="form-control">
       <label for="budget">Budget in GBP: </label>
       <input
         type="text"
         name="budget"
-        :placeholder="budgetGBP"
+        placeholder="£0.00"
         id="budget"
         v-model="budgetGBP"
       />
@@ -41,7 +45,7 @@
       <input
         type="text"
         name="trip-start"
-        :placeholder="startDate"
+        placeholder="YYYY/MM/DD"
         id="trip-start"
         v-model="startDate"
       />
@@ -51,7 +55,7 @@
       <input
         type="text"
         name="trip-end"
-        :placeholder="endDate"
+        placeholder="YYYY/MM/DD"
         id="trip-end"
         v-model="endDate"
       />
@@ -81,7 +85,9 @@
           {{ accom.display_name }}
         </option>
       </select>
-      REMOVE_USER : {{ REMOVE_USER }}
+      <button class="btn" @click="patchTrip">Save</button>
+      <button class="btn" @click="resetForm">Reset Form</button>
+      accom: {{ accom }}
     </div>
   </form>
 </template>
@@ -112,6 +118,53 @@ export default {
     };
   },
   methods: {
+    resetForm(e) {
+      e.preventDefault();
+      this.tripName = "";
+      this.attendee = "";
+      this.attending = [];
+      this.trip = {};
+      this.budgetGBP = "";
+      this.startDate = "";
+      this.endDate = "";
+      this.accommodationName = "";
+      this.isClicked = false;
+      this.accommodations = [];
+      this.country = "";
+      this.accom = "";
+      this.lookupAttendee = [];
+      this.users = [];
+      this.REMOVE_USER = "";
+      this.removeUsers = [];
+      this.newCreator = "";
+      this._id = this.$route.params.tripId;
+    },
+    patchTrip(e) {
+      e.preventDefault();
+      axios
+        .patch(
+          `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`,
+          {
+            tripName: this.tripName,
+            budgetGBP: this.budgetGBP,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            ...(this.accom.display_name
+              ? {
+                  accommodation: {
+                    accommodationName: this.accom.display_name,
+                    latitude: this.accom.lat,
+                    longitude: this.accom.lon,
+                    address: {},
+                  },
+                }
+              : {}),
+          }
+        )
+        .then(() => {
+          this.$emit("toggle-form");
+        });
+    },
     removeUser(e) {
       e.preventDefault();
 
