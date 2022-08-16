@@ -47,6 +47,7 @@ export default {
       zoom: 2,
       iconWidth: 25,
       iconHeight: 40,
+      accom: "",
     };
   },
 
