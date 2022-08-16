@@ -1,16 +1,15 @@
 <template>
   <div>
-    <p>{{ accommodation }}</p>
+    <p>{{ accommodation.latitude }}</p>
   </div>
   <div style="height: 75vh; width: 50vw">
     <l-map
       v-model="zoom"
       v-model:zoom="zoom"
       :center="[
-        Number(accommodation.latitude),
-        Number(accommodation.longitude),
+        accommodation.latitude.toString(),
+        accommodation.longitude.toString(),
       ]"
-      @move="log('move')"
     >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -19,14 +18,24 @@
 
       <l-marker
         :lat-lng="[
-          Number(accommodation.latitude),
-          Number(accommodation.longitude),
+          accommodation.latitude.toString(),
+          accommodation.longitude.toString(),
         ]"
       >
-        <l-popup> accommodation.accommodationName </l-popup>
+        <l-popup> {{ accommodation.accommodationName }} </l-popup>
       </l-marker>
+      
+      <li :key="activity._id" v-for="activity in allActivities">
+        <l-marker
+          :lat-lng="[
+            activity.latitude.toString(),
+            activity.longitude.toString(),
+          ]"
+        >
+          <l-popup> {{ activity.activityName }} </l-popup>
+        </l-marker>
+      </li>
     </l-map>
-    <button @click="changeIcon">New kitten icon</button>
   </div>
 </template>
 <script>
@@ -57,6 +66,7 @@ export default {
       iconHeight: 40,
       trip: Object,
       accommodation: Object,
+      allActivities: Array,
     };
   },
 
@@ -80,13 +90,22 @@ export default {
     },
   },
   created() {
-    axios
+    return axios
       .get(
         `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
       )
       .then(({ data: { trip } }) => {
         this.trip = trip;
         this.accommodation = trip.accommodation;
+        const allActivities = [];
+        const days = trip.days;
+        for (let i = 0; i < days.length; i++) {
+          for (let j = 0; j < days[i].activities.length; j++) {
+            allActivities.push(days[i].activities[j]);
+          }
+        }
+        this.allActivities = allActivities;
+        return;
       });
   },
 };
