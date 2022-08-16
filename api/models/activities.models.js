@@ -130,3 +130,9 @@ exports.removeActivity = (trip_id, day_id, activity_id, username) => {
       return;
     });
 };
+
+exports.selectActivitiesByDayId = (trip_id, day_id, username) => {
+  return selectDayById(trip_id, day_id, username).then((day) => {
+    return day.activities;
+  });
+};

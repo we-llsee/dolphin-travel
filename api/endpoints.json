@@ -309,5 +309,31 @@
   "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the days 24 character _id", "activity_id": "the activities 24 character _id" },
   "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d/63f24259222d00589a5a695d?username=willclegg",
   "exampleResponse": {}
-}
+  },
+  "GET /api/trips/:trip_id/:day_id/activities": {
+    "description": "serves an array of activites for the specified day",
+    "required queries": ["username"],
+    "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the day's 24 character _id"},
+    "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d/activities?username=willclegg",
+    "exampleResponse": {
+      "activities": [
+        {
+          "_id": "62fb71255a834cbd867cbab3",
+          "activityName": "DDR Museum",
+          "latitude": 52.519,
+          "longitude": 13.402,
+          "address": {"address":"Vera Britain Ufer, Karl-Liebknecht-Str. 1, 10178 Berlin, Germany"},
+          "type": "museum"
+        },
+        {
+          "_id": "62fb71255a834cbd867cbab4",
+          "activityName": "Großer Tiergarten",
+          "latitude": 52.513594,
+          "longitude": 13.358374,
+          "address": { "address": "Str. des 17. Juni, 10785 Berlin, Germany" },
+          "type": "park"
+        }
+      ]
+    }
+  }
 }

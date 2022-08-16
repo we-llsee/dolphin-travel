@@ -1,4 +1,8 @@
-const { postActivity, removeActivity } = require("../models/activities.models");
+const {
+  postActivity,
+  removeActivity,
+  selectActivitiesByDayId,
+} = require("../models/activities.models");
 
 exports.addNewActivity = (req, res, next) => {
   const { trip_id } = req.params;
@@ -23,6 +27,20 @@ exports.deleteActivity = (req, res, next) => {
   removeActivity(trip_id, day_id, activity_id, username)
     .then(() => {
       res.status(204).send({});
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getActivitiesByDayId = (req, res, next) => {
+  const { trip_id } = req.params;
+  const { day_id } = req.params;
+  const { username } = req.query;
+
+  selectActivitiesByDayId(trip_id, day_id, username)
+    .then((activities) => {
+      res.status(200).send({ activities });
     })
     .catch((err) => {
       next(err);
