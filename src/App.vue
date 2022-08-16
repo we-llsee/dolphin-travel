@@ -34,11 +34,23 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+
+:root {
+--midnight-blue: #03045eff;
+--star-command-blue: #0077b6ff;
+--pacific-blue: #00b4d8ff;
+--middle-blue: #90e0efff;
+--light-cyan: #caf0f8ff;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Poppins;
 }
+
+
 body {
   font-family: "Poppins", sans-serif;
 }
@@ -47,23 +59,25 @@ body {
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
-  border: 1px solid steelblue;
-  padding: 30px;
+  border: 1px solid var(--pacific-blue);
+  padding: 0.5rem;
   border-radius: 5px;
 }
 .btn {
   display: inline-block;
-  background: #000;
+  background: var(--star-command-blue);
+  height: 30px;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 0rem 1rem 0rem 1rem;
   margin: 5px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 14px;
   font-family: inherit;
 }
+
 .btn:focus {
   outline: none;
 }

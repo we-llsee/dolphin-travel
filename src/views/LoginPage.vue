@@ -1,7 +1,7 @@
 <template>
+  <h2 id="loginAs">Login as...</h2>
   <div class="users" v-if="users.length != 0">
-    <h2>Login as...</h2>
-    <div :key="user.id" v-for="user in users.users">
+    <div class="userCard" :key="user.id" v-for="user in users.users">
       <UserCard :user="user" />
     </div>
   </div>
@@ -36,5 +36,11 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  margin: 1rem;
+}
+
+#loginAs{
+  padding-top: 1rem;
+  font-size: 14px;
 }
 </style>

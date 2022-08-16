@@ -6,7 +6,7 @@
     >
   </div>
   <div v-if="trips.length != 0">
-    <p>These are your upcoming trips...</p>
+    <p id="upcomingText">These are your upcoming trips...</p>
     <div :key="trip._id" v-for="trip in trips">
       <TripCard :trip="trip" @delete-trip="deleteTrip" />
     </div>
@@ -63,3 +63,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#upcomingText {
+  font-size: 14px;
+  margin-top: 0.4rem;
+}
+</style>
