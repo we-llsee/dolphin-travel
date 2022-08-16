@@ -13,7 +13,10 @@ const {
 
 const { getDayById, deleteDay } = require("./controllers/days.controllers");
 
-const { addNewActivity } = require("./controllers/activities.controllers");
+const {
+  addNewActivity,
+  getActivitiesByDayId,
+} = require("./controllers/activities.controllers");
 
 const {
   getUsers,
@@ -45,6 +48,8 @@ app.delete("/api/trips/:trip_id", deleteTrip);
 app.delete("/api/trips/:trip_id/:day_id", deleteDay);
 
 app.get("/api/trips/:trip_id/:day_id", getDayById);
+
+app.get("/api/trips/:trip_id/:day_id/activities", getActivitiesByDayId);
 
 app.use("*", (req, res) => {
   res.status(404).send({ msg: "Invalid Path" });

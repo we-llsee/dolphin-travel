@@ -69,3 +69,9 @@ exports.postActivity = (trip_id, day_id, activityDetails) => {
       return activity;
     });
 };
+
+exports.selectActivitiesByDayId = (trip_id, day_id, username) => {
+  return selectDayById(trip_id, day_id, username).then((day) => {
+    return day.activities;
+  });
+};
