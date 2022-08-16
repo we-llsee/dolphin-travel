@@ -26,7 +26,7 @@
     </router-link>
 
     <img
-      @click="tripDelete(trip._id)"
+      @click="$emit('deleteTrip', trip._id)"
       class="delete-button"
       src="../assets/trash.svg"
       alt="trashcan"
@@ -51,11 +51,7 @@ export default {
       timeAgo: new TimeAgo("en-US"),
     };
   },
-  method: {
-    // onDelete(id) {
-    //   this.$emit("delete-trip", id);
-    // },
-  },
+
 };
 </script>
 

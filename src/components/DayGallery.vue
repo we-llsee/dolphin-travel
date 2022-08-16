@@ -9,6 +9,7 @@
         :trips="trips"
         :days="days"
         :day="day"
+        @delete-day="deleteDay"
       />
     </div>
   </div>
@@ -28,17 +29,26 @@ export default {
       days: [],
       day: { type: Object },
 
-      // days: (new Date(trip.endDate) - new Date(trip.startDate)) / 86400000,
     };
   },
-  //  mounted(){
-  //   splitActivity(){
-  //     if (this.activityArray.length >= 0 && this.days > 0){
-  //       for (let i = 0;i <= this.days; i++ ){
-  //         return this.activity = [...]
-  //       }
-  //     }
-  //   }
+
+  methods: {
+    deleteDay({ tripId, dayId }) {
+      if (confirm("Are you sure you want to delete this trip?")) {
+        axios
+          .delete(
+            `https://dolphin-travel.herokuapp.com/api/trips/${tripId}/${dayId}?username=${this.$store.state.loggedInUser}`
+          )
+          .then(() => {
+            alert("Day deleted");
+            this.days = this.days.filter((day) => {
+              return day._id !== dayId;
+            });
+          });
+      }
+    },
+  },
+
 
   created() {
     axios
@@ -52,7 +62,7 @@ export default {
       })
       .then((trip) => {
         this.days = trip[0].days;
-        console.log(trip);
+
       })
 
       .catch((err) => {
