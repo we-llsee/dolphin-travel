@@ -70,10 +70,9 @@ export default {
   margin-top: 0.4rem;
 }
 
-.cardGalley{
+.cardGalley {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 </style>
