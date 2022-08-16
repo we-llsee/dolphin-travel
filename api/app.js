@@ -15,6 +15,7 @@ const { getDayById, deleteDay } = require("./controllers/days.controllers");
 
 const {
   addNewActivity,
+  deleteActivity,
   getActivitiesByDayId,
 } = require("./controllers/activities.controllers");
 
@@ -46,6 +47,7 @@ app.patch("/api/trips/:trip_id", changeTrip);
 
 app.delete("/api/trips/:trip_id", deleteTrip);
 app.delete("/api/trips/:trip_id/:day_id", deleteDay);
+app.delete("/api/trips/:trip_id/:day_id/:activity_id", deleteActivity);
 
 app.get("/api/trips/:trip_id/:day_id", getDayById);
 

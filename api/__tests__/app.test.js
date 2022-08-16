@@ -43,6 +43,8 @@ const appTests = () => {
               "GET /api/trips/:trip_id/:day_id": expect.any(Object),
               "POST /api/trips/:trip_id/:day_id": expect.any(Object),
               "DELETE /api/trips/:trip_id/:day_id": expect.any(Object),
+              "DELETE /api/trips/:trip_id/:day_id/:activity_id":
+                expect.any(Object),
               "GET /api/trips/:trip_id/:day_id/activities": expect.any(Object),
             })
           );
