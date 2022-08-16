@@ -1,12 +1,15 @@
 <template>
-<div>
-  <p>{{accommodation}}</p>
-</div>
+  <div>
+    <p>{{ accommodation }}</p>
+  </div>
   <div style="height: 75vh; width: 50vw">
     <l-map
       v-model="zoom"
       v-model:zoom="zoom"
-      :center="[Number(accommodation.latitude), Number(accommodation.longitude)]"
+      :center="[
+        Number(accommodation.latitude),
+        Number(accommodation.longitude),
+      ]"
       @move="log('move')"
     >
       <l-tile-layer
@@ -14,7 +17,12 @@
       ></l-tile-layer>
       <l-control-layers />
 
-      <l-marker :lat-lng="[Number(accommodation.latitude), Number(accommodation.longitude)]">
+      <l-marker
+        :lat-lng="[
+          Number(accommodation.latitude),
+          Number(accommodation.longitude),
+        ]"
+      >
         <l-popup> accommodation.accommodationName </l-popup>
       </l-marker>
     </l-map>
@@ -22,64 +30,64 @@
   </div>
 </template>
 <script>
-  import {
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+  LControlLayers,
+  LPopup,
+} from "@vue-leaflet/vue-leaflet";
+import "leaflet/dist/leaflet.css";
+import axios from "axios";
+export default {
+  props: ["day"],
+  components: {
     LMap,
+
     LTileLayer,
     LMarker,
     LControlLayers,
+
     LPopup,
-  } from "@vue-leaflet/vue-leaflet";
-  import "leaflet/dist/leaflet.css";
-  import axios from "axios";
-  export default {
-    props: ["day"],
-    components: {
-      LMap,
+  },
+  data() {
+    return {
+      zoom: 13,
+      iconWidth: 25,
+      iconHeight: 40,
+      trip: Object,
+      accommodation: Object,
+    };
+  },
 
-      LTileLayer,
-      LMarker,
-      LControlLayers,
-
-      LPopup,
+  computed: {
+    iconUrl() {
+      return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
     },
-    data() {
-      return {
-        zoom: 13,
-        iconWidth: 25,
-        iconHeight: 40,
-        trip: Object,
-        accommodation: Object,
-      };
+    iconSize() {
+      return [this.iconWidth, this.iconHeight];
     },
-
-    computed: {
-      iconUrl() {
-        return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
-      },
-      iconSize() {
-        return [this.iconWidth, this.iconHeight];
-      },
+  },
+  methods: {
+    log(a) {
+      console.log(a);
     },
-    methods: {
-      log(a) {
-        console.log(a);
-      },
-      changeIcon() {
-        this.iconWidth += 2;
-        if (this.iconWidth > this.iconHeight) {
-          this.iconWidth = Math.floor(this.iconHeight / 2);
-        }
-      },
+    changeIcon() {
+      this.iconWidth += 2;
+      if (this.iconWidth > this.iconHeight) {
+        this.iconWidth = Math.floor(this.iconHeight / 2);
+      }
     },
-    created() {
-      axios
-        .get(
-          `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
-        )
-        .then(({ data: { trip } }) => {
-          this.trip=trip;
-          this.accommodation = trip.accommodation;
-          });
-    }
-  };
+  },
+  created() {
+    axios
+      .get(
+        `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
+      )
+      .then(({ data: { trip } }) => {
+        this.trip = trip;
+        this.accommodation = trip.accommodation;
+      });
+  },
+};
 </script>
