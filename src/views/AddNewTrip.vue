@@ -167,10 +167,10 @@ export default {
       this.isClicked = true;
       axios
         .get(
-          `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=${this.hotelName}&addressdetails=1&countrycodes=${this.country.code}&format=json`
+          `https://dolphin-travel.netlify.app/.netlify/functions/locationSearch?q=${this.hotelName}&countrycodes=${this.country.code}`
         )
-        .then(({ data }) => {
-          this.accommodations = data;
+        .then(({ msg }) => {
+          this.accommodations = msg;
         })
         .catch((err) => {
           if (err.code === "ERR_BAD_REQUEST") {
