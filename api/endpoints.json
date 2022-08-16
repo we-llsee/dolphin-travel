@@ -302,5 +302,12 @@
     "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the days 24 character _id" },
     "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d?username=willclegg",
     "exampleResponse": {}
-  }
+  },
+  "DELETE /api/trips/:trip_id/:day_id/:activity_id": {
+  "description": "deletes the specified activity from the specified day if the user is attending the trip",
+  "required queries": ["username"],
+  "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the days 24 character _id", "activity_id": "the activities 24 character _id" },
+  "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d/63f24259222d00589a5a695d?username=willclegg",
+  "exampleResponse": {}
+}
 }
