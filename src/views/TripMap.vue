@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <p>{{ accommodation.latitude }}</p>
-  </div>
-  <div style="height: 75vh; width: 50vw">
+  <div class="map" style="height: 75vh; width: 100%">
     <l-map
       v-model="zoom"
       v-model:zoom="zoom"
@@ -108,8 +105,14 @@ export default {
           }
         }
         this.allActivities = allActivities;
+        console.log(LMap)
         return;
       });
   },
 };
 </script>
+<style scoped>
+.map {
+  margin-top: 1rem;
+}
+</style>
