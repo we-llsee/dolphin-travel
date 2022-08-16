@@ -22,6 +22,7 @@
           accommodation.longitude.toString(),
         ]"
       >
+        <l-icon :iconUrl="iconUrl" :icon-size="iconSize"></l-icon>
         <l-popup> {{ accommodation.accommodationName }} </l-popup>
       </l-marker>
 
@@ -45,6 +46,7 @@ import {
   LMarker,
   LControlLayers,
   LPopup,
+  LIcon,
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
@@ -55,6 +57,7 @@ export default {
 
     LTileLayer,
     LMarker,
+    LIcon,
     LControlLayers,
 
     LPopup,
@@ -62,7 +65,7 @@ export default {
   data() {
     return {
       zoom: 13,
-      iconWidth: 25,
+      iconWidth: 40,
       iconHeight: 40,
       trip: Object,
       accommodation: Object,
@@ -72,7 +75,7 @@ export default {
 
   computed: {
     iconUrl() {
-      return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+      return `https://www.freeiconspng.com/uploads/pic--home-address-symbol-png-29.png`;
     },
     iconSize() {
       return [this.iconWidth, this.iconHeight];
