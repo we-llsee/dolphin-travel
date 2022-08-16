@@ -2,15 +2,14 @@
   <div>
     <ul>
       <li>
-        <a href="#">
+        <router-link :to="'/trips/' + $route.params.tripId + '/add-day/'">
           <p>Add Day</p>
-
           <img
             src="../assets/plus-sign.svg"
             alt="plus sign"
             class="plus-sign"
           />
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
