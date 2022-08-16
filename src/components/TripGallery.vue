@@ -35,7 +35,9 @@ export default {
             `https://dolphin-travel.herokuapp.com/api/trips/${id}?username=${this.$store.state.loggedInUser}`
           )
           .then(() => {
-            this.componentKey += 1;
+            this.trips = this.trips.filter((trip) => {
+              return trip._id != id;
+            });
             alert("Trip deleted");
           });
       } else {

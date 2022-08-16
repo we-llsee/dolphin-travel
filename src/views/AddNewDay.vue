@@ -1,0 +1,71 @@
+<template>
+  <div v-if="loggedIn === true">
+    Which day do you want to add to your trip?
+    <div :key="day" v-for="day in difference">
+      <router-link :to="'/trips/' + $route.params.tripId + '/activities'">
+        <button @click="saveDay(day)" class="btn">Day: {{ day }}</button>
+      </router-link>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  name: "AddNewDay",
+  data() {
+    return {
+      days: [],
+      loggedIn: false,
+      daysBetween: 0,
+      daysAvailable: [],
+      difference: [],
+    };
+  },
+
+  created() {
+    if (this.$store.state.loggedInUser != "GUEST") {
+      this.loggedIn = true;
+      axios
+        .get(
+          `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
+        )
+        .then(({ data }) => {
+          this.days = data.trip.days.map((day) => {
+            return day.dayNumber;
+          });
+          // eslint-disable-next-line prettier/prettier
+          console.log(this.days);
+          this.daysBetween =
+            (new Date(data.trip.endDate) - new Date(data.trip.startDate)) /
+            (1000 * 3600 * 24);
+        })
+        .then(() => {
+          for (let i = 1; i <= this.daysBetween; i++) {
+            this.daysAvailable.push(i);
+          }
+          this.difference = this.daysAvailable.filter((day) => {
+            return !this.days.includes(day);
+          });
+          console.log(this.difference);
+        });
+    }
+  },
+
+  methods: {
+    saveDay(day) {
+      axios({
+        method: "post",
+        url: `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}`,
+        data: {
+          username: this.$store.state.loggedInUser,
+          dayNumber: day,
+        },
+      }).catch((err) => {
+        console.log(this.day);
+        console.log(err);
+      });
+    },
+  },
+};
+</script>
