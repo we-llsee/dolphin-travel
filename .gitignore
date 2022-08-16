@@ -1,4 +1,6 @@
 # Logs
+*.env
+
 logs
 *.log
 npm-debug.log*
@@ -27,3 +29,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify

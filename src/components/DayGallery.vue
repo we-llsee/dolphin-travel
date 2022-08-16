@@ -28,6 +28,7 @@ export default {
       trips: [],
       days: [],
       day: { type: Object },
+
     };
   },
 
@@ -48,6 +49,7 @@ export default {
     },
   },
 
+
   created() {
     axios
       .get(
@@ -60,6 +62,7 @@ export default {
       })
       .then((trip) => {
         this.days = trip[0].days;
+
       })
 
       .catch((err) => {
