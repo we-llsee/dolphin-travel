@@ -1,29 +1,29 @@
 const axios = require("axios");
 
-const handler = async function () {
+const handler = async function (event) {
   try {
+
+    let {large}= event.queryStringParameters;
+    console.log(large);
+    console.log(event.queryStringParameters)
+    
     const response = await axios.get(
       `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=hilton&addressdetails=1&countrycodes=fr&format=json`
     );
-    // if (!response.ok) {
-    //   // NOT res.status >= 200 && res.status < 300
-    //   return { statusCode: response.status, body: response.statusText }
-    // }
-    // const data = await response.json()
+    if (response.status<200 || response.status>=300) {
+      return { statusCode: response.status, body: response.statusText }
+    }
 
-    // return {
-    //   statusCode: 200,
-    //   body: JSON.stringify({ msg: data.joke }),
-    // }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ msg: response.data }),
+    }
 
-    console.log(response);
   } catch (error) {
-    // output to netlify function log
     console.log(error);
     return {
       statusCode: 500,
-      // Could be a custom message or object i.e. JSON.stringify(err)
-      body: JSON.stringify({ msg: error.message }),
+      body: JSON.stringify({ msg:"Server Error" }),
     };
   }
 };
