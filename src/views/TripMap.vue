@@ -68,3 +68,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.leaflet-container {
+  height: 80%;
+}
+</style>

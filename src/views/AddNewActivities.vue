@@ -1,23 +1,41 @@
 <template>
   <p>Activity page</p>
-  <div style="height: 75vh; width: 50vw">
+
+  <div style="height: 75vh; width: 59vw">
     <l-map
       v-model="zoom"
       v-model:zoom="zoom"
-      :center="[47.41322, -1.219482]"
+      :center="[this.accomLat, this.accomLong]"
       @move="log('move')"
     >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       ></l-tile-layer>
       <l-control-layers />
+      <l-marker :lat-lng="[this.accomLat, this.accomLong]">
+        <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
+        <l-popup> You are staying at {{ accom }} </l-popup>
+      </l-marker>
 
-      <l-marker :lat-lng="[47.41322, -1.219482]">
-        <l-popup> hello </l-popup>
+      <l-marker
+        :key="attraction.address.postcode"
+        v-for="attraction in attractions"
+        :lat-lng="[attraction.lat, attraction.lon]"
+      >
+        <l-popup>
+          Address: {{ attraction.display_name }} <br />
+          Attraction type: {{ attraction.type }} <br />{{
+            attraction.distance
+          }}m Away from you <br />
+          <button @click="addActivities(attraction)">Add attraction</button>
+        </l-popup>
       </l-marker>
     </l-map>
-    <button @click="changeIcon">New kitten icon</button>
-    day:{{ day }}
+    <h3>Today you are going to :</h3>
+    <div :key="activity._id" v-for="activity in activities">
+      {{ activity.activityName }}
+      <button @click="deleteActivity(activity._id)">Delete Activity</button>
+    </div>
   </div>
 </template>
 
@@ -28,8 +46,10 @@ import {
   LMarker,
   LControlLayers,
   LPopup,
+  LIcon,
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 
 export default {
   name: "AddNewActivities",
@@ -39,21 +59,25 @@ export default {
     LTileLayer,
     LMarker,
     LControlLayers,
-
     LPopup,
+    LIcon,
   },
   data() {
     return {
-      zoom: 2,
-      iconWidth: 25,
+      zoom: 14,
+      iconWidth: 40,
       iconHeight: 40,
       accom: "",
+      accomLong: 0,
+      accomLat: 0,
+      attractions: [],
+      activities: [],
     };
   },
 
   computed: {
     iconUrl() {
-      return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+      return `https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Home-icon.svg/1024px-Home-icon.svg.png`;
     },
     iconSize() {
       return [this.iconWidth, this.iconHeight];
@@ -69,10 +93,74 @@ export default {
         this.iconWidth = Math.floor(this.iconHeight / 2);
       }
     },
+    addActivities(attraction) {
+      axios({
+        method: "post",
+        url: `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}/${this.$route.params.dayId}`,
+        data: {
+          username: this.$store.state.loggedInUser,
+          activityName: attraction.address.name,
+          latitude: Number(attraction.lat),
+          longitude: Number(attraction.lon),
+          address: {
+            name: attraction.address.name,
+            road: attraction.address.road,
+            city: attraction.address.city,
+            state: attraction.address.state,
+            postcode: attraction.address.postcode,
+            country: attraction.address.country,
+            country_code: attraction.address.country_code,
+          },
+          type: attraction.type,
+        },
+      }).then(({ data: { activity } }) => {
+        console.log(activity, "res");
+        this.activities.push(activity);
+      });
+    },
+    deleteActivity(id) {
+      if (confirm("Are you sure you want to delete this activity?")) {
+        axios
+          .delete(
+            `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}/${this.$route.params.dayId}/${id}?username=${this.$store.state.loggedInUser}`
+          )
+          .then(() => {
+            alert("Activity deleted");
+            this.activities = this.activities.filter((activity) => {
+              return activity._id !== id;
+            });
+          });
+      }
+    },
   },
 
-  created() {},
+  created() {
+    axios
+      .get(
+        `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
+      )
+      .then(({ data }) => {
+        this.accom = data.trip.accommodation.accommodationName;
+        this.accomLong = data.trip.accommodation.longitude;
+        this.accomLat = data.trip.accommodation.latitude;
+      })
+      .then(() => {
+        axios
+          .get(
+            `https://eu1.locationiq.com/v1/nearby?key=pk.925883abdd6280b4428e57337de16f23&lat=${this.accomLat}&lon=${this.accomLong}&tag=all&radius=1500&limit=50&format=json`
+          )
+          .then(({ data }) => {
+            this.attractions = data;
+          });
+      });
+    axios
+      .get(
+        `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}/${this.$route.params.dayId}/activities?username=${this.$store.state.loggedInUser}`
+      )
+      .then(({ data: { activities } }) => {
+        console.log(activities);
+        this.activities = activities;
+      });
+  },
 };
 </script>
-
->

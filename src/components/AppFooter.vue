@@ -17,6 +17,6 @@ p {
 }
 
 footer {
-  margin-top: 30px;
+  margin-top: 500px;
 }
 </style>
