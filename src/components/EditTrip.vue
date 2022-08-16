@@ -87,125 +87,123 @@
 </template>
 
 <script>
-  import axios from "axios";
+import axios from "axios";
 
-  export default {
-    name: "EditTrip",
-    data() {
-      return {
-        tripName: "",
-        attendee: "",
-        attending: [],
-        trip: {},
-        budgetGBP: 0,
-        startDate: "",
-        endDate: "",
-        accommodationName: "",
-        isClicked: false,
-        accommodations: [],
-        country: "",
-        accom: "",
-        lookupAttendee: [],
-        users: [],
-        REMOVE_USER: "",
-        removeUsers: [],
-      };
+export default {
+  name: "EditTrip",
+  data() {
+    return {
+      tripName: "",
+      attendee: "",
+      attending: [],
+      trip: {},
+      budgetGBP: 0,
+      startDate: "",
+      endDate: "",
+      accommodationName: "",
+      isClicked: false,
+      accommodations: [],
+      country: "",
+      accom: "",
+      lookupAttendee: [],
+      users: [],
+      REMOVE_USER: "",
+      removeUsers: [],
+    };
+  },
+  methods: {
+    removeUser(e) {
+      e.preventDefault();
+
+      const attendingRemoved = this.attending.filter((user) => {
+        return user !== this.REMOVE_USER;
+      });
+
+      if (this.attending !== attendingRemoved) {
+        this.attending = [...attendingRemoved];
+      } else
+        alert(
+          `${this.REMOVE_USER} is not on the attending list.Please try again.`
+        );
     },
-    methods: {
-      removeUser(e) {
-        e.preventDefault();
 
-        const attendingRemoved = this.attending.filter((user) => {
-          return user !== this.REMOVE_USER;
-        });
-
-        if (this.attending !== attendingRemoved) {
-          this.attending = [...attendingRemoved];
-        } else
-          alert(
-            `${this.REMOVE_USER} is not on the attending list.Please try again.`
-          );
-      },
-
-      addAttendee(e) {
-        e.preventDefault();
-        const lookupAttendee = this.attending.filter((attendee) => {
-          return attendee === this.attendee;
-        });
-        // length > 0 return warning
-        const validUsers = this.users.map((userObj) => {
-          return userObj._id;
-        });
-        //length > 0 push
-        const lookupUsers = validUsers.filter((attendee) => {
-          return attendee === this.attendee;
-        });
-        if (lookupUsers.length > 0 && lookupAttendee.length === 0) {
-          this.attending.push(this.attendee);
-        } else if (lookupUsers.length > 0 && lookupAttendee.length > 0) {
-          return alert(`${this.attendee} is already attending.`);
-        } else if (lookupUsers.length === 0) {
-          return alert(`${this.attendee} is not an existing user.`);
-        }
-      },
-      getAccommodation(e) {
-        e.preventDefault();
-        this.isClicked = true;
-
-        axios
-          .get(
-            `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=${this.accommodationName}&addressdetails=1&countrycodes=${this.country.code}&format=json`
-          )
-          .then(({ data }) => {
-            this.accommodations = data;
-            console.log(data);
-          })
-          .catch((err) => {
-            if (err.code === "ERR_BAD_REQUEST") {
-              alert(
-                "This accommodation is not available in this country, please try another location."
-              );
-            }
-          });
-      },
-    },
-    created() {
-      if (this.$store.state.loggedInUser != "GUEST") {
-        this.loggedIn = true;
-        axios
-          .get(
-            `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
-          )
-          .then(({ data: { trip } }) => {
-            this.trip = trip;
-            this.attending = trip.attending;
-            this._id = trip._id;
-            this.budgetGBP = trip.budgetGBP;
-            this.startDate = trip.startDate;
-            this.endDate = trip.endDate;
-            this.country = trip.accommodation.address.country;
-            this.accommodationName = trip.accommodationName;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        axios
-          .get(
-            "https://dolphin-travel.herokuapp.com/api/users?username=alexrong"
-          )
-          .then(({ data: { users } }) => {
-            this.users = users;
-          });
+    addAttendee(e) {
+      e.preventDefault();
+      const lookupAttendee = this.attending.filter((attendee) => {
+        return attendee === this.attendee;
+      });
+      // length > 0 return warning
+      const validUsers = this.users.map((userObj) => {
+        return userObj._id;
+      });
+      //length > 0 push
+      const lookupUsers = validUsers.filter((attendee) => {
+        return attendee === this.attendee;
+      });
+      if (lookupUsers.length > 0 && lookupAttendee.length === 0) {
+        this.attending.push(this.attendee);
+      } else if (lookupUsers.length > 0 && lookupAttendee.length > 0) {
+        return alert(`${this.attendee} is already attending.`);
+      } else if (lookupUsers.length === 0) {
+        return alert(`${this.attendee} is not an existing user.`);
       }
     },
-  };
+    getAccommodation(e) {
+      e.preventDefault();
+      this.isClicked = true;
+
+      axios
+        .get(
+          `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=${this.accommodationName}&addressdetails=1&countrycodes=${this.country.code}&format=json`
+        )
+        .then(({ data }) => {
+          this.accommodations = data;
+          console.log(data);
+        })
+        .catch((err) => {
+          if (err.code === "ERR_BAD_REQUEST") {
+            alert(
+              "This accommodation is not available in this country, please try another location."
+            );
+          }
+        });
+    },
+  },
+  created() {
+    if (this.$store.state.loggedInUser != "GUEST") {
+      this.loggedIn = true;
+      axios
+        .get(
+          `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
+        )
+        .then(({ data: { trip } }) => {
+          this.trip = trip;
+          this.attending = trip.attending;
+          this._id = trip._id;
+          this.budgetGBP = trip.budgetGBP;
+          this.startDate = trip.startDate;
+          this.endDate = trip.endDate;
+          this.country = trip.accommodation.address.country;
+          this.accommodationName = trip.accommodationName;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      axios
+        .get("https://dolphin-travel.herokuapp.com/api/users?username=alexrong")
+        .then(({ data: { users } }) => {
+          this.users = users;
+        });
+    }
+  },
+};
 </script>
 
 <style scoped>
-  div {
-    background-color: bisque;
-  }
-  .blue-container {
-    background-color: skyblue;
-  }
+div {
+  background-color: bisque;
+}
+.blue-container {
+  background-color: skyblue;
+}
 </style>
