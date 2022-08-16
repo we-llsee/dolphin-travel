@@ -207,7 +207,7 @@
         "longitude": "number",
         "address": "empty object or object containing any number of address keys"
       },
-      "exampleRequest": "/api/trips/:trip_id?username=willclegg",
+      "exampleRequest": "/api/trips/62f24229222c00589a5e617f?username=willclegg",
       "exampleResponse": {
         "trip": {
           "_id": "62f24229222c00589a5e617f",
@@ -244,7 +244,7 @@
       "username": "the username of the user adding the day",
       "dayNumber": "the day of the holiday relative to the start date, e.g. if the start date is 10/05/2022, then the dayNumber for 11/05/2022 would be 2. This can be set to 0 if the user does not want to select a day at this point)"
       },
-      "exampleRequest": "/api/trips/:trip_id",
+      "exampleRequest": "/api/trips/62f24229222c00589a5e617f",
       "exampleResponse": {
         "day": { "_id": "62fa317ea5b2a1d71463530c", "dayNumber": 3, "activities": [] }
       }
@@ -273,7 +273,7 @@
       "address": "an object (the object can be empty)",
       "type": "string (this is not required and will be set to 'other' if it is not given"
     },
-      "exampleRequest": "/api/trips/:trip_id/:day_id",
+      "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d",
       "exampleResponse": {
         "activity": {
           "_id": "62fa83901f08e1d94f736916",
@@ -295,5 +295,12 @@
           "type": "attraction"
         }
       }
-    }
+  },
+  "DELETE /api/trips/:trip_id/:day_id": {
+    "description": "deletes the specified day from the specified trip if the user is attending the trip",
+    "required queries": ["username"],
+    "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the days 24 character _id" },
+    "exampleRequest": "/api/trips/62f24229222c00589a5e617f/63f24229222c00589a5e617d?username=willclegg",
+    "exampleResponse": {}
+  }
 }

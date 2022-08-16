@@ -147,6 +147,177 @@ const dayTests = () => {
         });
     });
   });
+  describe("DELETE /api/trips/:trip_id/:day_id", () => {
+    beforeEach(() => {
+      if (process.env.TEST_FREQ === "all") {
+        return seed();
+      }
+    });
+    it("204 no content: successfully deletes the specified day", () => {
+      let trip_id;
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}/${day_id}?username=jesskemp`)
+            .expect(204);
+        })
+        .then(() => {
+          return request(app)
+            .get(`/api/trips/${trip_id}/${day_id}?username=jesskemp`)
+            .expect(404);
+        });
+    });
+    it("401: Returns {msg: You are unauthorised to access this trip.} when a user who is not attending the trip tries to delete a day.", () => {
+      let trip_id;
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}/${day_id}?username=alexrong`)
+            .expect(401)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("You are unauthorised to access this trip.");
+            });
+        });
+    });
+    it("400: Returns {msg: Username Not Specified} when no username query.", () => {
+      let trip_id;
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}/${day_id}`)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Username Not Specified");
+            });
+        });
+    });
+    it("400: Returns {msg: User 'X' is an invalid username.} for invalid username query", () => {
+      let trip_id;
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}/${day_id}?username=234`)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User '234' is an invalid username.");
+            });
+        });
+    });
+    it("404: Returns {msg: User 'jimstevenson' does not exist.} when username cannot be found", () => {
+      let trip_id;
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}/${day_id}?username=jimstevenson`)
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User 'jimstevenson' does not exist.");
+            });
+        });
+    });
+    it("400: Returns {msg: 'X' is an invalid trip_id.} when a user tries to access a trip id with the wrong format.", () => {
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/2345/${day_id}?username=jesskemp`)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("'2345' is an invalid trip_id.");
+            });
+        });
+    });
+    it("404: Returns {msg: trip_id 'X' does not exist.} when trip cannot be found", () => {
+      let day_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          day_id = trips[1].days[0]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(
+              `/api/trips/507f1f77bcf86cd799439011/${day_id}?username=jesskemp`
+            )
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe(
+                "trip_id '507f1f77bcf86cd799439011' does not exist."
+              );
+            });
+        });
+    });
+    it("400: Returns {msg: 'true' is an invalid day_id.} when a user tries to access a day id with the wrong format.", () => {
+      let trip_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(`/api/trips/${trip_id}/777?username=jesskemp`)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("'777' is an invalid day_id.");
+            });
+        });
+    });
+    it("404: Returns {msg: day_id 'X' does not exist.} when a day cannot be found.", () => {
+      let trip_id;
+      return request(app)
+        .get("/api/trips?username=jesskemp")
+        .then(({ body: { trips } }) => {
+          trip_id = trips[1]._id;
+        })
+        .then(() => {
+          return request(app)
+            .delete(
+              `/api/trips/${trip_id}/507f1f77bcf86cd799439011?username=jesskemp`
+            )
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe(
+                "day_id '507f1f77bcf86cd799439011' does not exist."
+              );
+            });
+        });
+    });
+  });
 };
 
 module.exports = dayTests;

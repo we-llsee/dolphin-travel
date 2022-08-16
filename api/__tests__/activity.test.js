@@ -237,7 +237,7 @@ const activityTests = () => {
             });
         });
     });
-    it("400: Returns {msg: day_id 'X' is an invalid trip ID.} when a user tries to access a day id with the wrong format.", () => {
+    it("400: Returns {msg: 'true' is an invalid day_id.} when a user tries to access a day id with the wrong format.", () => {
       let trip_id;
       const newActivity = {
         username: "jesskemp",
