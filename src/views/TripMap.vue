@@ -57,6 +57,7 @@ export default {
       iconHeight: 40,
       trip: Object,
       accommodation: Object,
+
     };
   },
 
