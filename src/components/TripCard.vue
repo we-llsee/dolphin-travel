@@ -51,7 +51,6 @@ export default {
       timeAgo: new TimeAgo("en-US"),
     };
   },
-
 };
 </script>
 
