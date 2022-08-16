@@ -3,12 +3,11 @@
     <router-link to="/"
       ><button class="btn" @click="loginHandler">
         <img
-      class="logo"
-      src="https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg"
-      alt="Dolphin logo"
-    />
-      </button></router-link
-    >
+          class="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg"
+          alt="Dolphin logo"
+        /></button
+    ></router-link>
     <p>{{ user._id }}</p>
   </div>
 </template>
@@ -45,7 +44,7 @@ a {
   padding: 15px;
 }
 
-.logo{
+.logo {
   width: 60px;
 }
 
@@ -54,7 +53,7 @@ a {
   padding: 0;
   background: none;
 }
-a:hover{
+a:hover {
   border-radius: 50%;
 }
 </style>

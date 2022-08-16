@@ -10,7 +10,7 @@
       <span class="subtitle">Dive into your next adventure</span>
     </div>
     <div class="loginInfo">
-       <p id="loggedinDesc">Logged in as {{ $store.state.loggedInUser }}</p>
+      <p id="loggedinDesc">Logged in as {{ $store.state.loggedInUser }}</p>
     </div>
   </header>
   <NavigationBar class="nav-bar" />
@@ -28,8 +28,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .maintitle {
   font-family: "Reenie Beanie";
   font-size: 50px;
@@ -53,18 +51,17 @@ header {
   align-items: center;
 }
 
-
 #loggedinDesc {
   padding-bottom: 0.5rem;
   font-size: 14px;
   padding-top: 1rem;
 }
 
-.loginInfo{
-  padding-top:1.5rem;
+.loginInfo {
+  padding-top: 1.5rem;
 }
 
-.nav-bar{
+.nav-bar {
   display: flex;
   margin-top: -1.2rem;
 }

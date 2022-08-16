@@ -39,7 +39,7 @@ export default {
   margin: 1rem;
 }
 
-#loginAs{
+#loginAs {
   padding-top: 1rem;
   font-size: 14px;
 }

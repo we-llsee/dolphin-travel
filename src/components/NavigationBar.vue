@@ -12,7 +12,9 @@
     <router-link to="/previous-trips">
       <button class="btn">Previous Trips</button>
     </router-link>
-    <router-link id="loginButton" to="/login"><button class="loginBtn">Login</button></router-link>
+    <router-link id="loginButton" to="/login"
+      ><button class="loginBtn">Login</button></router-link
+    >
   </div>
 </template>
 
@@ -43,5 +45,4 @@ div {
   font-size: 14px;
   font-family: inherit;
 }
-
 </style>

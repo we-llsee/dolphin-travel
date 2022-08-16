@@ -36,11 +36,11 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 :root {
---midnight-blue: #03045eff;
---star-command-blue: #0077b6ff;
---pacific-blue: #00b4d8ff;
---middle-blue: #90e0efff;
---light-cyan: #caf0f8ff;
+  --midnight-blue: #03045eff;
+  --star-command-blue: #0077b6ff;
+  --pacific-blue: #00b4d8ff;
+  --middle-blue: #90e0efff;
+  --light-cyan: #caf0f8ff;
 }
 
 * {
@@ -49,7 +49,6 @@ export default {
   padding: 0;
   font-family: Poppins;
 }
-
 
 body {
   font-family: "Poppins", sans-serif;

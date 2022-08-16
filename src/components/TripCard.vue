@@ -5,42 +5,42 @@
         <p id="tripName">
           {{ trip.tripName }}
         </p>
-         <p id="tripOwner">Trip owner: {{ trip.attending[0] }}</p>
+        <p id="tripOwner">Trip owner: {{ trip.attending[0] }}</p>
       </div>
       <div class="tripSummary">
-
-      <img
-        v-if="trip.accommodation.address.country_code != undefined"
-        :src="
-          'https://countryflagsapi.com/png/' +
-          trip.accommodation.address.country_code
-        "
-        alt=""
-        class="country-flag"
-      />
-      <div class="keyTripInfo">
-        <div>
-        <span>
-        You're visiting {{ trip.country }} for
-       <span id="daysUntilTrip">{{ (new Date(trip.endDate) - new Date(trip.startDate)) / 86400000 }}
-        days</span> </span
-      >
-      <span class="time-stamp">{{
-        timeAgo.format(new Date(trip.startDate))
-      }}</span>
-      </div>  
         <img
-      @click="$emit('deleteTrip', trip._id)"
-      class="delete-button"
-      src="../assets/trash.svg"
-      alt="trashcan"
-      />
-  </div>
+          v-if="trip.accommodation.address.country_code != undefined"
+          :src="
+            'https://countryflagsapi.com/png/' +
+            trip.accommodation.address.country_code
+          "
+          alt=""
+          class="country-flag"
+        />
+        <div class="keyTripInfo">
+          <div>
+            <span>
+              You're visiting {{ trip.country }} for
+              <span id="daysUntilTrip"
+                >{{
+                  (new Date(trip.endDate) - new Date(trip.startDate)) / 86400000
+                }}
+                days</span
+              >
+            </span>
+            <span class="time-stamp">{{
+              timeAgo.format(new Date(trip.startDate))
+            }}</span>
+          </div>
+          <img
+            @click="$emit('deleteTrip', trip._id)"
+            class="delete-button"
+            src="../assets/trash.svg"
+            alt="trashcan"
+          />
+        </div>
       </div>
-
     </router-link>
-
-
   </div>
 </template>
 
@@ -73,7 +73,7 @@ p {
   font-family: "Reenie Beanie";
   font-size: 2rem;
 }
-.card{
+.card {
   display: flex;
   flex-direction: column;
   border: 3px solid var(--pacific-blue);
@@ -82,7 +82,7 @@ p {
   border-radius: 10px;
 }
 
-.tripHeader{
+.tripHeader {
   display: flex;
   background-color: var(--pacific-blue);
   color: white;
@@ -93,37 +93,37 @@ p {
   align-items: center;
 }
 
-#tripName{
+#tripName {
   font-size: 40px;
 }
 
-#tripOwner{
+#tripOwner {
   font-size: 30px;
 }
 
-.tripSummary{
+.tripSummary {
   display: flex;
   justify-content: space-between;
 }
 
-.country-flag{
+.country-flag {
   height: 120px;
   margin: 1.5rem;
   margin-left: 2rem;
 }
 
-.keyTripInfo{
+.keyTripInfo {
   display: flex;
   flex-direction: column;
-  justify-content:space-between;
-  align-items:flex-end;
+  justify-content: space-between;
+  align-items: flex-end;
   font-size: 16px;
   margin-top: 1rem;
   margin-right: 1.5rem;
   margin-bottom: 1rem;
 }
 
-#daysUntilTrip{
+#daysUntilTrip {
   color: var(--pacific-blue);
   font-weight: bold;
 }
@@ -143,7 +143,7 @@ img:hover {
   box-shadow: 0px 0px 5px 1px var(--pacific-blue);
 }
 
-.delete-button:hover{
+.delete-button:hover {
   background-color: red;
   box-shadow: 0px 0px 5px 1px rgb(255, 0, 0);
 }
