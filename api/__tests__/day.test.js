@@ -26,7 +26,9 @@ const dayTests = () => {
           testTripId = body.trips[0]._id;
           testDayId = body.trips[0].days[0]._id;
           testDays = body.trips[0].days;
-          return request(app).get(`/api/trips/${testTripId}/${testDayId}?username=willclegg`);
+          return request(app).get(
+            `/api/trips/${testTripId}/${testDayId}?username=willclegg`
+          );
         })
         .then(({ body }) => {
           expect(testDays).toEqual(expect.arrayContaining([body.day]));
@@ -48,10 +50,12 @@ const dayTests = () => {
         .then(({ body }) => {
           const testTripId = body.trips[0]._id;
           const testDayId = body.trips[0].days[0]._id;
-          return request(app).get(`/api/trips/${testTripId}/${testDayId}?username=1`).expect(400);
+          return request(app)
+            .get(`/api/trips/${testTripId}/${testDayId}?username=1`)
+            .expect(400);
         })
         .then(({ body }) => {
-          expect(body.msg).toBe("User '1' is an invalid username.")
+          expect(body.msg).toBe("User '1' is an invalid username.");
         });
     });
 
@@ -70,7 +74,9 @@ const dayTests = () => {
         .expect(200)
         .then(({ body }) => {
           const testTripId = body.trips[0]._id;
-          return request(app).get(`/api/trips/${testTripId}/1?username=willclegg`).expect(400);
+          return request(app)
+            .get(`/api/trips/${testTripId}/1?username=willclegg`)
+            .expect(400);
         })
         .then(({ body }) => {
           expect(body.msg).toBe("'1' is an invalid day_id.");
@@ -84,10 +90,12 @@ const dayTests = () => {
         .then(({ body }) => {
           const testTripId = body.trips[0]._id;
           const testDayId = body.trips[0].days[0]._id;
-          return request(app).get(`/api/trips/${testTripId}/${testDayId}?username=jesskemp`).expect(401);
+          return request(app)
+            .get(`/api/trips/${testTripId}/${testDayId}?username=jesskemp`)
+            .expect(401);
         })
         .then(({ body }) => {
-          expect(body.msg).toBe("You are unauthorised to access this trip.")
+          expect(body.msg).toBe("You are unauthorised to access this trip.");
         });
     });
 
@@ -98,16 +106,20 @@ const dayTests = () => {
         .then(({ body }) => {
           const testTripId = body.trips[0]._id;
           const testDayId = body.trips[0].days[0]._id;
-          return request(app).get(`/api/trips/${testTripId}/${testDayId}?username=pcopley`).expect(404);
+          return request(app)
+            .get(`/api/trips/${testTripId}/${testDayId}?username=pcopley`)
+            .expect(404);
         })
         .then(({ body }) => {
-          expect(body.msg).toBe("User 'pcopley' does not exist.")
+          expect(body.msg).toBe("User 'pcopley' does not exist.");
         });
     });
 
     it('404: /api/trips/NONEXISTENTTRIP/validday returns "trip_id does not exist"', () => {
       return request(app)
-        .get("/api/trips/eeeeeeeeeeeeeeeeeeeeeeee/62f66caf2215f735d7243ab4?username=willclegg")
+        .get(
+          "/api/trips/eeeeeeeeeeeeeeeeeeeeeeee/62f66caf2215f735d7243ab4?username=willclegg"
+        )
         .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe(
@@ -123,7 +135,9 @@ const dayTests = () => {
         .then(({ body }) => {
           const testTripId = body.trips[0]._id;
           return request(app)
-            .get(`/api/trips/${testTripId}/eeeeeeeeeeeeeeeeeeeeeeee?username=willclegg`)
+            .get(
+              `/api/trips/${testTripId}/eeeeeeeeeeeeeeeeeeeeeeee?username=willclegg`
+            )
             .expect(404);
         })
         .then(({ body }) => {

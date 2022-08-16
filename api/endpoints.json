@@ -191,6 +191,7 @@
   "PATCH /api/trips/:trip_id": {
     "description": "updates a trip in the database and returns the updated trip on a key of trip",
     "required queries": ["username"],
+    "parameters": { "trip_id": "the trips 24 character _id" },
     "requestBodyDescription": "every option is the requestBody is optional but at least one field must be provided",
     "requestBody": {
       "tripName": "string",
@@ -238,6 +239,7 @@
   },
   "POST /api/trips/:trip_id": {
     "description": "adds a new empty day to the trip and returns the day on a key of day",
+    "parameters": { "trip_id": "the trips 24 character _id" },
     "requestBody": {
       "username": "the username of the user adding the day",
       "dayNumber": "the day of the holiday relative to the start date, e.g. if the start date is 10/05/2022, then the dayNumber for 11/05/2022 would be 2. This can be set to 0 if the user does not want to select a day at this point)"
@@ -259,5 +261,39 @@
         "activites":[]
       }
     }
-  }
+  },
+  "POST /api/trips/:trip_id/:day_id": {
+    "description": "adds a new activity to the specified day of the specified trip and returns the activity on a key of activity",
+    "parameters": { "trip_id": "the trips 24 character _id", "day_id": "the days 24 character _id" },
+    "requestBody": {
+      "username": "the username of the user adding the activity",
+      "activityName": "string",
+      "latitude": "number",
+      "longitude": "number",
+      "address": "an object (the object can be empty)",
+      "type": "string (this is not required and will be set to 'other' if it is not given"
+    },
+      "exampleRequest": "/api/trips/:trip_id/:day_id",
+      "exampleResponse": {
+        "activity": {
+          "_id": "62fa83901f08e1d94f736916",
+          "activityName": "Trevi Fountain",
+          "latitude": 41.9009778,
+          "longitude": 12.483284842339874,
+          "address": {
+            "attraction": "Trevi Fountain",
+            "road": "Piazza di Trevi",
+            "quarter": "Trevi",
+            "suburb": "Municipio Roma I",
+            "city": "Rome",
+            "county": "Roma Capitale",
+            "state": "Lazio",
+            "postcode": "00187",
+            "country": "Italy",
+            "country_code": "it"
+          },
+          "type": "attraction"
+        }
+      }
+    }
 }

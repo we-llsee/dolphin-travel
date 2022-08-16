@@ -3,6 +3,8 @@ const app = require("../app");
 const request = require("supertest");
 const { ObjectId } = require("bson");
 
+jest.setTimeout(15000);
+
 const tripTests = () => {
   beforeAll(() => {
     return seed();

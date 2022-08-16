@@ -13,6 +13,8 @@ const {
 
 const { getDayById } = require("./controllers/days.controllers");
 
+const { addNewActivity } = require("./controllers/activities.controllers");
+
 const {
   getUsers,
   getUserByUsername,
@@ -35,6 +37,7 @@ app.get("/api/trips/:trip_id", getSingleTrip);
 
 app.post("/api/trips", addNewTrip);
 app.post("/api/trips/:trip_id", addNewDay);
+app.post("/api/trips/:trip_id/:day_id", addNewActivity);
 
 app.patch("/api/trips/:trip_id", changeTrip);
 
