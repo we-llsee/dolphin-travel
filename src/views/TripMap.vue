@@ -24,7 +24,7 @@
       >
         <l-popup> {{ accommodation.accommodationName }} </l-popup>
       </l-marker>
-      
+
       <li :key="activity._id" v-for="activity in allActivities">
         <l-marker
           :lat-lng="[
