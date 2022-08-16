@@ -12,7 +12,12 @@ module.exports = [
       accommodationName: "Super Paradise Beach",
       latitude: 37.415,
       longitude: 25.368,
-      address: { address: "Super Paradise Beach, Mikonos 846 00, Greece" },
+      address: {  name: "Super Paradise Beach",
+                  city: "Mikonos",
+                  state: "Mikonos",
+                  postcode: 84600,
+                  country: "Greece",
+                  country_code: "GR"  }
     },
     days: [
       {
@@ -64,7 +69,14 @@ module.exports = [
       accommodationName: "Airbnb",
       latitude: 52.502,
       longitude: 13.416,
-      address: { address: "Oranienstraße 40, 10999 Berlin, Germany" },
+      address: {  name: "Natalia's Airbnb",
+                  house_number: "40",
+                  road: "Oranienstraße",
+                  city: "Berlin",
+                  state: "Berlin",
+                  postcode: 10999,
+                  country: "Germany",
+                  country_code: "DE" }
     },
     days: [
       {
