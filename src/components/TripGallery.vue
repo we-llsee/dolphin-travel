@@ -5,9 +5,9 @@
       ><button class="loginbtn">Login</button></router-link
     >
   </div>
-  <div v-if="trips.length != 0">
+  <div class="cardGalley" v-if="trips.length != 0">
     <p id="upcomingText">These are your upcoming trips...</p>
-    <div :key="trip._id" v-for="trip in trips">
+    <div class="cardHolder" :key="trip._id" v-for="trip in trips">
       <TripCard :trip="trip" @delete-trip="deleteTrip" />
     </div>
   </div>
@@ -69,4 +69,11 @@ export default {
   font-size: 14px;
   margin-top: 0.4rem;
 }
+
+.cardGalley{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 </style>

@@ -80,6 +80,7 @@ p {
   margin: 20px;
   cursor: pointer;
   border-radius: 10px;
+  width: 600px;
 }
 
 .tripHeader {
@@ -110,6 +111,7 @@ p {
   height: 120px;
   margin: 1.5rem;
   margin-left: 2rem;
+  border: 1px solid lightgray;
 }
 
 .keyTripInfo {
