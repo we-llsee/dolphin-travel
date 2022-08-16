@@ -1,9 +1,12 @@
 <template>
+<div>
+  <p>{{accommodation}}</p>
+</div>
   <div style="height: 75vh; width: 50vw">
     <l-map
       v-model="zoom"
       v-model:zoom="zoom"
-      :center="[47.41322, -1.219482]"
+      :center="[Number(accommodation.latitude), Number(accommodation.longitude)]"
       @move="log('move')"
     >
       <l-tile-layer
@@ -11,12 +14,11 @@
       ></l-tile-layer>
       <l-control-layers />
 
-      <l-marker :lat-lng="[47.41322, -1.219482]">
-        <l-popup> hello </l-popup>
+      <l-marker :lat-lng="[Number(accommodation.latitude), Number(accommodation.longitude)]">
+        <l-popup> accommodation.accommodationName </l-popup>
       </l-marker>
     </l-map>
     <button @click="changeIcon">New kitten icon</button>
-    day:{{ day }}
   </div>
 </template>
 <script>
@@ -28,6 +30,7 @@
     LPopup,
   } from "@vue-leaflet/vue-leaflet";
   import "leaflet/dist/leaflet.css";
+  import axios from "axios";
   export default {
     props: ["day"],
     components: {
@@ -41,9 +44,11 @@
     },
     data() {
       return {
-        zoom: 2,
+        zoom: 13,
         iconWidth: 25,
         iconHeight: 40,
+        trip: Object,
+        accommodation: Object,
       };
     },
 
@@ -66,5 +71,15 @@
         }
       },
     },
+    created() {
+      axios
+        .get(
+          `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}?username=${this.$store.state.loggedInUser}`
+        )
+        .then(({ data: { trip } }) => {
+          this.trip=trip;
+          this.accommodation = trip.accommodation;
+          });
+    }
   };
 </script>
