@@ -1,8 +1,10 @@
 <template>
   <div class="center">
+    <div class="tripHeader">
+      <p id="tripName">{{ trip.tripName }}</p>
+      <p id="budgetGBP">Budget: £{{ trip.budgetGBP }}</p>
+    </div>
     <div class="day-gallery">
-      <AddDayCard />
-
       <DayCard
         :key="day.date"
         v-for="day in days"
@@ -11,6 +13,7 @@
         :day="day"
         @delete-day="deleteDay"
       />
+      <AddDayCard />
     </div>
   </div>
 </template>
@@ -28,6 +31,7 @@ export default {
       trips: [],
       days: [],
       day: { type: Object },
+      trip: { type: Object },
     };
   },
 
@@ -55,11 +59,16 @@ export default {
       )
       .then(({ data: { trips } }) => {
         return (this.trips = trips.filter((trip) => {
-          return trip._id === this.$route.params.tripId;
+          if (trip._id === this.$route.params.tripId) {
+            this.trip = trip;
+            return trip._id === this.$route.params.tripId;
+          }
         }));
       })
       .then((trip) => {
-        this.days = trip[0].days;
+        const days = trip[0].days.sort((a, b) => a.dayNumber - b.dayNumber);
+        console.log(days);
+        this.days = days;
       })
 
       .catch((err) => {
@@ -70,10 +79,30 @@ export default {
 </script>
 
 <style scoped>
+.tripHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .day-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 16px;
   justify-content: center;
+  margin-top: -1rem;
+  padding: 1rem;
+}
+
+#tripName {
+  font-family: "Reenie Beanie";
+  font-size: 50px;
+  color: var(--midnight-blue);
+  margin-top: -0.5rem;
+  width: 60%;
+}
+
+#budgetGBP {
+  width: 20%;
+  color: var(--midnight-blue);
 }
 </style>

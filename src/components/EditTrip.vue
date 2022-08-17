@@ -87,7 +87,6 @@
       </select>
       <button class="btn" @click="patchTrip">Save</button>
       <button class="btn" @click="resetForm">Reset Form</button>
-     
     </div>
   </form>
 </template>

@@ -1,12 +1,12 @@
 <script>
-import TripCard from '../components/TripCard.vue'
+import TripCard from "../components/TripCard.vue";
 
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "PreviousTrips",
-  components:{
-    TripCard
+  components: {
+    TripCard,
   },
   created() {
     if (this.$store.state.loggedInUser != "GUEST") {
@@ -15,21 +15,21 @@ export default {
         .get(
           `https://dolphin-travel.herokuapp.com/api/trips?username=${this.$store.state.loggedInUser}`
         )
-        .then(({data:{trips}}) => {
-
-          
-          this.pTrips = trips.filter((trip)=>{return new Date() > new Date(trip.endDate) });
+        .then(({ data: { trips } }) => {
+          this.pTrips = trips.filter((trip) => {
+            return new Date() > new Date(trip.endDate);
+          });
         })
         .catch((err) => {
           console.log(err);
         });
     }
   },
-  data(){
+  data() {
     return {
-      pTrips:[]
-    }
-  }
+      pTrips: [],
+    };
+  },
 };
 </script>
 
@@ -37,9 +37,9 @@ export default {
   <div>
     <h2>Previous Trips</h2>
     <div class="cardGalley" v-if="pTrips.length != 0">
-    <div class="cardHolder" :key="trip._id" v-for="trip in pTrips">
-      <TripCard :trip="trip"  />
-    </div>
+      <div class="cardHolder" :key="trip._id" v-for="trip in pTrips">
+        <TripCard :trip="trip" />
+      </div>
     </div>
   </div>
 </template>
