@@ -73,18 +73,20 @@ ul {
   display: block;
   padding: 0.5rem;
   max-width: 300px;
+  min-height: 250px;
   width: 100%;
   height: 100%;
   border-radius: 5px;
 }
 ul {
-  margin: 1em;
+  margin: 0.5rem;
   list-style: none;
 }
 .btn {
   display: inline-block;
   background: var(--star-command-blue);
   height: 30px;
+  width: 60%;
   color: #fff;
   border: none;
   padding: 0rem 1rem 0rem 1rem;
@@ -94,10 +96,11 @@ ul {
   text-decoration: none;
   font-size: 14px;
   font-family: inherit;
+  align-self: center;
 }
 
 .btn:hover {
-  background-color: var(--pacific-blue);
+  box-shadow: 0px 0px 5px 2px rgb(255, 0, 0);
 }
 
 .activity {

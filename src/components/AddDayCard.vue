@@ -55,7 +55,15 @@ ul {
   max-width: 300px;
 }
 
+.newCard:hover {
+  background: var(--pacific-blue);
+}
+
 .plus-sign {
   height: 10em;
+}
+
+a:hover {
+  background: none;
 }
 </style>
