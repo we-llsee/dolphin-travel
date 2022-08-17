@@ -51,7 +51,6 @@ export default {
   props: ["day"],
   components: {
     LMap,
-
     LTileLayer,
     LMarker,
     LIcon,
@@ -110,7 +109,12 @@ export default {
   },
 };
 </script>
+
 <style scoped>
+.leaflet-container {
+  height: 80%;
+}
+
 .map {
   margin-top: 1rem;
 }
