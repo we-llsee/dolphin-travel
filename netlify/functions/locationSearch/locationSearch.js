@@ -5,7 +5,7 @@ const handler = async function (event) {
     const { q } = event.queryStringParameters;
     const { countrycodes } = event.queryStringParameters;
     let { viewbox } = event.queryStringParameters;
-    const key = process.env.LOCATIONIQ_KEY
+    const key = process.env.LOCATIONIQ_KEY;
 
     if (viewbox === undefined) {
       viewbox = "";
