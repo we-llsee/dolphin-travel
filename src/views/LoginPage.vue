@@ -35,8 +35,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin: 1rem;
+  justify-content: center;
 }
 
 #loginAs {
