@@ -2,11 +2,7 @@
   <div class="User">
     <router-link to="/"
       ><button class="btn" @click="loginHandler">
-        <img
-          class="logo"
-          :src= user.avatarURL
-          alt="Dolphin logo"
-        /></button
+        <img class="logo" :src="user.avatarURL" alt="Dolphin logo" /></button
     ></router-link>
     <p>{{ user._id }}</p>
   </div>
@@ -29,8 +25,8 @@ export default {
 <style scoped>
 .User {
   display: flex;
-  padding: 1rem 0.5rem;
-  border: 1px solid lightgray;
+  padding: 1rem rem;
+  /* border: 1px solid lightgray; */
   border-radius: 10px;
   width: 150px;
   height: 100%;
@@ -41,15 +37,19 @@ export default {
 }
 
 a {
-  padding: 15px;
+  padding: 3px;
 }
 
 .logo {
-  width: 60px;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .btn {
-  width: 50px;
+  width: 90px;
+  height: 90px;
   padding: 0;
   background: none;
 }
