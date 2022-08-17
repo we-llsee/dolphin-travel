@@ -87,7 +87,7 @@
       </select>
       <button class="btn" @click="patchTrip">Save</button>
       <button class="btn" @click="resetForm">Reset Form</button>
-      accom: {{ accom }}
+     
     </div>
   </form>
 </template>
@@ -103,9 +103,9 @@ export default {
       attendee: "",
       attending: [],
       trip: {},
-      budgetGBP: 0,
-      startDate: "",
-      endDate: "",
+      budgetGBP: undefined,
+      startDate: undefined,
+      endDate: undefined,
       accommodationName: "",
       isClicked: false,
       accommodations: [],
@@ -124,9 +124,9 @@ export default {
       this.attendee = "";
       this.attending = [];
       this.trip = {};
-      this.budgetGBP = "";
-      this.startDate = "";
-      this.endDate = "";
+      this.budgetGBP = undefined;
+      this.startDate = undefined;
+      this.endDate = undefined;
       this.accommodationName = "";
       this.isClicked = false;
       this.accommodations = [];
@@ -233,9 +233,6 @@ export default {
           this.trip = trip;
           this.attending = trip.attending;
           this._id = trip._id;
-          this.budgetGBP = trip.budgetGBP;
-          this.startDate = trip.startDate;
-          this.endDate = trip.endDate;
           this.country = trip.accommodation.address.country;
           this.accommodationName = trip.accommodationName;
         })
