@@ -56,7 +56,7 @@ ul {
 }
 
 .newCard:hover {
-  background: var(--pacific-blue);
+  background: var(--light-cyan);
 }
 
 .plus-sign {
