@@ -21,6 +21,7 @@
           </div>
         </router-link>
       </li>
+
       <button
         @click="
           $emit('deleteDay', {
@@ -92,7 +93,7 @@ ul {
   display: block;
   padding: 0.5rem;
   max-width: 300px;
-  min-height: 250px;
+  min-height: 270px;
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -101,6 +102,7 @@ ul {
   margin: 0.5rem;
   list-style: none;
 }
+
 .btn {
   display: inline-block;
   background: var(--star-command-blue);
@@ -109,7 +111,7 @@ ul {
   color: #fff;
   border: none;
   padding: 0rem 1rem 0rem 1rem;
-  margin: 0px 5px 5px 5px;
+  margin: 0px 0px 0px 0px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
@@ -118,8 +120,13 @@ ul {
   align-self: center;
 }
 
+a {
+  display: inline-block;
+  min-height: 100%;
+}
+
 .day-card:hover {
-  box-shadow: 0px 0px 5px 2px var(--pacific-blue);
+  box-shadow: 0px 0px 5px 2px var(--middle-blue);
 }
 
 .btn:hover {
