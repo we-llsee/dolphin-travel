@@ -1,5 +1,5 @@
 <template>
-  <p>Activity page</p>
+  <p>Add Activity page</p>
 
   <div style="height: 75vh; width: 59vw">
     <l-map
@@ -52,7 +52,7 @@ import "leaflet/dist/leaflet.css";
 import axios from "axios";
 
 export default {
-  name: "AddNewActivities",
+  name: "AllActivities",
 
   components: {
     LMap,
