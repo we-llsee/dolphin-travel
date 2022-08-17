@@ -1,40 +1,43 @@
 <template>
-  <p>Activity page</p>
-
-  <div style="height: 75vh; width: 59vw">
-    <l-map
-      v-model="zoom"
-      v-model:zoom="zoom"
-      :center="[this.accomLat, this.accomLong]"
-      @move="log('move')"
-    >
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      ></l-tile-layer>
-      <l-control-layers />
-      <l-marker :lat-lng="[this.accomLat, this.accomLong]">
-        <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
-        <l-popup> You are staying at {{ accom }} </l-popup>
-      </l-marker>
-
-      <l-marker
-        :key="attraction.address.postcode"
-        v-for="attraction in attractions"
-        :lat-lng="[attraction.lat, attraction.lon]"
+  <div>
+    <p id="activityPageTitle">Activities planned for today:</p>
+    <div class="activityList">
+      <div class="listItem" :key="activity._id" v-for="activity in activities">
+        <p class="listItemName">{{ activity.activityName }}</p>
+        <button class="btn" @click="deleteActivity(activity._id)">
+          Delete
+        </button>
+      </div>
+    </div>
+    <div class="map" style="height: 75vh; width: 100%">
+      <l-map
+        v-model="zoom"
+        v-model:zoom="zoom"
+        :center="[this.accomLat, this.accomLong]"
       >
-        <l-popup>
-          Address: {{ attraction.display_name }} <br />
-          Attraction type: {{ attraction.type }} <br />{{
-            attraction.distance
-          }}m Away from you <br />
-          <button @click="addActivities(attraction)">Add attraction</button>
-        </l-popup>
-      </l-marker>
-    </l-map>
-    <h3>Today you are going to :</h3>
-    <div :key="activity._id" v-for="activity in activities">
-      {{ activity.activityName }}
-      <button @click="deleteActivity(activity._id)">Delete Activity</button>
+        <l-tile-layer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        ></l-tile-layer>
+        <l-control-layers />
+        <l-marker :lat-lng="[this.accomLat, this.accomLong]">
+          <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
+          <l-popup> You are staying at {{ accom }} </l-popup>
+        </l-marker>
+
+        <l-marker
+          :key="attraction.address.postcode"
+          v-for="attraction in attractions"
+          :lat-lng="[attraction.lat, attraction.lon]"
+        >
+          <l-popup>
+            Address: {{ attraction.display_name }} <br />
+            Attraction type: {{ attraction.type }} <br />{{
+              attraction.distance
+            }}m Away from you <br />
+            <button @click="addActivities(attraction)">Add attraction</button>
+          </l-popup>
+        </l-marker>
+      </l-map>
     </div>
   </div>
 </template>
@@ -164,3 +167,37 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#activityPageTitle {
+  font-family: "Reenie Beanie";
+  font-size: 50px;
+  color: var(--midnight-blue);
+  margin-top: -0.5rem;
+}
+
+.map {
+  padding: 1rem;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listItem {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  margin-left: 1rem;
+}
+
+.btn:hover {
+  box-shadow: 0px 0px 5px 2px rgb(255, 0, 0);
+}
+</style>
