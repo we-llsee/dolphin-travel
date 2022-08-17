@@ -1,20 +1,19 @@
 <script>
 import TripCard from "../components/TripCard.vue";
 
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "CurrentTrips",
   components: {
     TripCard,
-    
   },
-  data(){
-return {
-currTrips: [],
-}
+  data() {
+    return {
+      currTrips: [],
+    };
   },
-  created(){
+  created() {
     if (this.$store.state.loggedInUser != "GUEST") {
       this.loggedIn = true;
       axios
@@ -30,7 +29,7 @@ currTrips: [],
           console.log(err);
         });
     }
-  }
+  },
 };
 </script>
 
