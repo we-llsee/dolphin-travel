@@ -10,6 +10,7 @@
       <span class="subtitle">Dive into your next adventure</span>
     </div>
     <div class="loginInfo">
+      <UserCard :user="this.$store.state.loggedInUserObj" />
       <p id="loggedinDesc">Logged in as {{ $store.state.loggedInUser }}</p>
     </div>
   </header>
@@ -18,12 +19,15 @@
 
 <script>
 import NavigationBar from "./NavigationBar.vue";
+import UserCard from "./UserCard.vue"
+// import axios from 'axios'
 
 export default {
   name: "AppHeader",
   components: {
     NavigationBar,
-  },
+    UserCard
+  }
 };
 </script>
 

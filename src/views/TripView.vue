@@ -13,11 +13,15 @@ export default {
       isToggled: false,
     };
   },
-  methods: {
+  methods: {  
+      goBack() {
+        window.history.go(-1);
+      },
     toggleTrip() {
       this.isToggled = !this.isToggled;
     },
   },
+  
 };
 </script>
 
@@ -32,6 +36,7 @@ export default {
       <button class="btn">View All Activities</button></router-link
     >
     <button class="btn" @click="toggleTrip">Edit Trip</button>
+    <button class="btn" @click="goBack">Go Back</button>
   </div>
 </template>
 //asssign days
