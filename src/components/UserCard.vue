@@ -4,7 +4,7 @@
       ><button class="btn" @click="loginHandler">
         <img
           class="logo"
-          src="https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg"
+          :src= user.avatarURL
           alt="Dolphin logo"
         /></button
     ></router-link>
