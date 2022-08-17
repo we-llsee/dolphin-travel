@@ -52,9 +52,7 @@ export default {
     },
   },
   methods: {
-    log(a) {
-      console.log(a);
-    },
+    log() {},
     deleteActivity(dayId, actId) {
       if (confirm("Are you sure you want to delete this activity?")) {
         axios

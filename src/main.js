@@ -7,7 +7,7 @@ import "./assets/main.css";
 const store = createStore({
   state() {
     return {
-      loggedInUser: "GUEST",
+      loggedInUser: "Guest",
       loggedInUserObj: {
         _id: "Guest",
         avatarURL:

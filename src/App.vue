@@ -23,7 +23,6 @@ export default {
   methods: {
     // deleteTrip(id) {
     //   alert("Are you sure you want to delete this trip?");
-    //   console.log(id);
     //   this.trips = this.trips.filter((trip) => {
     //     return trip._id !== id;
     //   });

@@ -9,7 +9,7 @@ export default {
     TripCard,
   },
   created() {
-    if (this.$store.state.loggedInUser != "GUEST") {
+    if (this.$store.state.loggedInUser != "Guest") {
       this.loggedIn = true;
       axios
         .get(
@@ -20,9 +20,7 @@ export default {
             return new Date() > new Date(trip.endDate);
           });
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {});
     } else {
       this.loggedIn = false;
     }

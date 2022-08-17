@@ -31,7 +31,6 @@ const handler = async function (event) {
       body: JSON.stringify({ msg: response.data }),
     };
   } catch (error) {
-    console.log(error);
     return {
       statusCode: 500,
       body: JSON.stringify({ msg: "Server Error" }),

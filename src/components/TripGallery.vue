@@ -42,7 +42,7 @@ export default {
   },
 
   created() {
-    if (this.$store.state.loggedInUser != "GUEST") {
+    if (this.$store.state.loggedInUser != "Guest") {
       this.loggedIn = true;
       axios
         .get(
@@ -51,9 +51,7 @@ export default {
         .then((response) => {
           this.trips = response.data.trips;
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {});
     }
   },
 };
