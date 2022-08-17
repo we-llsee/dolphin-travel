@@ -275,7 +275,9 @@ export default {
 .saveBtn {
   align-self: center;
   width: 100%;
-  padding: 5px;
+  padding: 1px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   margin: 0;
   text-align: center;
 }
