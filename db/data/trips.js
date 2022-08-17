@@ -249,8 +249,8 @@ module.exports = [
   {
     tripName: "Solo Rome Trip",
     attending: ["jesskemp"],
-    startDate: new Date(2023, 5, 14),
-    endDate: new Date(2023, 5, 25),
+    startDate: new Date(2021, 5, 14),
+    endDate: new Date(2021, 5, 25),
     budgetGBP: 1200,
     country: "Italy",
     accommodation: {
