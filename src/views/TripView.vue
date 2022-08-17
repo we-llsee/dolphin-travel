@@ -28,7 +28,6 @@ export default {
     <p>Welcome to the trip view</p>
     <DayGallery />
     <EditTrip v-if="isToggled" />
-    isToggled: {{ isToggled }}
     <router-link :to="'/trips/' + $route.params.tripId + '/map'"
       ><button class="btn">View map</button></router-link
     >

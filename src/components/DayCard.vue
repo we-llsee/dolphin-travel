@@ -9,10 +9,13 @@
           :day="day"
         >
           <h2>Day #{{ day.dayNumber }}</h2>
-          <div v-if="day.activities.length > 0">
-            <p>{{ day.activities[0].activityName }}</p>
-            <p class="type">{{ day.activities[0].type }}</p>
+          <div class="day-font" v-if="activities.length > 0">
+            <div :key="activity._id" v-for="activity in activities">
+              <span>{{ activity.activityName }}&nbsp; - &nbsp;</span>
+              <span class="type">{{ activity.type.replace(/_/g, " ") }}</span>
+            </div>
           </div>
+          Click to see more activites
         </router-link>
         <button
           @click="
@@ -37,12 +40,20 @@ export default {
   data() {
     return {
       isBooked: false,
+      activities: [],
     };
+  },
+
+  created() {
+    this.activities = [...this.day.activities.slice(0, 3)];
   },
 };
 </script>
 
 <style scoped>
+.day-font {
+  font-size: 13px;
+}
 body {
   margin: 20px auto;
   font-family: "Lato";
@@ -59,8 +70,11 @@ h2 {
   font-size: 1rem;
 }
 p {
+  font-size: 0.8rem;
+}
+span {
   font-family: "Reenie Beanie";
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 ul,
 li {
