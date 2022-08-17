@@ -67,7 +67,6 @@ export default {
       })
       .then((trip) => {
         const days = trip[0].days.sort((a, b) => a.dayNumber - b.dayNumber);
-        console.log(days);
         this.days = days;
       })
 

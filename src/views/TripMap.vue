@@ -3,22 +3,14 @@
     <l-map
       v-model="zoom"
       v-model:zoom="zoom"
-      :center="[
-        accommodation.latitude.toString(),
-        accommodation.longitude.toString(),
-      ]"
+      :center="[this.accomLat, this.accomLong]"
     >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       ></l-tile-layer>
       <l-control-layers />
 
-      <l-marker
-        :lat-lng="[
-          accommodation.latitude.toString(),
-          accommodation.longitude.toString(),
-        ]"
-      >
+      <l-marker :lat-lng="[this.accomLat, this.accomLong]">
         <l-icon :iconUrl="iconUrl" :icon-size="iconSize"></l-icon>
         <l-popup> {{ accommodation.accommodationName }} </l-popup>
       </l-marker>
@@ -63,6 +55,8 @@ export default {
       zoom: 13,
       iconWidth: 40,
       iconHeight: 40,
+      accomLong: 0,
+      accomLat: 0,
       trip: Object,
       accommodation: Object,
       allActivities: Array,
@@ -96,6 +90,8 @@ export default {
       .then(({ data: { trip } }) => {
         this.trip = trip;
         this.accommodation = trip.accommodation;
+        this.accomLong = trip.accommodation.longitude;
+        this.accomLat = trip.accommodation.latitude;
         const allActivities = [];
         const days = trip.days;
         for (let i = 0; i < days.length; i++) {
