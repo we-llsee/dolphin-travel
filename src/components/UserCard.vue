@@ -1,11 +1,14 @@
 <template>
   <div class="User">
-    <p>{{ user._id }}</p>
     <router-link to="/"
-      ><button class="loginbtn" @click="loginHandler">
-        Login as {{ user._id }}
-      </button></router-link
-    >
+      ><button class="btn" @click="loginHandler">
+        <img
+          class="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg"
+          alt="Dolphin logo"
+        /></button
+    ></router-link>
+    <p>{{ user._id }}</p>
   </div>
 </template>
 
@@ -27,11 +30,30 @@ export default {
 .User {
   display: flex;
   padding: 1rem 0.5rem;
-  background: lightblue;
-  width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  width: 150px;
+  height: 100%;
   margin-bottom: 1rem;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+a {
+  padding: 15px;
+}
+
+.logo {
+  width: 60px;
+}
+
+.btn {
+  width: 50px;
+  padding: 0;
+  background: none;
+}
+a:hover {
+  border-radius: 50%;
 }
 </style>

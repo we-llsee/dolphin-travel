@@ -1,16 +1,17 @@
 <template>
   <header>
-    <div class="logowrapper"></div>
     <img
       class="logo"
       src="https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg"
+      alt="Dolphin logo"
     />
     <div class="logotext">
       <span class="maintitle">Dolphin Travels</span>
       <span class="subtitle">Dive into your next adventure</span>
     </div>
-    <p>Logged in as {{ $store.state.loggedInUser }}</p>
-    <router-link to="/login"><button class="btn">Login</button></router-link>
+    <div class="loginInfo">
+      <p id="loggedinDesc">Logged in as {{ $store.state.loggedInUser }}</p>
+    </div>
   </header>
   <NavigationBar class="nav-bar" />
 </template>
@@ -28,46 +29,41 @@ export default {
 
 <style scoped>
 .maintitle {
-  font-size: 30px;
+  font-family: "Reenie Beanie";
+  font-size: 50px;
   font-weight: bold;
-  color: #002fff;
+  color: var(--midnight-blue);
 }
 
 .logotext {
+  font-size: 14px;
   display: flex;
   flex-direction: column;
 }
 
-.logowrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .logo {
-  height: 200px;
+  height: 150px;
 }
 
 header {
-  padding: 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  background-color: #f7f7f7;
 }
 
-.btn {
-  display: inline-block;
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 15px;
-  font-family: inherit;
+#loggedinDesc {
+  padding-bottom: 0.5rem;
+  font-size: 14px;
+  padding-top: 1rem;
+}
+
+.loginInfo {
+  padding-top: 1.5rem;
+}
+
+.nav-bar {
+  display: flex;
+  margin-top: -1.2rem;
 }
 
 .btn:focus {
