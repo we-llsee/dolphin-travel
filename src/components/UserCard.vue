@@ -30,7 +30,7 @@ export default {
 .User {
   display: flex;
   padding: 1rem 0.5rem;
-  border: 1px solid var(--midnight-blue);
+  border: 1px solid lightgray;
   border-radius: 10px;
   width: 150px;
   height: 100%;
