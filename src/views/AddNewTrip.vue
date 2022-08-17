@@ -169,8 +169,9 @@ export default {
         .get(
           `https://dolphin-travel.netlify.app/.netlify/functions/locationSearch?q=${this.hotelName}&countrycodes=${this.country.code}`
         )
-        .then(({ msg }) => {
-          this.accommodations = msg;
+        .then((res) => {
+          this.accommodations = res.data.msg;
+          // console.log(res.data.msg)
         })
         .catch((err) => {
           if (err.code === "ERR_BAD_REQUEST") {
