@@ -96,14 +96,14 @@
         </li>
       </ul>
     </div>
+    <router-link :to="'/trips/' + $route.params.tripId">
+      <input
+        @click="saveTrip"
+        type="submit"
+        value="Save trip"
+        class="btn btn-block"
+    /></router-link>
   </form>
-  <router-link :to="'/trips/' + $route.params.tripId">
-    <input
-      @click="saveTrip"
-      type="submit"
-      value="Save trip"
-      class="btn btn-block"
-  /></router-link>
 </template>
 
 <script>
@@ -180,7 +180,6 @@ export default {
         )
         .then((res) => {
           this.accommodations = res.data.msg;
-          // console.log(res.data.msg)
         })
         .catch((err) => {
           if (err.code === "ERR_BAD_REQUEST") {

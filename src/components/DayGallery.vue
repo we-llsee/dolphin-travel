@@ -67,7 +67,6 @@ export default {
       })
       .then((trip) => {
         const days = trip[0].days.sort((a, b) => a.dayNumber - b.dayNumber);
-        console.log(days);
         this.days = days;
       })
 
@@ -86,7 +85,7 @@ export default {
 }
 .day-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
   grid-gap: 16px;
   justify-content: center;
   margin-top: -1rem;

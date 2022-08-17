@@ -1,5 +1,46 @@
 <template>
-  <p>Activity page</p>
+  <div>
+    <p id="activityPageTitle">Activities planned for today:</p>
+    <div class="activityList">
+      <div class="listItem" :key="activity._id" v-for="activity in activities">
+        <p class="listItemName">{{ activity.activityName }}</p>
+        <button class="btn" @click="deleteActivity(activity._id)">
+          Delete
+        </button>
+      </div>
+    </div>
+    <div class="map" style="height: 75vh; width: 100%">
+      <l-map
+        v-model="zoom"
+        v-model:zoom="zoom"
+        :center="[this.accomLat, this.accomLong]"
+      >
+        <l-tile-layer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        ></l-tile-layer>
+        <l-control-layers />
+        <l-marker :lat-lng="[this.accomLat, this.accomLong]">
+          <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
+          <l-popup> You are staying at {{ accom }} </l-popup>
+        </l-marker>
+
+        <l-marker
+          :key="attraction.address.postcode"
+          v-for="attraction in attractions"
+          :lat-lng="[attraction.lat, attraction.lon]"
+        >
+          <l-popup>
+            Address: {{ attraction.display_name }} <br />
+            Attraction type: {{ attraction.type }} <br />{{
+              attraction.distance
+            }}m Away from you <br />
+            <button @click="addActivities(attraction)">Add attraction</button>
+          </l-popup>
+        </l-marker>
+      </l-map>
+    </div>
+  </div>
+  <p>Nearby Activities</p>
 
   <div style="height: 75vh; width: 59vw">
     <l-map
@@ -24,13 +65,42 @@
       >
         <l-popup>
           Address: {{ attraction.display_name }} <br />
-          Attraction type: {{ attraction.type }} <br />{{
-            attraction.distance
-          }}m Away from you <br />
+          Attraction type: {{ attraction.type }} <br />
+          <div v-if="attraction.distance != undefined">
+            {{ attraction.distance }}m Away from you <br />
+          </div>
           <button @click="addActivities(attraction)">Add attraction</button>
         </l-popup>
       </l-marker>
     </l-map>
+    <div class="search-activities">
+      <div>
+        <label for="activity">Search activities nearby</label>
+        <div class="boxAndButton">
+          <input v-model="searchTerm" type="text" name="results" id="result" />
+          <button @click="searchActivities" class="btn">Search</button>
+        </div>
+        <div class="back-button">
+          <button class="btn" @click="goBack">Go Back</button>
+        </div>
+      </div>
+      <select name="" id="result-select" v-show="isClicked" v-model="result">
+        <option value="">Search Results</option>
+        <option
+          :key="result.place_id"
+          v-for="result in results"
+          :value="result"
+        >
+          {{ result.display_name }}
+        </option>
+      </select>
+      <input
+        @click="addActivities(result)"
+        type="submit"
+        value="Add Activity"
+        class="btn btn-block"
+      />
+    </div>
     <h3>Today you are going to :</h3>
     <div :key="activity._id" v-for="activity in activities">
       {{ activity.activityName }}
@@ -52,7 +122,7 @@ import "leaflet/dist/leaflet.css";
 import axios from "axios";
 
 export default {
-  name: "AddNewActivities",
+  name: "AllActivities",
 
   components: {
     LMap,
@@ -64,6 +134,7 @@ export default {
   },
   data() {
     return {
+      searchTerm: "",
       zoom: 14,
       iconWidth: 40,
       iconHeight: 40,
@@ -72,6 +143,9 @@ export default {
       accomLat: 0,
       attractions: [],
       activities: [],
+      isClicked: false,
+      results: [],
+      result: undefined,
     };
   },
 
@@ -84,6 +158,27 @@ export default {
     },
   },
   methods: {
+    goBack(){
+    window.history.go(-1)
+    },
+    searchActivities(e) {
+      e.preventDefault();
+      this.isClicked = true;
+      axios
+        .get(
+          `https://eu1.locationiq.com/v1/search?key=pk.925883abdd6280b4428e57337de16f23&q=${
+            this.searchTerm
+          }&bounded=1&viewbox=${(this.accomLong + 0.05).toFixed(2)},${(
+            this.accomLat + 0.05
+          ).toFixed(2)},${(this.accomLong - 0.05).toFixed(2)},${(
+            this.accomLat - 0.05
+          ).toFixed(2)}&addressdetails=1&format=json&normalizeaddress=1`
+        )
+        .then(({ data }) => {
+          console.log(data);
+          this.results = data;
+        });
+    },
     log(a) {
       console.log(a);
     },
@@ -114,8 +209,9 @@ export default {
           type: attraction.type,
         },
       }).then(({ data: { activity } }) => {
-        console.log(activity, "res");
         this.activities.push(activity);
+
+        this.attractions.push(this.result);
       });
     },
     deleteActivity(id) {
@@ -164,3 +260,37 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#activityPageTitle {
+  font-family: "Reenie Beanie";
+  font-size: 50px;
+  color: var(--midnight-blue);
+  margin-top: -0.5rem;
+}
+
+.map {
+  padding: 1rem;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listItem {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  margin-left: 1rem;
+}
+
+.btn:hover {
+  box-shadow: 0px 0px 5px 2px rgb(255, 0, 0);
+}
+</style>
