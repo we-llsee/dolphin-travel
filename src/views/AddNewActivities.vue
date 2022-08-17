@@ -175,13 +175,10 @@ export default {
           ).toFixed(2)}&addressdetails=1&format=json&normalizeaddress=1`
         )
         .then(({ data }) => {
-          console.log(data);
           this.results = data;
         });
     },
-    log(a) {
-      console.log(a);
-    },
+    log() {},
     changeIcon() {
       this.iconWidth += 2;
       if (this.iconWidth > this.iconHeight) {
@@ -254,7 +251,6 @@ export default {
         `https://dolphin-travel.herokuapp.com/api/trips/${this.$route.params.tripId}/${this.$route.params.dayId}/activities?username=${this.$store.state.loggedInUser}`
       )
       .then(({ data: { activities } }) => {
-        console.log(activities);
         this.activities = activities;
       });
   },

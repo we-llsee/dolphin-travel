@@ -20,9 +20,7 @@ export default {
             return new Date() > new Date(trip.endDate);
           });
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {});
     } else {
       this.loggedIn = false;
     }

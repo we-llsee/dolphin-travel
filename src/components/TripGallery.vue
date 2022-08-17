@@ -51,9 +51,7 @@ export default {
         .then((response) => {
           this.trips = response.data.trips;
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {});
     }
   },
 };
