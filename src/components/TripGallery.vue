@@ -3,7 +3,7 @@
     <p id="loginReminder">Please login to view your trips.</p>
   </div>
   <div class="cardGalley" v-if="trips.length != 0">
-    <p id="upcomingText">These are your upcoming trips...</p>
+    <p id="upcomingText">All Trips</p>
     <div class="cardHolder" :key="trip._id" v-for="trip in trips">
       <TripCard :trip="trip" @delete-trip="deleteTrip" />
     </div>
@@ -61,8 +61,12 @@ export default {
 
 <style scoped>
 #upcomingText {
-  font-size: 14px;
-  margin-top: 0.4rem;
+  font-family: "Reenie Beanie";
+  font-size: 50px;
+  color: var(--midnight-blue);
+  margin-top: -0.5rem;
+  margin-bottom: -1rem;
+  width: 60%;
 }
 
 .cardGalley {
