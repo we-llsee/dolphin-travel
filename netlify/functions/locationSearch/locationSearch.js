@@ -4,14 +4,14 @@ const handler = async function (event) {
   try {
     let { q } = event.queryStringParameters;
     let { countrycodes } = event.queryStringParameters;
-    let { viewbox } = event.queryStringParameters
+    let { viewbox } = event.queryStringParameters;
 
-    if(viewbox===undefined){
-      console.log(viewbox)
-      viewbox='';
+    if (viewbox === undefined) {
+      console.log(viewbox);
+      viewbox = "";
     } else {
-      viewbox = '&viewbox=' + viewbox + '&bounded=1'
-      console.log(viewbox)
+      viewbox = "&viewbox=" + viewbox + "&bounded=1";
+      console.log(viewbox);
     }
 
     const response = await axios.get(
