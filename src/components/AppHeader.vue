@@ -10,6 +10,7 @@
       <span class="subtitle">Dive into your next adventure</span>
     </div>
     <div class="loginInfo">
+      <UserCard :user="this.userData" />
       <p id="loggedinDesc">Logged in as {{ $store.state.loggedInUser }}</p>
     </div>
   </header>
@@ -18,12 +19,27 @@
 
 <script>
 import NavigationBar from "./NavigationBar.vue";
+import UserCard from "./UserCard.vue"
+import axios from 'axios'
 
 export default {
   name: "AppHeader",
   components: {
     NavigationBar,
+    UserCard
   },
+  data()  {
+    return {userData: {_id:this.$store.state.loggedInUser}}
+  },
+  updated() {
+    return axios.get(`https://dolphin-travel.herokuapp.com/api/users/${this.$store.state.loggedInUser}?username=willclegg`).then((res)=>{
+      console.log(res.data)
+      console.log('XXXXXXxxXXXXXXXXXXX')
+      if(res.status===200){
+        this.userData=res.data.user
+      } 
+    });
+  }
 };
 </script>
 
