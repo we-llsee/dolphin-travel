@@ -13,15 +13,14 @@ export default {
       isToggled: false,
     };
   },
-  methods: {  
-      goBack() {
-        window.history.go(-1);
-      },
+  methods: {
+    goBack() {
+      window.history.go(-1);
+    },
     toggleTrip() {
       this.isToggled = !this.isToggled;
     },
   },
-  
 };
 </script>
 

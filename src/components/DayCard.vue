@@ -75,7 +75,7 @@ span {
 ul,
 li {
   list-style: none;
-  overflow: scroll;
+  overflow: hidden;
   height: 80%;
 }
 
