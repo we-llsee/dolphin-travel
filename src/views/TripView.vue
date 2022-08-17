@@ -35,3 +35,16 @@ export default {
   </div>
 </template>
 //asssign days
+
+<style scoped>
+@media (hover: hover) {
+  .btn:hover {
+    box-shadow: 0px 0px 0px 5px var(--light-cyan);
+  }
+
+  .btn {
+    text-decoration: none;
+    transition: 0.4s;
+  }
+}
+</style>

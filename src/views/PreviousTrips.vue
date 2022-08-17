@@ -45,7 +45,6 @@ export default {
 </template>
 
 <style scoped>
-
 .cardGalley {
   display: flex;
   flex-direction: column;

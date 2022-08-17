@@ -1,9 +1,6 @@
 <template>
   <div v-if="loggedIn === false">
-    <p>Please login first to view your trips</p>
-    <router-link to="/login"
-      ><button class="loginbtn">Login</button></router-link
-    >
+    <p id="loginReminder">Please login to view your trips.</p>
   </div>
   <div class="cardGalley" v-if="trips.length != 0">
     <p id="upcomingText">These are your upcoming trips...</p>
@@ -72,5 +69,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#loginReminder {
+  font-size: 14px;
+  margin: 5rem;
 }
 </style>
