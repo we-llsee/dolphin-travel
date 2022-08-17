@@ -72,9 +72,7 @@ export default {
     },
   },
   methods: {
-    log(a) {
-      console.log(a);
-    },
+    log() {},
     changeIcon() {
       this.iconWidth += 2;
       if (this.iconWidth > this.iconHeight) {

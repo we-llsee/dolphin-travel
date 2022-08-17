@@ -37,7 +37,6 @@ export default {
             return day.dayNumber;
           });
           // eslint-disable-next-line prettier/prettier
-          console.log(this.days);
           this.daysBetween =
             (new Date(data.trip.endDate) - new Date(data.trip.startDate)) /
             (1000 * 3600 * 24);
@@ -49,15 +48,14 @@ export default {
           this.difference = this.daysAvailable.filter((day) => {
             return !this.days.includes(day);
           });
-          console.log(this.difference);
         });
     }
   },
 
   methods: {
-      goBack() {
-        window.history.go(-1);
-      },
+    goBack() {
+      window.history.go(-1);
+    },
     saveDay(day) {
       axios({
         method: "post",
@@ -73,10 +71,7 @@ export default {
             `/trips/${this.$route.params.tripId}/${this.newDayId}/add-activities`
           );
         })
-        .catch((err) => {
-          console.log(this.day);
-          console.log(err);
-        });
+        .catch(() => {});
     },
   },
 };

@@ -219,7 +219,6 @@ export default {
         )
         .then((res) => {
           this.accommodations = res.data.msg;
-          // console.log(res.data.msg);
         })
         .catch((err) => {
           if (err.code === "ERR_BAD_REQUEST") {
@@ -244,9 +243,7 @@ export default {
           this.country = trip.accommodation.address.country;
           this.accommodationName = trip.accommodationName;
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {});
       axios
         .get("https://dolphin-travel.herokuapp.com/api/users?username=alexrong")
         .then(({ data: { users } }) => {

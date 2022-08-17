@@ -70,9 +70,7 @@ export default {
         this.days = days;
       })
 
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(() => {});
   },
 };
 </script>

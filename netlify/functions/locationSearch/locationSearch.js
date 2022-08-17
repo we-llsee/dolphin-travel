@@ -5,7 +5,7 @@ const handler = async function (event) {
     const { q } = event.queryStringParameters;
     const { countrycodes } = event.queryStringParameters;
     let { viewbox } = event.queryStringParameters;
-    const key = process.env.LOCATIONIQ_KEY
+    const key = process.env.LOCATIONIQ_KEY;
 
     if (viewbox === undefined) {
       viewbox = "";
@@ -31,7 +31,6 @@ const handler = async function (event) {
       body: JSON.stringify({ msg: response.data }),
     };
   } catch (error) {
-    console.log(error);
     return {
       statusCode: 500,
       body: JSON.stringify({ msg: "Server Error" }),
