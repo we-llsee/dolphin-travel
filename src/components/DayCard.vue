@@ -118,6 +118,10 @@ ul {
   align-self: center;
 }
 
+.day-card:hover {
+  box-shadow: 0px 0px 5px 2px var(--pacific-blue);
+}
+
 .btn:hover {
   box-shadow: 0px 0px 5px 2px rgb(255, 0, 0);
 }

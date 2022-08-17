@@ -36,6 +36,10 @@ p {
   padding: 0;
 }
 
+.newCard:hover {
+  box-shadow: 0px 0px 5px 2px var(--pacific-blue);
+}
+
 ul,
 li {
   list-style: none;
@@ -56,7 +60,7 @@ ul {
 }
 
 .newCard:hover {
-  background: var(--light-cyan);
+  background: var(--pacific-blue);
 }
 
 .plus-sign {
