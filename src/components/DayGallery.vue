@@ -37,7 +37,7 @@ export default {
 
   methods: {
     deleteDay({ tripId, dayId }) {
-      if (confirm("Are you sure you want to delete this trip?")) {
+      if (confirm("Are you sure you want to delete this day?")) {
         axios
           .delete(
             `https://dolphin-travel.herokuapp.com/api/trips/${tripId}/${dayId}?username=${this.$store.state.loggedInUser}`
