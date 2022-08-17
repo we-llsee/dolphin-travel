@@ -40,8 +40,6 @@ export default {
             });
             alert("Trip deleted");
           });
-      } else {
-        console.log("Trip was not deleted");
       }
     },
   },
