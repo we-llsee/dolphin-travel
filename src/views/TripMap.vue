@@ -1,4 +1,7 @@
 <template>
+  <div class="back-button">
+    <button class="btn" @click="goBack">Go Back</button>
+  </div>
   <div class="map" style="height: 60vh; width: 100%">
     <l-map
       v-model="zoom"
@@ -81,6 +84,9 @@ export default {
         this.iconWidth = Math.floor(this.iconHeight / 2);
       }
     },
+    goBack() {
+      window.history.go(-1);
+    },
   },
   created() {
     return axios
@@ -111,6 +117,21 @@ export default {
   height: 80%;
 }
 
+@media (hover: hover) {
+  .btn:hover {
+    box-shadow: 0px 0px 0px 5px var(--light-cyan);
+  }
+
+  .btn {
+    text-decoration: none;
+    transition: 0.4s;
+  }
+}
+
+.back-button {
+  text-align: left;
+  margin-left: 1rem;
+}
 .map {
   margin-top: 1rem;
 }
