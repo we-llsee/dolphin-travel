@@ -25,87 +25,63 @@
         </l-marker>
 
         <l-marker
+          :key="activity._id"
+          v-for="activity in activities"
+          :lat-lng="[activity.latitude, activity.longitude]"
+        >
+          <l-icon :icon-url="redIconUrl" :icon-size="iconSize" />
+          <l-popup>
+            You are visiting here today! <br />
+            Address: {{ activity.activityName }} <br />
+            Attraction type: {{ activity.type }} <br />
+            <button @click="deleteActivity(activity._id)">
+              Delete Activity
+            </button>
+          </l-popup>
+        </l-marker>
+
+        <l-marker
           :key="attraction.address.postcode"
           v-for="attraction in attractions"
           :lat-lng="[attraction.lat, attraction.lon]"
         >
           <l-popup>
             Address: {{ attraction.display_name }} <br />
-            Attraction type: {{ attraction.type }} <br />{{
-              attraction.distance
-            }}m Away from you <br />
+            Attraction type: {{ attraction.type }} <br />
+            <div v-if="attraction.distance != undefined">
+              {{ attraction.distance }}m Away from you <br />
+            </div>
+
             <button @click="addActivities(attraction)">Add attraction</button>
           </l-popup>
         </l-marker>
       </l-map>
     </div>
   </div>
-  <p>Nearby Activities</p>
 
-  <div style="height: 75vh; width: 59vw">
-    <l-map
-      v-model="zoom"
-      v-model:zoom="zoom"
-      :center="[this.accomLat, this.accomLong]"
-      @move="log('move')"
-    >
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      ></l-tile-layer>
-      <l-control-layers />
-      <l-marker :lat-lng="[this.accomLat, this.accomLong]">
-        <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
-        <l-popup> You are staying at {{ accom }} </l-popup>
-      </l-marker>
-
-      <l-marker
-        :key="attraction.address.postcode"
-        v-for="attraction in attractions"
-        :lat-lng="[attraction.lat, attraction.lon]"
-      >
-        <l-popup>
-          Address: {{ attraction.display_name }} <br />
-          Attraction type: {{ attraction.type }} <br />
-          <div v-if="attraction.distance != undefined">
-            {{ attraction.distance }}m Away from you <br />
-          </div>
-          <button @click="addActivities(attraction)">Add attraction</button>
-        </l-popup>
-      </l-marker>
-    </l-map>
-    <div class="search-activities">
-      <div>
-        <label for="activity">Search activities nearby</label>
-        <div class="boxAndButton">
-          <input v-model="searchTerm" type="text" name="results" id="result" />
-          <button @click="searchActivities" class="btn">Search</button>
-        </div>
-        <div class="back-button">
-          <button class="btn" @click="goBack">Go Back</button>
-        </div>
+  <div class="search-activities">
+    <div>
+      <label for="activity">Search activities nearby</label>
+      <div class="boxAndButton">
+        <input v-model="searchTerm" type="text" name="results" id="result" />
+        <button @click="searchActivities" class="btn">Search</button>
       </div>
-      <select name="" id="result-select" v-show="isClicked" v-model="result">
-        <option value="">Search Results</option>
-        <option
-          :key="result.place_id"
-          v-for="result in results"
-          :value="result"
-        >
-          {{ result.display_name }}
-        </option>
-      </select>
-      <input
-        @click="addActivities(result)"
-        type="submit"
-        value="Add Activity"
-        class="btn btn-block"
-      />
     </div>
-    <h3>Today you are going to :</h3>
-    <div :key="activity._id" v-for="activity in activities">
-      {{ activity.activityName }}
-      <button @click="deleteActivity(activity._id)">Delete Activity</button>
-    </div>
+    <select name="" id="result-select" v-show="isClicked" v-model="result">
+      <option value="">Search Results</option>
+      <option :key="result.place_id" v-for="result in results" :value="result">
+        {{ result.display_name }}
+      </option>
+    </select>
+    <input
+      @click="addActivities(result)"
+      type="submit"
+      value="Add Activity"
+      class="btn btn-block"
+    />
+  </div>
+  <div class="back-button">
+    <button class="btn" @click="goBack">Go Back</button>
   </div>
 </template>
 
@@ -152,6 +128,9 @@ export default {
   computed: {
     iconUrl() {
       return `https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Home-icon.svg/1024px-Home-icon.svg.png`;
+    },
+    redIconUrl() {
+      return `https://freesvg.org/img/flat_location_logo.png`;
     },
     iconSize() {
       return [this.iconWidth, this.iconHeight];
@@ -207,8 +186,6 @@ export default {
         },
       }).then(({ data: { activity } }) => {
         this.activities.push(activity);
-
-        this.attractions.push(this.result);
       });
     },
     deleteActivity(id) {
