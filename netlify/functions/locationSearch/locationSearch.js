@@ -7,11 +7,9 @@ const handler = async function (event) {
     let { viewbox } = event.queryStringParameters;
 
     if (viewbox === undefined) {
-      console.log(viewbox);
       viewbox = "";
     } else {
       viewbox = "&viewbox=" + viewbox + "&bounded=1";
-      console.log(viewbox);
     }
 
     const response = await axios.get(

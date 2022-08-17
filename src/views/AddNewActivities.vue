@@ -81,7 +81,8 @@
           <button @click="searchActivities" class="btn">Search</button>
         </div>
         <div class="back-button">
-        <button class="btn" @click='backButton'>Go Back</button></div>
+          <button class="btn" @click="backButton">Go Back</button>
+        </div>
       </div>
       <select name="" id="result-select" v-show="isClicked" v-model="result">
         <option value="">Search Results</option>
@@ -157,10 +158,10 @@ export default {
     },
   },
   methods: {
-    backButton(e){
-      e.preventDefault()
-    
-    window.history.go(-1)
+    backButton(e) {
+      e.preventDefault();
+
+      window.history.go(-1);
     },
     searchActivities(e) {
       e.preventDefault();
