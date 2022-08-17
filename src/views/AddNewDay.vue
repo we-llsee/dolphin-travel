@@ -6,6 +6,7 @@
         Day: {{ day }}
       </button>
     </div>
+    <button class="btn" @click="goBack">Go Back</button>
   </div>
 </template>
 
@@ -54,6 +55,9 @@ export default {
   },
 
   methods: {
+      goBack() {
+        window.history.go(-1);
+      },
     saveDay(day) {
       axios({
         method: "post",
