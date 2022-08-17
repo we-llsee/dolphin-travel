@@ -9,7 +9,6 @@
 </template>
 
 <script>
-
 export default {
   name: "UserCard",
   props: {
@@ -18,8 +17,8 @@ export default {
   methods: {
     loginHandler() {
       this.$store.state.loggedInUser = this.user._id;
-      this.$store.state.loggedInUserObj= this.user;
-    }
+      this.$store.state.loggedInUserObj = this.user;
+    },
   },
 };
 </script>

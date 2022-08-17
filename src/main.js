@@ -8,7 +8,11 @@ const store = createStore({
   state() {
     return {
       loggedInUser: "GUEST",
-      loggedInUserObj: {_id:'Guest',avatarURL:'https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg'}
+      loggedInUserObj: {
+        _id: "Guest",
+        avatarURL:
+          "https://upload.wikimedia.org/wikipedia/commons/6/60/Dolphin-logo.svg",
+      },
     };
   },
   mutations: {

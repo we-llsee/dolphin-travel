@@ -1,11 +1,9 @@
 <template>
   <div v-if="loggedIn === false">
-    <p>Please login first to create trips</p>
-    <router-link to="/login"
-      ><button class="loginbtn">Login</button></router-link
-    >
+    <p id="loginReminder">Please login to create a new trip.</p>
   </div>
   <form v-if="loggedIn === true" class="add-form">
+    <p id="upcomingText">Create a New Trip</p>
     <div class="form-control">
       <label for="trip-name">Trip Name: </label>
       <input
@@ -101,7 +99,7 @@
         @click="saveTrip"
         type="submit"
         value="Save trip"
-        class="btn btn-block"
+        class="btn btn-block saveBtn"
     /></router-link>
   </form>
 </template>
@@ -274,8 +272,23 @@ export default {
   font-family: inherit;
 }
 
+.saveBtn {
+  align-self: center;
+  width: 100%;
+  padding: 1px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0;
+  text-align: center;
+}
+
 .btn:hover {
   background-color: var(--pacific-blue);
+}
+
+a {
+  display: inline-block;
+  align-self: center;
 }
 
 .blue-container {
@@ -284,6 +297,7 @@ export default {
   border: 1px solid var(--midnight-blue);
   border-radius: 10px;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 #currAttText {
@@ -303,6 +317,20 @@ export default {
   padding: 0.2rem 0.5rem 0.2rem 0.5rem;
   border-radius: 10px;
   margin: 0.2rem;
+}
+
+#loginReminder {
+  font-size: 14px;
+  margin: 5rem;
+}
+
+#upcomingText {
+  font-family: "Reenie Beanie";
+  font-size: 50px;
+  color: var(--midnight-blue);
+  margin-top: -1.5rem;
+  width: 100%;
+  text-align: center;
 }
 
 input:focus,
