@@ -17,6 +17,7 @@
               <span class="type"> ({{ day.activities[0].type }})</span>
             </p>
           </div>
+          Click to see more activites
         </router-link>
       </li>
       <button
@@ -42,7 +43,12 @@ export default {
   data() {
     return {
       isBooked: false,
+      activities: [],
     };
+  },
+
+  created() {
+    this.activities = [...this.day.activities.slice(0, 3)];
   },
 };
 </script>
@@ -56,6 +62,17 @@ h2 {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-size: 20px;
+}
+p {
+  font-size: 0.8rem;
+}
+span {
+  font-family: "Reenie Beanie";
+  font-size: 1.3rem;
+}
+ul,
+li {
+  list-style: none;
 }
 
 ul {

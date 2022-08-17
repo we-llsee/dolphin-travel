@@ -24,6 +24,8 @@ export default {
 <template>
   <div>
     <DayGallery />
+
+    <EditTrip v-if="isToggled" />
     <EditTrip v-if="isToggled" @toggle-form="toggleTrip" />
     <router-link :to="'/trips/' + $route.params.tripId + '/map'"
       ><button class="btn">View map</button></router-link
