@@ -129,7 +129,7 @@ export default {
   },
 
   created() {
-    if (this.$store.state.loggedInUser != "GUEST") {
+    if (this.$store.state.loggedInUser != "Guest") {
       this.loggedIn = true;
     }
   },
