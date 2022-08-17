@@ -45,11 +45,6 @@ export default {
 </template>
 
 <style scoped>
-#upcomingText {
-  font-size: 14px;
-  margin-top: 0.4rem;
-}
-
 .cardGalley {
   display: flex;
   flex-direction: column;
