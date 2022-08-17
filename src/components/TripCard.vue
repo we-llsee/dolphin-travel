@@ -123,6 +123,7 @@ p {
   margin-top: 1rem;
   margin-right: 1.5rem;
   margin-bottom: 1rem;
+  text-align: right;
 }
 
 #daysUntilTrip {

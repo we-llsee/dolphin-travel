@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="newCard">
     <ul>
       <li>
         <router-link :to="'/trips/' + $route.params.tripId + '/add-day/'">
@@ -30,12 +30,6 @@ p {
   font-family: "Reenie Beanie";
   font-size: 2rem;
 }
-body {
-  margin: 20px auto;
-  font-family: "Lato";
-  background: #666;
-  color: #fff;
-}
 
 * {
   margin: 0;
@@ -51,15 +45,14 @@ ul {
   flex-wrap: wrap;
   justify-content: center;
 }
-ul li a {
+.newCard {
   text-decoration: none;
   color: #000;
-  background: plum;
+  background: var(--middle-blue);
   display: block;
-  height: 15em;
-  width: 15em;
-  margin: 1em;
+  padding: 0.5rem;
   border-radius: 5px;
+  max-width: 300px;
 }
 
 .plus-sign {

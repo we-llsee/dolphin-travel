@@ -23,7 +23,6 @@ export default {
 
 <template>
   <div>
-    <p>Welcome to the trip view</p>
     <DayGallery />
     <EditTrip v-if="isToggled" @toggle-form="toggleTrip" />
     <router-link :to="'/trips/' + $route.params.tripId + '/map'"

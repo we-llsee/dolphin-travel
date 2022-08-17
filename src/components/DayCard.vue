@@ -8,23 +8,28 @@
           "
           :day="day"
         >
-          <h2>Day #{{ day.dayNumber }}</h2>
+          <h2>Day {{ day.dayNumber }}</h2>
           <div v-if="day.activities.length > 0">
-            <p>{{ day.activities[0].activityName }}</p>
-            <p class="type">{{ day.activities[0].type }}</p>
+            <p>
+              <span class="activity"
+                >{{ day.activities[0].activityName }}
+              </span>
+              <span class="type"> ({{ day.activities[0].type }})</span>
+            </p>
           </div>
         </router-link>
-        <button
-          @click="
-            $emit('deleteDay', {
-              tripId: this.$route.params.tripId,
-              dayId: this.day._id,
-            })
-          "
-        >
-          Delete Day
-        </button>
       </li>
+      <button
+        @click="
+          $emit('deleteDay', {
+            tripId: this.$route.params.tripId,
+            dayId: this.day._id,
+          })
+        "
+        class="btn"
+      >
+        Delete Day
+      </button>
     </ul>
   </div>
 </template>
@@ -43,49 +48,66 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 20px auto;
-  font-family: "Lato";
-  background: #666;
-  color: #fff;
-}
-
 * {
   margin: 0;
   padding: 0;
 }
 h2 {
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
-  font-size: 1rem;
-}
-p {
-  font-family: "Reenie Beanie";
-  font-size: 2rem;
-}
-ul,
-li {
-  list-style: none;
-}
-ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-ul li a {
-  text-decoration: none;
-  color: #000;
-  background: skyblue;
-  display: block;
-  height: 15em;
-  width: 15em;
-  padding: 1em;
-  border-radius: 5px;
-}
-ul li {
-  margin: 1em;
+  font-size: 20px;
 }
 
+ul {
+  height: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.day-card {
+  text-decoration: none;
+  color: #000;
+  background: var(--light-cyan);
+  display: block;
+  padding: 0.5rem;
+  max-width: 300px;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+ul {
+  margin: 1em;
+  list-style: none;
+}
+.btn {
+  display: inline-block;
+  background: var(--star-command-blue);
+  height: 30px;
+  color: #fff;
+  border: none;
+  padding: 0rem 1rem 0rem 1rem;
+  margin: 0px 5px 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background-color: var(--pacific-blue);
+}
+
+.activity {
+  font-family: "Reenie Beanie";
+  font-size: 2rem;
+  font-size: 25px;
+}
 .type {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
   color: saddlebrown;
 }
 </style>
