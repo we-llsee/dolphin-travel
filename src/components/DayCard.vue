@@ -111,7 +111,7 @@ ul {
   color: #fff;
   border: none;
   padding: 0rem 1rem 0rem 1rem;
-  margin: 0px 0px 0px 0px;
+  margin: 0px 5px 5px 5px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
@@ -122,7 +122,7 @@ ul {
 
 a {
   display: inline-block;
-  min-height: 100%;
+  min-height: 90%;
 }
 
 .day-card:hover {
