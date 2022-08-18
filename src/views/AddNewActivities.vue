@@ -4,7 +4,7 @@
     <div class="activityList">
       <div class="listItem" :key="activity._id" v-for="activity in activities">
         <p class="listItemName">{{ activity.activityName }}</p>
-        <button class="btn" @click="deleteActivity(activity._id)">
+        <button class="btn deleteBtn" @click="deleteActivity(activity._id)">
           Delete
         </button>
       </div>
@@ -61,7 +61,7 @@
 
   <div class="search-activities">
     <div>
-      <label for="activity">Search activities nearby</label>
+      <label for="activity">Search for activities nearby...</label>
       <div class="boxAndButton">
         <input v-model="searchTerm" type="text" name="results" id="result" />
         <button @click="searchActivities" class="btn">Search</button>
@@ -77,11 +77,11 @@
       @click="addActivities(result)"
       type="submit"
       value="Add Activity"
-      class="btn btn-block"
+      class="btn btn-block addActivity"
     />
   </div>
   <div class="back-button">
-    <button class="btn" @click="goBack">Go Back</button>
+    <button id="backButton" class="btn" @click="goBack">Go Back</button>
   </div>
 </template>
 
@@ -259,11 +259,49 @@ export default {
   align-items: center;
 }
 
-.btn {
+.deleteBtn {
+  margin-left: 1rem;
+}
+
+@media (hover: hover) {
+  #backButton {
+    text-decoration: none;
+    transition: 0.4s;
+  }
+
+  #backButton:hover {
+    box-shadow: 0px 0px 0px 5px var(--light-cyan);
+    background-color: var(--star-command-blue);
+  }
+}
+
+#backButton {
+  margin-top: 1rem;
   margin-left: 1rem;
 }
 
 .btn:hover {
+  background-color: var(--pacific-blue);
+}
+
+.deleteBtn:hover {
   box-shadow: 0px 0px 5px 2px rgb(255, 0, 0);
+  background: var(--star-command-blue);
+}
+
+.search-activities {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.addActivity {
+  width: 20%;
+}
+
+#result {
+  width: 300px;
 }
 </style>

@@ -260,7 +260,7 @@ export default {
   flex-direction: column;
   text-align: left;
   padding: 1rem;
-  padding-left: 12rem;
+  padding-left: 13.6rem;
   width: 80%;
 }
 

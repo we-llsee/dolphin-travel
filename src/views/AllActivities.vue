@@ -1,79 +1,36 @@
 <template>
-  <p>All Activity page</p>
-
-  <div style="height: 75vh; width: 59vw">
-    <l-map
-      v-model="zoom"
-      v-model:zoom="zoom"
-      :center="[this.accomLat, this.accomLong]"
-      @move="log('move')"
-    >
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      ></l-tile-layer>
-      <l-control-layers />
-      <l-marker :lat-lng="[this.accomLat, this.accomLong]">
-        <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
-        <l-popup> You are staying at {{ accom }} </l-popup>
-      </l-marker>
-      <div :key="day" v-for="day in days">
-        <l-marker
-          :key="attraction._id"
-          v-for="attraction in day.activities"
-          :lat-lng="[attraction.latitude, attraction.longitude]"
-        >
-          <l-popup>
-            Day: {{ day.dayNumber }}<br />
-            Attraction : {{ attraction.activityName }} <br />
-            Attraction type: {{ attraction.type.replace(/_/g, " ") }}
-            <button @click="deleteActivity(day._id, attraction._id)">
-              Delete Activity
-            </button>
-          </l-popup>
-        </l-marker>
-      </div>
-    </l-map>
+  <p id="activityPageTitle">Activities planned for the trip:</p>
+  <div class="activityList">
     <div class="daybox" :key="day" v-for="day in days">
-      <h3>Day {{ day.dayNumber }}</h3>
-      <div :key="attraction._id" v-for="attraction in day.activities">
+      <h3 class="dayText">Day {{ day.dayNumber }}</h3>
+      <div
+        class="listItem"
+        :key="attraction._id"
+        v-for="attraction in day.activities"
+      >
         <span
-          >• {{ attraction.activityName }} ({{
+          >{{ attraction.activityName }} ({{
             attraction.type.replace(/_/g, " ")
-          }}) at
-          {{ attraction.address.address }}
-          -
-          <button @click="deleteActivity(day._id, attraction._id)">
+          }})
+          <button class="btn" @click="deleteActivity(day._id, attraction._id)">
             Delete Activity
           </button>
         </span>
       </div>
+      <hr />
     </div>
+  </div>
+  <div class="back-button">
+    <button class="btn" @click="goBack">Go Back</button>
   </div>
 </template>
 
 <script>
-import {
-  LMap,
-  LTileLayer,
-  LMarker,
-  LControlLayers,
-  LPopup,
-  LIcon,
-} from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 
 export default {
   name: "AddNewActivities",
-
-  components: {
-    LMap,
-    LTileLayer,
-    LMarker,
-    LControlLayers,
-    LPopup,
-    LIcon,
-  },
   data() {
     return {
       zoom: 14,
@@ -120,6 +77,9 @@ export default {
           });
       }
     },
+    goBack() {
+      window.history.go(-1);
+    },
   },
 
   created() {
@@ -139,3 +99,54 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#activityPageTitle {
+  font-family: "Reenie Beanie";
+  font-size: 50px;
+  color: var(--midnight-blue);
+  margin-top: -0.5rem;
+}
+
+.dayText {
+  font-family: "Reenie Beanie";
+  font-size: 40px;
+  color: var(--midnight-blue);
+  margin-top: -0.5rem;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listItem {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (hover: hover) {
+  .btn:hover {
+    box-shadow: 0px 0px 0px 5px var(--light-cyan);
+  }
+
+  .btn {
+    text-decoration: none;
+    transition: 0.4s;
+  }
+}
+
+.back-button {
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+hr {
+  width: 100%;
+  text-align: left;
+  margin: 1rem;
+}
+</style>
