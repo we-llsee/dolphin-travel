@@ -34,7 +34,7 @@
             You are visiting here today! <br />
             Address: {{ activity.activityName }} <br />
             Attraction type: {{ activity.type }} <br />
-            <button deleteBtn @click="deleteActivity(activity._id)">
+            <button @click="deleteActivity(activity._id)">
               Delete Activity
             </button>
           </l-popup>
